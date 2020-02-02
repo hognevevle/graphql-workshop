@@ -1,15 +1,18 @@
 type Query {
     me: User
+    allUsers: [Contact!]
 }
 
 type Mutation {
     sendMessage(input: SendMessageInput!): SendMessagePayload!
     createUser(input: CreateUserInput!): CreateUserPayload!
+    inviteUser() ...
 }
 
 type Subscription  {
     onMessageReceived(from: ID!): Message!
     onOnlineStatusChanged: Friend!
+    onInvitationAccepted: Friend!
 }
 
 type User implements Node, Contact {
