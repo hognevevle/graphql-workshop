@@ -15,7 +15,7 @@ type Subscription  {
     onInvitationAccepted: Friend!
 }
 
-type Viewer implements Node, Contact {
+type Viewer implements Node {
     id: ID!
     name: String!
     image: Url!
@@ -28,12 +28,6 @@ type Friend implements Node, Contact {
     image: Url!
     status: OnlineStatus!
     messages: [Message!]
-}
-
-type InvitedUser implements Node, Contact {
-    id: ID!
-    name: String!
-    image: Url!
 }
 
 type User implements Node, Contact {
