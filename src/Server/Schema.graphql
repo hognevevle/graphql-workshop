@@ -35,15 +35,15 @@ interface Contact {
 
 type Message implements Node {
     id: ID!
-    type: MessageType!
+    direction: MessageDirection!
     text: String!
     from: Contact!
     to: Contact!
 }
 
-enum MessageType {
-    IN
-    OUT
+enum MessageDirection {
+    INCOMING
+    OUTGOING
 }
 
 input SendMessageInput {
