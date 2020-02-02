@@ -4,6 +4,7 @@ type Query {
 
 type Mutation {
     sendMessage(input: SendMessageInput!): SendMessagePayload!
+    createUser(input: CreateUserInput!): CreateUserPayload!
 }
 
 type Subscription  {
@@ -14,14 +15,14 @@ type Subscription  {
 type User implements Node, Contact {
     id: ID!
     name: String!
-    image: ByteArray
+    image: Url!
     friends: [Friend!]
 }
 
 type Friend implements Node, Contact {
     id: ID!
     name: String!
-    image: ByteArray
+    image: Url!
     status: OnlineStatus!
     messages: [Message!]
 }
@@ -29,7 +30,7 @@ type Friend implements Node, Contact {
 interface Contact {
     id: ID!
     name: String!
-    image: ByteArray
+    image: Url!
 }
 
 type Message implements Node {
