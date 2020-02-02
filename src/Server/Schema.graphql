@@ -1,6 +1,6 @@
 type Query {
-    me: User
-    allUsers: [Contact!]
+    me: Viewer
+    allUsers: [User!]
 }
 
 type Mutation {
@@ -15,11 +15,11 @@ type Subscription  {
     onInvitationAccepted: Friend!
 }
 
-type User implements Node, Contact {
+type Viewer implements Node, Contact {
     id: ID!
     name: String!
     image: Url!
-    friends: [Friend!]
+    contacts: [Contact!]
 }
 
 type Friend implements Node, Contact {
@@ -28,6 +28,18 @@ type Friend implements Node, Contact {
     image: Url!
     status: OnlineStatus!
     messages: [Message!]
+}
+
+type InvitedUser implements Node, Contact {
+    id: ID!
+    name: String!
+    image: Url!
+}
+
+type User implements Node, Contact {
+    id: ID!
+    name: String!
+    image: Url!
 }
 
 interface Contact {
