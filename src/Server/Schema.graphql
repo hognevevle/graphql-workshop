@@ -1,0 +1,64 @@
+type Query {
+    me: User
+}
+
+type Mutation {
+    sendMessage(input: SendMessageInput!): SendMessagePayload!
+}
+
+type Subscription  {
+    onMessageReceived(from: ID!): Message!
+    onOnlineStatusChanged: Friend!
+}
+
+type User implements Node, Contact {
+    id: ID!
+    name: String!
+    image: ByteArray
+    friends: [Friend!]
+}
+
+type Friend implements Node, Contact {
+    id: ID!
+    name: String!
+    image: ByteArray
+    status: OnlineStatus!
+    messages: [Message!]
+}
+
+interface Contact {
+    id: ID!
+    name: String!
+    image: ByteArray
+}
+
+type Message implements Node {
+    id: ID!
+    type: MessageType!
+    text: String!
+    from: Contact!
+    to: Contact!
+}
+
+enum MessageType {
+    IN
+    OUT
+}
+
+input SendMessageInput {
+    text: String!
+    to: ID!
+    clientMutationId: String
+}
+
+type SendMessagePayload {
+    message: Message
+    clientMutationId: String
+}
+
+enum OnlineStatus {
+    ONLINE
+    OFFLINE
+    INACTIVE
+}
+
