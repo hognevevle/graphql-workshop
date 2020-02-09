@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
-using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -43,48 +40,6 @@ namespace Chat.Server
                     await context.Response.WriteAsync("Hello World!");
                 });
             });
-        }
-    }
-
-    public class Query
-    {
-
-    }
-
-    public interface IContact
-    {
-        Guid Id { get; }
-
-        string Name { get; }
-
-        Uri Image { get; }
-    }
-
-    public class User
-        : IContact
-    {
-        public User(Guid id, string name, string email, Uri image)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-            Image = image;
-        }
-
-        public Guid Id { get; }
-
-        public string Name { get; }
-
-        public string Email { get; }
-
-        public Uri Image { get; }
-    }
-
-    public class ViewerType : ObjectType<User>
-    {
-        protected override void Configure(IObjectTypeDescriptor<User> descriptor)
-        {
-            
         }
     }
 }
