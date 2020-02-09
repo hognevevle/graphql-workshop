@@ -1,0 +1,93 @@
+﻿@page "/"
+
+<div class="chat">
+  <div class="chat-header">
+    <img
+      class="chat-avatar"
+      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg"
+      alt="avatar"
+    />
+    <div class="chat-about">
+      <div class="chat-with">Chat with Vincent Porter</div>
+      <div class="chat-num-messages">already 1 902 messages</div>
+    </div>
+    <span class="favorite-icon fa fa-star"></span>
+  </div>
+  <div class="chat-history">
+    <ul class="messages">
+      @foreach(var message in messages)
+      {
+        <li class="message--@message.Direction">
+          <div class="message-data">
+            @if (@message.Direction == "outgoing")
+            {
+              <span class="status-icon-viewer fa fa-circle"></span>
+              <span class="message-data-name">@message.From</span>
+              <span class="message-data-time">@message.Timestamp</span>
+            }
+            else
+            {
+              <span class="message-data-time">@message.Timestamp</span>
+              <span class="message-data-name">@message.From</span>
+              <span class="status-icon--@message.Status fa fa-circle"></span>
+            }
+          </div>
+          <div class="message-text">
+            @message.Text
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+  <div class="chat-message">
+    <textarea
+      class="chat-message-textbox"
+      name="message-to-send"
+      id="message-to-send"
+      placeholder="Type your message"
+      rows="3"
+    ></textarea>
+    <div class="chat-message-footer">
+      <div class="chat-message-actions">
+        <span class="chat-message-file fa fa-file-o"></span>
+        <span class="chat-message-image fa fa-file-image-o"></span>
+      </div>
+      <button class="chat-message-send">Send</button>
+    </div>
+  </div>
+</div>
+
+@code {
+    private Message[] messages = new []
+    {
+      new Message
+      {
+        From = "Olia",
+        Direction = "outgoing",
+        Status = "online",
+        Text = "Hi Vincent, how are you? How is the project coming along?",
+        Timestamp = "10:10 AM, Today"
+      },
+      new Message
+      {
+        From = "Vincent",
+        Direction = "incoming",
+        Status = "online",
+        Text = "Are we meeting today? Project has been already finished and I have results to show you.",
+        Timestamp = "10:11 AM, Today"
+      }
+    };
+
+    public class Message
+    {
+        public string From { get; set; }
+
+        public string Direction { get; set; }
+
+        public string Status { get; set; }
+
+        public string Text { get; set; }
+
+        public string Timestamp { get; set; }
+    }
+}
