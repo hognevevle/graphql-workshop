@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Chat.Server.Repositories
 {
@@ -12,7 +12,7 @@ namespace Chat.Server.Repositories
             CancellationToken cancellationToken);
 
         Task<IReadOnlyDictionary<Guid, User>> GetUsersByIdsAsync(
-            IReadOnlyList<Guid> id, 
+            IReadOnlyList<Guid> ids,
             CancellationToken cancellationToken);
     }
 }

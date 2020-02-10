@@ -1,5 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Immutable;
+using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MongoDB.Driver;
 
 namespace Chat.Server
 {
@@ -16,9 +19,19 @@ namespace Chat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IMongoDatabase>(sp => new MongoClient().GetDatabase("chat"));
+            services.AddSingleton<IUserRepository>(sp => new UserRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<User>(nameof(User))));
+
             services.AddGraphQL(
                 SchemaBuilder.New()
-                    .AddQueryType<Query>())
+                    .AddQueryType<Query>()
+                    .EnableRelaySupport());
+
+            services.AddQueryRequestInterceptor((context, builder, ct) => 
+            {
+                builder.AddProperty("CurrentUserId", Guid.Empty);
+                return Task.CompletedTask;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
