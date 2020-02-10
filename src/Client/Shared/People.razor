@@ -1,0 +1,53 @@
+﻿<div class="people">
+  <div class="people-filter">
+    <input class="people-filter-input" type="text" placeholder="search" />
+    <span class="people-filter-icon fa fa-search"></span>
+  </div>
+  <ul class="people-list">
+    @foreach(var person in people)
+    {
+      <li class="person">
+        <img class="person-avatar" src="@person.AvatarUrl" alt="avatar" />
+        <div class="person-about">
+          <div class="person-name">@person.Name</div>
+          <div class="person-status">
+            <span class="status-icon--@person.Status fa fa-circle"></span>
+            @person.Status
+            @person.LastSeen
+          </div>
+        </div>
+      </li>
+    }
+  </ul>
+</div>
+
+@code {
+    private Person[] people = new []
+    {
+      new Person
+      {
+        Name = "Vincent Porter",
+        AvatarUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg",
+        Status = "online",
+        LastSeen = ""
+      },
+      new Person
+      {
+        Name = "Aiden Chavez",
+        AvatarUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_02.jpg",
+        Status = "offline",
+        LastSeen = "left 7 mins ago"
+      }
+    };
+
+    public class Person
+    {
+        public string AvatarUrl { get; set; }
+
+        public string LastSeen { get; set; }
+
+        public string Name { get; set; }
+
+        public string Status { get; set; }
+    }
+}

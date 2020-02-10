@@ -1,0 +1,281 @@
+﻿@import url("https://fonts.googleapis.com/css?family=Lato:400, 700");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  /*background: #c5ddeb;*/
+  margin: 0;
+  background: #444753;
+  font: 14px/20px "Lato", Arial, sans-serif;
+  color: white;
+}
+
+app {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.people {
+  display: flex;
+  flex: 0 0 260px;
+  flex-direction: column;
+}
+
+.people-filter {
+  display: flex;
+  flex: 0 0 100px;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 2px solid #444753;
+  padding: 0 7px 0 20px;
+  overflow: hidden;
+}
+
+.people-filter-input {
+  flex: 1 1 auto;
+  border: none;
+  border-radius: 3px;
+  padding: 14px 36px 14px 14px;
+  font-size: 14px;
+  background: #6a6c75;
+  color: white;
+}
+
+.people-filter-icon {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  left: -25px;
+}
+
+.people-list {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin: 0;
+  padding: 20px;
+}
+
+.person {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.person-about {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 0 8px 0 16px;
+}
+
+.person-name {
+  flex: 0 0 auto;
+}
+
+.person-status {
+  flex: 0 0 auto;
+  color: #92959e;
+}
+
+.status-icon--online {
+  color: #86bb71;
+}
+
+.status-icon--offline {
+  color: #e38968;
+}
+
+.chat {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  background: #f2f5f8;
+  color: #434651;
+}
+
+.chat-header {
+  display: flex;
+  flex: 0 0 100px;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 2px solid white;
+}
+
+.chat-about {
+  flex: 1 1 auto;
+  padding: 0 16px;
+}
+
+.chat-with {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.chat-num-messages {
+  color: #92959e;
+}
+
+.favorite-icon {
+  font-size: 20px;
+  color: #d8dadf;
+}
+
+.chat-history {
+  flex: 1 1 auto;
+  border-bottom: 2px solid white;
+  padding: 30px 30px 20px;
+  overflow-y: scroll;
+}
+
+.message-text {
+  position: relative;
+  margin-bottom: 30px;
+  border-radius: 7px;
+  padding: 18px 20px;
+  width: 90%;
+  font-size: 16px;
+  line-height: 26px;
+  color: white;
+}
+
+.message-text:after {
+  position: absolute;
+  bottom: 100%;
+  margin-left: -10px;
+  border: solid transparent;
+  border-width: 10px;
+  width: 0;
+  height: 0;
+  content: " ";
+  pointer-events: none;
+}
+
+.message--incoming .message-text {
+  background: #86bb71;
+}
+
+.message--incoming .message-text:after {
+  border-bottom-color: #86bb71;
+  left: 7%;
+}
+
+.message--outgoing .message-text {
+  background: #94c2ed;
+}
+
+.message--outgoing .message-text:after {
+  border-bottom-color: #94c2ed;
+  left: 93%;
+}
+
+.message-data {
+  margin-bottom: 15px;
+}
+
+.message-data-time {
+  padding-left: 6px;
+  color: #a8aab1;
+}
+
+.chat-message {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px 20px;
+}
+
+.chat-message-textbox {
+  flex: 0 0 auto;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font: 14px/22px "Lato", Arial, sans-serif;
+  resize: none;
+}
+
+.chat-message-footer {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+}
+
+.chat-message-actions {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: row;
+}
+
+.chat-message-file,
+.chat-message-image {
+  flex: 0 0 auto;
+  padding: 0 6px;
+  font-size: 16px;
+  color: gray;
+  cursor: pointer;
+}
+
+.chat-message-send {
+  flex: 0 0 auto;
+  justify-self: flex-end;
+  border: none;
+  padding: 0 6px;
+  font-size: 16px;
+  font-weight: bold;
+  background: #f2f5f8;
+  color: #94c2ed;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.chat-message-send:hover {
+  color: #75b1e8;
+}
+
+.status-icon--offline,
+.status-icon--online,
+.status-icon-viewer {
+  font-size: 10px;
+}
+
+.status-icon-viewer {
+  color: #94c2ed;
+}
+
+#blazor-error-ui {
+  background: lightyellow;
+  bottom: 0;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+  display: none;
+  left: 0;
+  padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+#blazor-error-ui .dismiss {
+  cursor: pointer;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.5rem;
+}
