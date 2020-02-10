@@ -21,15 +21,15 @@
           <div class="message-data">
             @if (@message.Direction == "outgoing")
             {
-              <span class="status-icon-viewer fa fa-circle"></span>
-              <span class="message-data-name">@message.From</span>
               <span class="message-data-time">@message.Timestamp</span>
+              <span class="message-data-name">@message.From</span>
+              <span class="status-icon-viewer fa fa-circle"></span>
             }
             else
             {
-              <span class="message-data-time">@message.Timestamp</span>
-              <span class="message-data-name">@message.From</span>
               <span class="status-icon--@message.Status fa fa-circle"></span>
+              <span class="message-data-name">@message.From</span>
+              <span class="message-data-time">@message.Timestamp</span>
             }
           </div>
           <div class="message-text">

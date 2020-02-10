@@ -13,7 +13,6 @@ body {
 }
 
 body {
-  /*background: #c5ddeb;*/
   margin: 0;
   background: #444753;
   font: 14px/20px "Lato", Arial, sans-serif;
@@ -102,6 +101,10 @@ app {
   color: #e38968;
 }
 
+.status-text {
+  padding: 0 6px;
+}
+
 .chat {
   display: flex;
   flex: 1 1 auto;
@@ -145,6 +148,23 @@ app {
   overflow-y: scroll;
 }
 
+.messages {
+  padding: 0;
+}
+
+.message--incoming,
+.message--outgoing {
+  display: block;
+}
+
+.message-data {
+  margin-bottom: 15px;
+}
+
+.message-data-time {
+  color: #a8aab1;
+}
+
 .message-text {
   position: relative;
   margin-bottom: 30px;
@@ -168,31 +188,37 @@ app {
   pointer-events: none;
 }
 
+.message--incoming .message-data-name,
+.message--incoming .message-data-time {
+  padding-left: 6px;
+}
+
 .message--incoming .message-text {
   background: #86bb71;
 }
 
 .message--incoming .message-text:after {
+  left: 30px;
   border-bottom-color: #86bb71;
-  left: 7%;
+}
+
+.message--outgoing .message-data {
+  text-align: right;
+}
+
+.message--outgoing .message-data-name,
+.message--outgoing .message-data-time {
+  padding-right: 6px;
 }
 
 .message--outgoing .message-text {
+  margin-left: auto;
   background: #94c2ed;
 }
 
 .message--outgoing .message-text:after {
+  right: 20px;
   border-bottom-color: #94c2ed;
-  left: 93%;
-}
-
-.message-data {
-  margin-bottom: 15px;
-}
-
-.message-data-time {
-  padding-left: 6px;
-  color: #a8aab1;
 }
 
 .chat-message {
