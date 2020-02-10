@@ -12,8 +12,14 @@
           <div class="person-name">@person.Name</div>
           <div class="person-status">
             <span class="status-icon--@person.Status fa fa-circle"></span>
-            <span class="status-text">@person.Status</span>
-            <span class="status-last-seen">@person.LastSeen</span>
+            @if (@person.Status == "online")
+            {
+              <span class="status-text">@person.Status</span>
+            }
+            else
+            {
+              <span class="status-text">@person.LastSeen</span>
+            }
           </div>
         </div>
       </li>

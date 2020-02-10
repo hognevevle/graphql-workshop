@@ -14,7 +14,7 @@ body {
 
 body {
   margin: 0;
-  background: #444753;
+  background-color: #444753;
   font: 14px/20px "Lato", Arial, sans-serif;
   color: white;
 }
@@ -49,7 +49,7 @@ app {
   border-radius: 3px;
   padding: 14px 36px 14px 14px;
   font-size: 14px;
-  background: #6a6c75;
+  background-color: #6a6c75;
   color: white;
 }
 
@@ -102,14 +102,14 @@ app {
 }
 
 .status-text {
-  padding: 0 6px;
+  padding-left: 3px;
 }
 
 .chat {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  background: #f2f5f8;
+  background-color: #f2f5f8;
   color: #434651;
 }
 
@@ -188,13 +188,16 @@ app {
   pointer-events: none;
 }
 
-.message--incoming .message-data-name,
+.message--incoming .message-data-name {
+  padding-left: 3px;
+}
+
 .message--incoming .message-data-time {
   padding-left: 6px;
 }
 
 .message--incoming .message-text {
-  background: #86bb71;
+  background-color: #86bb71;
 }
 
 .message--incoming .message-text:after {
@@ -206,19 +209,63 @@ app {
   text-align: right;
 }
 
-.message--outgoing .message-data-name,
+.message--outgoing .message-data-name {
+  padding-right: 3px;
+}
+
 .message--outgoing .message-data-time {
   padding-right: 6px;
 }
 
 .message--outgoing .message-text {
   margin-left: auto;
-  background: #94c2ed;
+  background-color: #94c2ed;
 }
 
 .message--outgoing .message-text:after {
   right: 20px;
   border-bottom-color: #94c2ed;
+}
+
+.typing {
+  display: block;
+  letter-spacing: 1px;
+}
+
+@keyframes typing-animation {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+.typing-icon-1,
+.typing-icon-2,
+.typing-icon-3 {
+  font-size: 10px;
+  color: #86bb71;
+  opacity: 0.25;
+  animation-name: typing-animation;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.typing-icon-1 {
+  animation-delay: 0s;
+}
+
+.typing-icon-2 {
+  animation-delay: 0.5s;
+}
+
+.typing-icon-3 {
+  animation-delay: 1s;
 }
 
 .chat-message {
@@ -267,7 +314,7 @@ app {
   padding: 0 6px;
   font-size: 16px;
   font-weight: bold;
-  background: #f2f5f8;
+  background-color: #f2f5f8;
   color: #94c2ed;
   text-transform: uppercase;
   cursor: pointer;
@@ -288,7 +335,7 @@ app {
 }
 
 #blazor-error-ui {
-  background: lightyellow;
+  background-color: lightyellow;
   bottom: 0;
   box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
   display: none;
