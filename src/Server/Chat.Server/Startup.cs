@@ -21,15 +21,19 @@ namespace Chat.Server
         {
             services.AddSingleton<IMongoDatabase>(sp => new MongoClient().GetDatabase("chat"));
             services.AddSingleton<IUserRepository>(sp => new UserRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<User>(nameof(User))));
+            services.AddSingleton<IImageStorage, InMemoryImageStorage>();
+
+            services.AddDataLoaderRegistry();
 
             services.AddGraphQL(
                 SchemaBuilder.New()
                     .AddQueryType<Query>()
+                    .AddMutationType<Mutation>()
                     .EnableRelaySupport());
 
             services.AddQueryRequestInterceptor((context, builder, ct) => 
             {
-                builder.AddProperty("CurrentUserId", Guid.Empty);
+                builder.AddProperty("CurrentUserName", "foo");
                 return Task.CompletedTask;
             });
         }

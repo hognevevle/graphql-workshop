@@ -10,7 +10,7 @@ namespace Chat.Server.Types
         protected override void Configure(IObjectTypeDescriptor<User> descriptor)
         {
             descriptor
-                .Name("User")
+                .Name("Friend")
                 .AsNode()
                 .IdField(t => t.Id)
                 .NodeResolver((ctx, id) =>

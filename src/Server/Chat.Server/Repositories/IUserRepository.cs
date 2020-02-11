@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -7,12 +8,18 @@ namespace Chat.Server.Repositories
 {
     public interface IUserRepository
     {
+        IQueryable<User> Users { get; }
+
         Task<User> GetUserByIdAsync(
             Guid id,
             CancellationToken cancellationToken = default);
 
         Task<IReadOnlyDictionary<Guid, User>> GetUsersByIdsAsync(
             IReadOnlyList<Guid> ids,
+            CancellationToken cancellationToken);
+
+        Task<IReadOnlyDictionary<string, User>> GetUsersByNamesAsync(
+            IReadOnlyList<string> names,
             CancellationToken cancellationToken);
 
         Task CreateUserAsync(
@@ -23,6 +30,11 @@ namespace Chat.Server.Repositories
             string userName,
             string newPasswordHash,
             string salt,
+            CancellationToken cancellationToken = default);
+
+        Task AddFriendIdAsync(
+            string userName,
+            Guid friendId,
             CancellationToken cancellationToken = default);
     }
 }

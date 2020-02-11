@@ -6,7 +6,7 @@ namespace Chat.Server
             string name,
             string email,
             string password,
-            byte[] image,
+            byte[]? image,
             string? clientMutationId)
         {
             Name = name;
@@ -22,7 +22,7 @@ namespace Chat.Server
 
         public string Password { get; }
 
-        public byte[] Image { get; }
+        public byte[]? Image { get; }
 
         public string? ClientMutationId { get; }
     }

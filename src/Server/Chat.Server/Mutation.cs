@@ -3,10 +3,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Chat.Server.DataLoader;
 using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Types;
+using HotChocolate.Types.Relay;
 
 namespace Chat.Server
 {
@@ -50,11 +51,12 @@ namespace Chat.Server
             using var sha = SHA512.Create();
             byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password + salt));
 
+
             var user = new User(
                 Guid.NewGuid(),
                 input.Name,
                 input.Email,
-                Encoding.UTF8.GetString(hash),
+                Convert.ToBase64String(hash),
                 salt,
                 Array.Empty<Guid>());
 
@@ -62,11 +64,55 @@ namespace Chat.Server
                 user, cancellationToken)
                 .ConfigureAwait(false);
 
-            await imageStorage.SaveImageAsync(
-                user.Id, input.Image, cancellationToken)
-                .ConfigureAwait(false);
+            if (input.Image is { })
+            {
+                await imageStorage.SaveImageAsync(
+                    user.Id, input.Image, cancellationToken)
+                    .ConfigureAwait(false);
+            }
 
             return new CreateUserPayload(user, input.ClientMutationId);
+        }
+
+        public async Task<InviteFriendPayload> InviteFriendAsync(
+            InviteFriendInput input,
+            [State("CurrentUserName")]string userName,
+            [DataLoader]UserByNameDataLoader userByNameDataLoader,
+            [Service]IIdSerializer idSerializer,
+            [Service]IUserRepository userRepository,
+            CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(input.UserId))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetMessage("The user id cannot be empty.")
+                        .SetCode("USERID_EMPTY")
+                        .Build());
+            }
+
+            IdValue value = idSerializer.Deserialize(input.UserId);
+
+            if (!value.TypeName.Equals(nameof(User), StringComparison.Ordinal))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetMessage("The provided user id has an invalid format.")
+                        .SetCode("USERID_INVALID")
+                        .Build());
+            }
+
+            Guid newFriendId = (Guid)value.Value;
+
+            await userRepository.AddFriendIdAsync(
+                userName, newFriendId, cancellationToken)
+                .ConfigureAwait(false);
+
+            User user = await userByNameDataLoader.LoadAsync(
+                userName, cancellationToken)
+                .ConfigureAwait(false);
+
+            return new InviteFriendPayload(user, input.ClientMutationId);
         }
     }
 }

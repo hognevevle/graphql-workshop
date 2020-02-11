@@ -28,6 +28,8 @@ namespace Chat.Server.Repositories
                     new CreateIndexOptions { Unique = true }));
         }
 
+        public IQueryable<User> Users => _users.AsQueryable();
+
         public Task<User> GetUserByIdAsync(
             Guid id,
             CancellationToken cancellationToken)
@@ -39,14 +41,24 @@ namespace Chat.Server.Repositories
             IReadOnlyList<Guid> ids,
             CancellationToken cancellationToken)
         {
-            var list = new List<Guid>(ids);
-
             List<User> result = await _users.AsQueryable()
-                .Where(t => list.Contains(t.Id))
+                .Where(t => ids.Contains(t.Id))
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return result.ToDictionary(t => t.Id);
+        }
+
+        public async Task<IReadOnlyDictionary<string, User>> GetUsersByNamesAsync(
+            IReadOnlyList<string> names,
+            CancellationToken cancellationToken)
+        {
+            List<User> result = await _users.AsQueryable()
+                .Where(t => names.Contains(t.Name))
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return result.ToDictionary(t => t.Name);
         }
 
         public Task CreateUserAsync(
@@ -68,6 +80,19 @@ namespace Chat.Server.Repositories
                 options: default,
                 cancellationToken)
                 .ConfigureAwait(false);
-        }   
+        }
+
+        public async Task AddFriendIdAsync(
+            string userName,
+            Guid friendId,
+            CancellationToken cancellationToken = default)
+        {
+            await _users.UpdateOneAsync(
+                Builders<User>.Filter.Eq(t => t.Name, userName),
+                Builders<User>.Update.AddToSet(t => t.FriendIds, friendId),
+                options: default,
+                cancellationToken)
+                .ConfigureAwait(false);
+        }
     }
 }
