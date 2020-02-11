@@ -16,9 +16,7 @@ namespace Chat.Server.Types
                 .NodeResolver((ctx, id) =>
                     ctx.DataLoader<UserByIdDataLoader>().LoadAsync(id, ctx.RequestAborted));
 
-            descriptor.Ignore(t => t.FriendIds);
-            descriptor.Ignore(t => t.PasswordHash);
-            descriptor.Ignore(t => t.Salt);
+            descriptor.DefaultIgnores();
         }
     }
 }

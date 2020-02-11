@@ -20,9 +20,7 @@ namespace Chat.Server.Types
                     ctx.DataLoader<UserByIdDataLoader>().LoadAsync(id, ctx.RequestAborted));
 
             descriptor
-                .Ignore(t => t.FriendIds)
-                .Ignore(t => t.PasswordHash)
-                .Ignore(t => t.Salt)
+                .DefaultIgnores()
                 .Field<ViewerResolvers>(t => t.GetFriendsAsync(default!, default!, default))
                 .Type<NonNullType<ListType<NonNullType<FriendType>>>>();
         }
