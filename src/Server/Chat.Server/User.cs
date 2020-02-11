@@ -5,12 +5,19 @@ namespace Chat.Server
 {
     public class User
     {
-        public User(Guid id, string name, string email, Uri image, IReadOnlyList<Guid> friendIds)
+        public User(
+            Guid id, 
+            string name, 
+            string email, 
+            string passwordHash, 
+            string salt, 
+            IReadOnlyList<Guid> friendIds)
         {
             Id = id;
             Name = name;
             Email = email;
-            Image = image;
+            PasswordHash = passwordHash;
+            Salt = salt;
             FriendIds = friendIds;
         }
 
@@ -20,7 +27,9 @@ namespace Chat.Server
 
         public string Email { get; }
 
-        public Uri Image { get; }
+        public string PasswordHash { get; }
+
+        public string Salt { get; }
 
         public IReadOnlyList<Guid> FriendIds { get; }
     }

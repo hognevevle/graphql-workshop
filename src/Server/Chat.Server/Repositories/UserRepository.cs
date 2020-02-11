@@ -16,6 +16,16 @@ namespace Chat.Server.Repositories
         public UserRepository(IMongoCollection<User> users)
         {
             _users = users;
+
+            _users.Indexes.CreateOne(
+                new CreateIndexModel<User>(
+                    Builders<User>.IndexKeys.Ascending(x => x.Name),
+                    new CreateIndexOptions { Unique = true }));
+
+            _users.Indexes.CreateOne(
+                new CreateIndexModel<User>(
+                    Builders<User>.IndexKeys.Ascending(x => x.Email),
+                    new CreateIndexOptions { Unique = true }));
         }
 
         public Task<User> GetUserByIdAsync(
@@ -38,5 +48,26 @@ namespace Chat.Server.Repositories
 
             return result.ToDictionary(t => t.Id);
         }
+
+        public Task CreateUserAsync(
+            User user,
+            CancellationToken cancellationToken) =>
+            _users.InsertOneAsync(user, options: default, cancellationToken);
+
+        public async Task UpdatePasswordAsync(
+            string userName,
+            string newPasswordHash,
+            string salt,
+            CancellationToken cancellationToken)
+        {
+            await _users.UpdateOneAsync(
+                Builders<User>.Filter.Eq(t => t.Name, userName),
+                Builders<User>.Update.Combine(
+                    Builders<User>.Update.Set(t => t.PasswordHash, newPasswordHash),
+                    Builders<User>.Update.Set(t => t.Salt, salt)),
+                options: default,
+                cancellationToken)
+                .ConfigureAwait(false);
+        }   
     }
 }

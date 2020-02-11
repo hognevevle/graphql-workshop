@@ -12,7 +12,7 @@ namespace Chat.Server
     {
         [GraphQLType(typeof(NonNullType<ViewerType>))]
         public Task<User> GetMeAsync(
-            [State("CurrentUserId")]Guid currentUserId, 
+            [State("CurrentUserId")]Guid currentUserId,
             UserByIdDataLoader userByIdDataLoader,
             CancellationToken cancellationToken) =>
             userByIdDataLoader.LoadAsync(currentUserId, cancellationToken);

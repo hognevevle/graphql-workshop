@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Chat.Server.DataLoader;
 using HotChocolate;
 using HotChocolate.Resolvers;
@@ -15,6 +18,22 @@ namespace Chat.Server.Types
                 .IdField(t => t.Id)
                 .NodeResolver((ctx, id) =>
                     ctx.DataLoader<UserByIdDataLoader>().LoadAsync(id, ctx.RequestAborted));
+
+            descriptor
+                .Ignore(t => t.FriendIds)
+                .Ignore(t => t.PasswordHash)
+                .Ignore(t => t.Salt)
+                .Field<ViewerResolvers>(t => t.GetFriendsAsync(default!, default!, default))
+                .Type<NonNullType<ListType<NonNullType<FriendType>>>>();
+        }
+
+        private class ViewerResolvers
+        {
+            public Task<IReadOnlyList<User>> GetFriendsAsync(
+                [Parent]User user,
+                [DataLoader]UserByIdDataLoader dataLoader,
+                CancellationToken cancellationToken) =>
+                dataLoader.LoadAsync(user.FriendIds, cancellationToken);
         }
     }
 }
