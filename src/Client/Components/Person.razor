@@ -1,0 +1,31 @@
+﻿<li class="person">
+  <img class="person-avatar" src="@AvatarUrl" alt="avatar" />
+  <div class="person-about">
+    <div class="person-name">@Name</div>
+    <div class="person-status">
+      <span class="status-icon--@Status fa fa-circle"></span>
+      @if (@Status == "online")
+      {
+        <span class="status-text">@Status</span>
+      }
+      else
+      {
+        <span class="status-text">@LastSeen</span>
+      }
+    </div>
+  </div>
+</li>
+
+@code {
+    [Parameter]
+    public string AvatarUrl { get; set; }
+
+    [Parameter]
+    public string LastSeen { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public string Status { get; set; }
+}

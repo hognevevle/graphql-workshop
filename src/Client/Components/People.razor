@@ -6,23 +6,11 @@
   <ul class="people-list">
     @foreach(var person in people)
     {
-      <li class="person">
-        <img class="person-avatar" src="@person.AvatarUrl" alt="avatar" />
-        <div class="person-about">
-          <div class="person-name">@person.Name</div>
-          <div class="person-status">
-            <span class="status-icon--@person.Status fa fa-circle"></span>
-            @if (@person.Status == "online")
-            {
-              <span class="status-text">@person.Status</span>
-            }
-            else
-            {
-              <span class="status-text">@person.LastSeen</span>
-            }
-          </div>
-        </div>
-      </li>
+      <Person
+        AvatarUrl="@person.AvatarUrl"
+        LastSeen="@person.LastSeen"
+        Name="@person.Name"
+        Status="@person.Status" />
     }
   </ul>
 </div>
@@ -32,17 +20,17 @@
     {
       new Person
       {
-        Name = "Vincent Porter",
         AvatarUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg",
-        Status = "online",
-        LastSeen = ""
+        LastSeen = "",
+        Name = "Vincent Porter",
+        Status = "online"
       },
       new Person
       {
-        Name = "Aiden Chavez",
         AvatarUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_02.jpg",
-        Status = "offline",
-        LastSeen = "left 7 mins ago"
+        LastSeen = "left 7 mins ago",
+        Name = "Aiden Chavez",
+        Status = "offline"
       }
     };
 
