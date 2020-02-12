@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,6 +17,7 @@ namespace Chat.Server
         public async Task<CreateUserPayload> CreateUser(
             CreateUserInput input,
             [Service]IUserRepository userRepository,
+            [Service]IPersonRepository personRepository,
             [Service]IImageStorage imageStorage,
             CancellationToken cancellationToken)
         {
@@ -51,17 +53,29 @@ namespace Chat.Server
             using var sha = SHA512.Create();
             byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password + salt));
 
+            Guid personId = Guid.NewGuid();
 
             var user = new User(
                 Guid.NewGuid(),
-                input.Name,
+                personId,
                 input.Email,
                 Convert.ToBase64String(hash),
-                salt,
+                salt);
+
+            var person = new Person(
+                personId,
+                user.Id,
+                input.Name,
+                input.Email,
+                DateTime.UtcNow,
                 Array.Empty<Guid>());
 
-            await userRepository.CreateUserAsync(
+            await userRepository.AddUserAsync(
                 user, cancellationToken)
+                .ConfigureAwait(false);
+
+            await personRepository.AddPersonAsync(
+                person, cancellationToken)
                 .ConfigureAwait(false);
 
             if (input.Image is { })
@@ -76,43 +90,42 @@ namespace Chat.Server
 
         public async Task<InviteFriendPayload> InviteFriendAsync(
             InviteFriendInput input,
-            [State("CurrentUserName")]string userName,
-            [DataLoader]UserByNameDataLoader userByNameDataLoader,
-            [Service]IIdSerializer idSerializer,
-            [Service]IUserRepository userRepository,
+            [State("CurrentUserEmail")]string myEmail,
+            [DataLoader]PersonByEmailDataLoader personByEmail,
+            [Service]IPersonRepository personRepository,
             CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(input.UserId))
+            if (string.IsNullOrEmpty(input.Email))
             {
                 throw new QueryException(
                     ErrorBuilder.New()
-                        .SetMessage("The user id cannot be empty.")
-                        .SetCode("USERID_EMPTY")
+                        .SetMessage("The email address cannot be empty.")
+                        .SetCode("EMAIL_EMPTY")
                         .Build());
             }
 
-            IdValue value = idSerializer.Deserialize(input.UserId);
+            IReadOnlyList<Person> people =
+                await personByEmail.LoadAsync(
+                    cancellationToken, input.Email, myEmail)
+                    .ConfigureAwait(false);
 
-            if (!value.TypeName.Equals(nameof(User), StringComparison.Ordinal))
+            if (people[0] is null)
             {
                 throw new QueryException(
                     ErrorBuilder.New()
-                        .SetMessage("The provided user id has an invalid format.")
-                        .SetCode("USERID_INVALID")
+                        .SetMessage("The provided friend email address is invalid.")
+                        .SetCode("EMAIL_UNKNOWN")
                         .Build());
             }
 
-            Guid newFriendId = (Guid)value.Value;
-
-            await userRepository.AddFriendIdAsync(
-                userName, newFriendId, cancellationToken)
+            await personRepository.AddFriendIdAsync(
+                people[1].Id, people[0].Id, cancellationToken)
                 .ConfigureAwait(false);
 
-            User user = await userByNameDataLoader.LoadAsync(
-                userName, cancellationToken)
-                .ConfigureAwait(false);
-
-            return new InviteFriendPayload(user, input.ClientMutationId);
+        
+            return new InviteFriendPayload(
+                people[1].AddFriendId(people[0].Id), 
+                input.ClientMutationId);
         }
     }
 }

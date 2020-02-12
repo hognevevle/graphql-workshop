@@ -1,9 +1,7 @@
 using System.Linq;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Chat.Server.DataLoader;
-using Chat.Server.Types;
 using HotChocolate;
 using HotChocolate.Types;
 using Chat.Server.Repositories;
@@ -13,20 +11,17 @@ namespace Chat.Server
 {
     public class Query
     {
-        [GraphQLType(typeof(NonNullType<ViewerType>))]
-        public Task<User> GetMeAsync(
-            [State("CurrentUserName")]string userName,
-            [DataLoader]UserByNameDataLoader userByNameDataLoader,
+        public Task<Person> GetMeAsync(
+            [State("CurrentUserEmail")]string email,
+            [DataLoader]PersonByEmailDataLoader personByEmail,
             CancellationToken cancellationToken) =>
-            userByNameDataLoader.LoadAsync(userName, cancellationToken);
+            personByEmail.LoadAsync(email, cancellationToken);
 
         [UsePaging]
         [UseFiltering]
         [UseSorting]
-        [GraphQLType(typeof(NonNullType<ListType<NonNullType<UserType>>>))]
-        public IQueryable<User> GetUsers(
-            [Service]IUserRepository userRepository) =>
-            userRepository.Users;
-            
+        public IQueryable<Person> GetPeople(
+            [Service]IPersonRepository personRepository) =>
+            personRepository.GetPersons();
     }
 }
