@@ -15,11 +15,11 @@ using StrawberryShake.Transport;
 namespace Chat.Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public static class SchemaClientServiceCollectionExtensions
+    public static class ChatClientServiceCollectionExtensions
     {
-        private const string _clientName = "SchemaClient";
+        private const string _clientName = "ChatClient";
 
-        public static IOperationClientBuilder AddSchemaClient(
+        public static IOperationClientBuilder AddChatClient(
             this IServiceCollection serviceCollection)
         {
             if (serviceCollection is null)
@@ -27,7 +27,7 @@ namespace Chat.Client
                 throw new ArgumentNullException(nameof(serviceCollection));
             }
 
-            serviceCollection.AddSingleton<ISchemaClient, SchemaClient>();
+            serviceCollection.AddSingleton<IChatClient, ChatClient>();
 
             serviceCollection.AddSingleton<IOperationExecutorFactory>(sp =>
                 new HttpOperationExecutorFactory(

@@ -6,9 +6,9 @@ using StrawberryShake;
 namespace Chat.Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IViewer
+    public interface IPerson
     {
-        string Id { get; }
+        System.Guid Id { get; }
 
         string Name { get; }
     }

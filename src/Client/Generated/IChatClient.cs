@@ -8,7 +8,7 @@ using StrawberryShake;
 namespace Chat.Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface ISchemaClient
+    public interface IChatClient
     {
         Task<IOperationResult<IMe>> MeAsync(
             CancellationToken cancellationToken = default);

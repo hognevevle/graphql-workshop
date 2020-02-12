@@ -3,18 +3,12 @@ schema {
   mutation: Mutation
 }
 
-"The node interface is implemented by entities that have a gloabl unique identifier."
-interface Node {
-  id: ID!
-}
-
 "The multiplier path scalar represents a valid GraphQL multiplier path string."
 scalar MultiplierPath
 
 type Query {
-  me: Viewer!
-  node(id: ID!): Node
-  users(after: String before: String first: PaginationAmount last: PaginationAmount order_by: UserSort where: UserFilter): UserConnection
+  me: Person!
+  people(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
 }
 
 type Mutation {
@@ -22,20 +16,17 @@ type Mutation {
   inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
 }
 
-type User implements Node {
+type Person {
   email: String!
-  id: ID!
+  friendIds: [Uuid]!
+  id: Uuid!
+  lastSeen: DateTime!
   name: String!
+  userId: Uuid!
 }
 
-type Friend implements Node {
-  email: String!
-  id: ID!
-  name: String!
-}
-
-input UserFilter {
-  AND: [UserFilter!]
+input PersonFilter {
+  AND: [PersonFilter!]
   email: String
   email_contains: String
   email_ends_with: String
@@ -58,6 +49,18 @@ input UserFilter {
   id_not_in: [Uuid!]
   id_not_lt: Uuid
   id_not_lte: Uuid
+  lastSeen: DateTime
+  lastSeen_gt: DateTime
+  lastSeen_gte: DateTime
+  lastSeen_in: [DateTime!]
+  lastSeen_lt: DateTime
+  lastSeen_lte: DateTime
+  lastSeen_not: DateTime
+  lastSeen_not_gt: DateTime
+  lastSeen_not_gte: DateTime
+  lastSeen_not_in: [DateTime!]
+  lastSeen_not_lt: DateTime
+  lastSeen_not_lte: DateTime
   name: String
   name_contains: String
   name_ends_with: String
@@ -68,52 +71,37 @@ input UserFilter {
   name_not_in: [String!]
   name_not_starts_with: String
   name_starts_with: String
-  OR: [UserFilter!]
-  passwordHash: String
-  passwordHash_contains: String
-  passwordHash_ends_with: String
-  passwordHash_in: [String!]
-  passwordHash_not: String
-  passwordHash_not_contains: String
-  passwordHash_not_ends_with: String
-  passwordHash_not_in: [String!]
-  passwordHash_not_starts_with: String
-  passwordHash_starts_with: String
-  salt: String
-  salt_contains: String
-  salt_ends_with: String
-  salt_in: [String!]
-  salt_not: String
-  salt_not_contains: String
-  salt_not_ends_with: String
-  salt_not_in: [String!]
-  salt_not_starts_with: String
-  salt_starts_with: String
+  OR: [PersonFilter!]
+  userId: Uuid
+  userId_gt: Uuid
+  userId_gte: Uuid
+  userId_in: [Uuid!]
+  userId_lt: Uuid
+  userId_lte: Uuid
+  userId_not: Uuid
+  userId_not_gt: Uuid
+  userId_not_gte: Uuid
+  userId_not_in: [Uuid!]
+  userId_not_lt: Uuid
+  userId_not_lte: Uuid
 }
 
-input UserSort {
+input PersonSort {
   email: SortOperationKind
   id: SortOperationKind
+  lastSeen: SortOperationKind
   name: SortOperationKind
-  passwordHash: SortOperationKind
-  salt: SortOperationKind
-}
-
-type Viewer implements Node {
-  email: String!
-  friends: [Friend!]!
-  id: ID!
-  name: String!
+  userId: SortOperationKind
 }
 
 scalar PaginationAmount
 
 "A connection to a list of items."
-type UserConnection {
+type PersonConnection {
   "A list of edges."
-  edges: [UserEdge!]
+  edges: [PersonEdge!]
   "A flattened list of the nodes."
-  nodes: [User]
+  nodes: [Person]
   "Information to aid in pagination."
   pageInfo: PageInfo!
   totalCount: Int!
@@ -137,11 +125,11 @@ type PageInfo {
 }
 
 "An edge in a connection."
-type UserEdge {
+type PersonEdge {
   "A cursor for use in pagination."
   cursor: String!
   "The item at the end of the edge."
-  node: User
+  node: Person
 }
 
 type CreateUserPayload {
@@ -159,15 +147,26 @@ input CreateUserInput {
 
 input InviteFriendInput {
   clientMutationId: String
-  userId: ID!
+  email: String!
 }
 
 type InviteFriendPayload {
   clientMutationId: String
-  me: Viewer!
+  me: Person!
 }
 
 scalar Uuid
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime
+
+type User {
+  email: String!
+  id: Uuid!
+  passwordHash: String!
+  personId: Uuid!
+  salt: String!
+}
 
 "The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255."
 scalar Byte

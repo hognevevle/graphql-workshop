@@ -14,7 +14,7 @@ namespace Chat.Client
     public class MeResultParser
         : JsonResultParserBase<IMe>
     {
-        private readonly IValueSerializer _iDSerializer;
+        private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
 
         public MeResultParser(IValueSerializerCollection serializerResolver)
@@ -23,7 +23,7 @@ namespace Chat.Client
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
-            _iDSerializer = serializerResolver.Get("ID");
+            _uuidSerializer = serializerResolver.Get("Uuid");
             _stringSerializer = serializerResolver.Get("String");
         }
 
@@ -36,23 +36,23 @@ namespace Chat.Client
 
         }
 
-        private IViewer ParseMeMe(
+        private IPerson ParseMeMe(
             JsonElement parent,
             string field)
         {
             JsonElement obj = parent.GetProperty(field);
 
-            return new Viewer
+            return new Person
             (
-                DeserializeID(obj, "id"),
+                DeserializeUuid(obj, "id"),
                 DeserializeString(obj, "name")
             );
         }
 
-        private string DeserializeID(JsonElement obj, string fieldName)
+        private System.Guid DeserializeUuid(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (string)_iDSerializer.Deserialize(value.GetString());
+            return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
         }
 
         private string DeserializeString(JsonElement obj, string fieldName)

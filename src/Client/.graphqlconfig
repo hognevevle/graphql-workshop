@@ -1,2 +1,2 @@
-schema: "Schema.graphql"
+schema: "Chat.graphql"
 documents: "Queries.graphql"

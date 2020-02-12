@@ -21,27 +21,27 @@ namespace Chat.Client
         };
         private readonly byte[] _hash = new byte[]
         {
-            51,
+            104,
+            87,
+            86,
+            74,
+            103,
+            98,
+            107,
+            108,
+            97,
+            110,
             48,
-            75,
-            69,
+            117,
+            71,
+            65,
             100,
             51,
-            43,
-            109,
-            114,
-            87,
-            54,
-            53,
-            114,
-            71,
-            43,
             55,
-            51,
-            84,
-            55,
-            115,
-            81,
+            110,
+            88,
+            82,
+            47,
             119,
             61,
             61
@@ -54,7 +54,7 @@ namespace Chat.Client
             114,
             121,
             32,
-            77,
+            109,
             101,
             32,
             123,
@@ -97,7 +97,7 @@ namespace Chat.Client
         public static Queries Default { get; } = new Queries();
 
         public override string ToString() => 
-            @"query Me {
+            @"query me {
               me {
                 id
                 name

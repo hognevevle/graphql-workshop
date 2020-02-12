@@ -1,4 +1,4 @@
-﻿@inject ISchemaClient SchemaClient
+﻿@inject IChatClient ChatClient
 
 <div class="chat">
   <ChatHeader />
@@ -61,7 +61,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        me = await SchemaClient.MeAsync();
+        me = await ChatClient.MeAsync();
         StateHasChanged();
     }
 }

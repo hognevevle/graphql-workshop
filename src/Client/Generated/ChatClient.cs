@@ -8,14 +8,14 @@ using StrawberryShake;
 namespace Chat.Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SchemaClient
-        : ISchemaClient
+    public class ChatClient
+        : IChatClient
     {
-        private const string _clientName = "SchemaClient";
+        private const string _clientName = "ChatClient";
 
         private readonly IOperationExecutor _executor;
 
-        public SchemaClient(IOperationExecutorPool executorPool)
+        public ChatClient(IOperationExecutorPool executorPool)
         {
             _executor = executorPool.CreateExecutor(_clientName);
         }

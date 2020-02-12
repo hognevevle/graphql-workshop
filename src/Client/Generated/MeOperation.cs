@@ -9,7 +9,7 @@ namespace Chat.Client
     public class MeOperation
         : IOperation<IMe>
     {
-        public string Name => "Me";
+        public string Name => "me";
 
         public IDocument Document => Queries.Default;
 

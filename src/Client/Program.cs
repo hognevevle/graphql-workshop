@@ -14,7 +14,7 @@ namespace Chat.Client
             builder.Services.AddHttpClient(
                 "SchemaClient",
                 c => c.BaseAddress = new Uri("http://localhost:5000/"));
-            builder.Services.AddSchemaClient();
+            builder.Services.AddChatClient();
             builder.RootComponents.Add<App>("app");
 
             await builder.Build().RunAsync();
