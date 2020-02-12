@@ -16,5 +16,12 @@ namespace Chat.Client
         Task<IOperationResult<IMe>> MeAsync(
             MeOperation operation,
             CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<IPeople>> PeopleAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<IPeople>> PeopleAsync(
+            PeopleOperation operation,
+            CancellationToken cancellationToken = default);
     }
 }

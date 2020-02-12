@@ -1,48 +1,33 @@
-﻿<div class="people">
+﻿@inject IChatClient ChatClient
+
+<div class="people">
   <div class="people-filter">
     <input class="people-filter-input" type="text" placeholder="search" />
     <span class="people-filter-icon fa fa-search"></span>
   </div>
   <ul class="people-list">
-    @foreach(var person in people)
+    @if (operation?.Data != null)
     {
-      <Person
-        AvatarUrl="@person.AvatarUrl"
-        LastSeen="@person.LastSeen"
-        Name="@person.Name"
-        Status="@person.Status"
-      />
+      @foreach (var person in operation.Data.People.Nodes)
+      {
+        <Person
+          @key="person"
+          AvatarUrl="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
+          LastSeen="yesterday"
+          Name="@person.Email"
+          Status="online"
+        />
+      }
     }
   </ul>
 </div>
 
 @code {
-    private Person[] people = new []
+    private IOperationResult<IPeople>? operation;
+
+    protected override async Task OnInitializedAsync()
     {
-      new Person
-      {
-        AvatarUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg",
-        LastSeen = "",
-        Name = "Vincent Porter",
-        Status = "online"
-      },
-      new Person
-      {
-        AvatarUrl = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_02.jpg",
-        LastSeen = "left 7 mins ago",
-        Name = "Aiden Chavez",
-        Status = "offline"
-      }
-    };
-
-    public class Person
-    {
-        public string AvatarUrl { get; set; }
-
-        public string LastSeen { get; set; }
-
-        public string Name { get; set; }
-
-        public string Status { get; set; }
+        operation = await ChatClient.PeopleAsync();
+        StateHasChanged();
     }
 }

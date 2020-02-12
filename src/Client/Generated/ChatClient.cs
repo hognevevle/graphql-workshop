@@ -40,5 +40,26 @@ namespace Chat.Client
 
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
+
+        public Task<IOperationResult<IPeople>> PeopleAsync(
+            CancellationToken cancellationToken = default)
+        {
+
+            return _executor.ExecuteAsync(
+                new PeopleOperation(),
+                cancellationToken);
+        }
+
+        public Task<IOperationResult<IPeople>> PeopleAsync(
+            PeopleOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
     }
 }

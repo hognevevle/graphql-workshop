@@ -1,6 +1,4 @@
-﻿@inject IChatClient ChatClient
-
-<div class="chat">
+﻿<div class="chat">
   <ChatHeader />
   <div class="chat-history">
     <ul class="messages">
@@ -25,7 +23,6 @@
 </div>
 
 @code {
-    private IOperationResult<IMe>? me;
     private Message[] messages = new []
     {
         new Message
@@ -57,11 +54,5 @@
         public string Text { get; set; }
 
         public string Timestamp { get; set; }
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        me = await ChatClient.MeAsync();
-        StateHasChanged();
     }
 }

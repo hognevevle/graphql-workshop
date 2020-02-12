@@ -39,6 +39,7 @@ namespace Chat.Client
 
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
                 .AddResultParser(serializers => new MeResultParser(serializers))
+                .AddResultParser(serializers => new PeopleResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(builder => builder.UseHttpDefaultPipeline());
 

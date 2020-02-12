@@ -1,0 +1,2 @@
+schema: "./src/Client/Chat.graphql"
+documents: "./src/CLient/Queries.graphql"
