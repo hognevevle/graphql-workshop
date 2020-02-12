@@ -1,0 +1,176 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"The node interface is implemented by entities that have a gloabl unique identifier."
+interface Node {
+  id: ID!
+}
+
+"The multiplier path scalar represents a valid GraphQL multiplier path string."
+scalar MultiplierPath
+
+type Query {
+  me: Viewer!
+  node(id: ID!): Node
+  users(after: String before: String first: PaginationAmount last: PaginationAmount order_by: UserSort where: UserFilter): UserConnection
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserPayload!
+  inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
+}
+
+type User implements Node {
+  email: String!
+  id: ID!
+  name: String!
+}
+
+type Friend implements Node {
+  email: String!
+  id: ID!
+  name: String!
+}
+
+input UserFilter {
+  AND: [UserFilter!]
+  email: String
+  email_contains: String
+  email_ends_with: String
+  email_in: [String!]
+  email_not: String
+  email_not_contains: String
+  email_not_ends_with: String
+  email_not_in: [String!]
+  email_not_starts_with: String
+  email_starts_with: String
+  id: Uuid
+  id_gt: Uuid
+  id_gte: Uuid
+  id_in: [Uuid!]
+  id_lt: Uuid
+  id_lte: Uuid
+  id_not: Uuid
+  id_not_gt: Uuid
+  id_not_gte: Uuid
+  id_not_in: [Uuid!]
+  id_not_lt: Uuid
+  id_not_lte: Uuid
+  name: String
+  name_contains: String
+  name_ends_with: String
+  name_in: [String!]
+  name_not: String
+  name_not_contains: String
+  name_not_ends_with: String
+  name_not_in: [String!]
+  name_not_starts_with: String
+  name_starts_with: String
+  OR: [UserFilter!]
+  passwordHash: String
+  passwordHash_contains: String
+  passwordHash_ends_with: String
+  passwordHash_in: [String!]
+  passwordHash_not: String
+  passwordHash_not_contains: String
+  passwordHash_not_ends_with: String
+  passwordHash_not_in: [String!]
+  passwordHash_not_starts_with: String
+  passwordHash_starts_with: String
+  salt: String
+  salt_contains: String
+  salt_ends_with: String
+  salt_in: [String!]
+  salt_not: String
+  salt_not_contains: String
+  salt_not_ends_with: String
+  salt_not_in: [String!]
+  salt_not_starts_with: String
+  salt_starts_with: String
+}
+
+input UserSort {
+  email: SortOperationKind
+  id: SortOperationKind
+  name: SortOperationKind
+  passwordHash: SortOperationKind
+  salt: SortOperationKind
+}
+
+type Viewer implements Node {
+  email: String!
+  friends: [Friend!]!
+  id: ID!
+  name: String!
+}
+
+scalar PaginationAmount
+
+"A connection to a list of items."
+type UserConnection {
+  "A list of edges."
+  edges: [UserEdge!]
+  "A flattened list of the nodes."
+  nodes: [User]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+enum SortOperationKind {
+  ASC
+  DESC
+}
+
+"Information about pagination in a connection."
+type PageInfo {
+  "When paginating forwards, the cursor to continue."
+  endCursor: String
+  "Indicates whether more edges exist following the set defined by the clients arguments."
+  hasNextPage: Boolean!
+  "Indicates whether more edges exist prior the set defined by the clients arguments."
+  hasPreviousPage: Boolean!
+  "When paginating backwards, the cursor to continue."
+  startCursor: String
+}
+
+"An edge in a connection."
+type UserEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: User
+}
+
+type CreateUserPayload {
+  clientMutationId: String
+  user: User!
+}
+
+input CreateUserInput {
+  clientMutationId: String
+  email: String!
+  image: [Byte!]
+  name: String!
+  password: String!
+}
+
+input InviteFriendInput {
+  clientMutationId: String
+  userId: ID!
+}
+
+type InviteFriendPayload {
+  clientMutationId: String
+  me: Viewer!
+}
+
+scalar Uuid
+
+"The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255."
+scalar Byte
+
+"The cost directives is used to express the complexity of a field."
+directive @cost("Defines the complexity of the field." complexity: Int! = 1 "Defines field arguments that act as complexity multipliers." multipliers: [MultiplierPath!]) on FIELD_DEFINITION

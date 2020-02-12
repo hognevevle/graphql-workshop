@@ -25,13 +25,15 @@ namespace Chat.Server
 
             services.AddDataLoaderRegistry();
 
+            services.AddCors();
+
             services.AddGraphQL(
                 SchemaBuilder.New()
                     .AddQueryType<Query>()
                     .AddMutationType<Mutation>()
                     .EnableRelaySupport());
 
-            services.AddQueryRequestInterceptor((context, builder, ct) => 
+            services.AddQueryRequestInterceptor((context, builder, ct) =>
             {
                 builder.AddProperty("CurrentUserName", "foo");
                 return Task.CompletedTask;
@@ -45,6 +47,11 @@ namespace Chat.Server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(o => o
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
 
             app.UseRouting();
 

@@ -1,4 +1,6 @@
-﻿<div class="chat">
+﻿@inject ISchemaClient SchemaClient
+
+<div class="chat">
   <ChatHeader />
   <div class="chat-history">
     <ul class="messages">
@@ -9,7 +11,8 @@
           From="@message.From"
           Status="@message.Status"
           Text="@message.Text"
-          Timestamp="@message.Timestamp" />
+          Timestamp="@message.Timestamp"
+        />
       }
       <li class="typing">
         <span class="typing-icon-1 fa fa-circle"></span>
@@ -22,24 +25,25 @@
 </div>
 
 @code {
+    private IOperationResult<IMe>? me;
     private Message[] messages = new []
     {
-      new Message
-      {
-        From = "Olia",
-        Direction = "outgoing",
-        Status = "online",
-        Text = "Hi Vincent, how are you? How is the project coming along?",
-        Timestamp = "10:10 AM, Today"
-      },
-      new Message
-      {
-        From = "Vincent",
-        Direction = "incoming",
-        Status = "online",
-        Text = "Are we meeting today? Project has been already finished and I have results to show you.",
-        Timestamp = "10:11 AM, Today"
-      }
+        new Message
+        {
+            From = "Olia",
+            Direction = "outgoing",
+            Status = "online",
+            Text = "Hi Vincent, how are you? How is the project coming along?",
+            Timestamp = "10:10 AM, Today"
+        },
+        new Message
+        {
+            From = "Vincent",
+            Direction = "incoming",
+            Status = "online",
+            Text = "Are we meeting today? Project has been already finished and I have results to show you.",
+            Timestamp = "10:11 AM, Today"
+        }
     };
 
     public class Message
@@ -53,5 +57,11 @@
         public string Text { get; set; }
 
         public string Timestamp { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        me = await SchemaClient.MeAsync();
+        StateHasChanged();
     }
 }
