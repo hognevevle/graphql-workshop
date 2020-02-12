@@ -19,8 +19,10 @@ namespace Chat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMongoDatabase>(sp => new MongoClient().GetDatabase("chat"));
+            services.AddSingleton<IMongoDatabase>(sp => new MongoClient().GetDatabase("chat2"));
             services.AddSingleton<IUserRepository>(sp => new UserRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<User>(nameof(User))));
+            services.AddSingleton<IPersonRepository>(sp => new PersonRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<Person>(nameof(Person))));
+            services.AddSingleton<IMessageRepository>(sp => new MessageRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<Message>(nameof(Message))));
             services.AddSingleton<IImageStorage, InMemoryImageStorage>();
 
             services.AddDataLoaderRegistry();
@@ -28,12 +30,11 @@ namespace Chat.Server
             services.AddGraphQL(
                 SchemaBuilder.New()
                     .AddQueryType<Query>()
-                    .AddMutationType<Mutation>()
-                    .EnableRelaySupport());
+                    .AddMutationType<Mutation>());
 
             services.AddQueryRequestInterceptor((context, builder, ct) => 
             {
-                builder.AddProperty("CurrentUserName", "foo");
+                builder.AddProperty("CurrentUserEmail", "foo@bar.com");
                 return Task.CompletedTask;
             });
         }

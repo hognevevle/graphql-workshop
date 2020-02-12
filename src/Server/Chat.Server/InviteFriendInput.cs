@@ -1,18 +1,14 @@
-using HotChocolate;
-using HotChocolate.Types;
-
 namespace Chat.Server
 {
     public class InviteFriendInput
     {
-        public InviteFriendInput(string userId, string? clientMutationId)
+        public InviteFriendInput(string email, string? clientMutationId)
         {
-            UserId = userId;
+            Email = email;
             ClientMutationId = clientMutationId;
         }
-
-        [GraphQLType(typeof(NonNullType<IdType>))]
-        public string UserId { get; }
+        
+        public string Email { get; }
 
         public string? ClientMutationId { get; }
     }

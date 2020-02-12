@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.0-preview.2" />
-    <PackageReference Include="HotChocolate.Types.Filters" Version="10.4.0-preview.2" />
-    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.4.0-preview.2" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="10.4.0-preview.5" />
+    <PackageReference Include="HotChocolate.Types.Filters" Version="10.4.0-preview.5" />
+    <PackageReference Include="HotChocolate.Types.Sorting" Version="10.4.0-preview.5" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.1" />
   </ItemGroup>
 
