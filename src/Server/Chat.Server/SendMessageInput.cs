@@ -5,19 +5,19 @@ namespace Chat.Server
     public class SendMessageInput
     {
         public SendMessageInput(
-            Guid recipientId,
+            string recipientEmail,
             string text,
             string? clientMutationId)
         {
-            RecipientId = recipientId;
+            RecipientEmail = recipientEmail;
             Text = text;
             ClientMutationId = clientMutationId;
         }
 
         /// <summary>
-        /// The ID of the person to which a message shall be send.
+        /// The email of the person to which a message shall be send.
         /// </summary>
-        public Guid RecipientId { get; }
+        public string RecipientEmail { get; }
 
         /// <summary>
         /// The message text.
