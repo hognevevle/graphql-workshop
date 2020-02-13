@@ -12,7 +12,7 @@ namespace Chat.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
             builder.Services.AddHttpClient(
-                "SchemaClient",
+                "ChatClient",
                 c => c.BaseAddress = new Uri("http://localhost:5000/"));
             builder.Services.AddChatClient();
             builder.RootComponents.Add<App>("app");

@@ -6,7 +6,7 @@
     <span class="people-filter-icon fa fa-search"></span>
   </div>
   <ul class="people-list">
-    @if (operation?.Data != null)
+    @if (operation?.Data?.People?.Nodes != null)
     {
       @foreach (var person in operation.Data.People.Nodes)
       {
