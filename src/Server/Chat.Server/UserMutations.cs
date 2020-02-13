@@ -8,10 +8,12 @@ using Chat.Server.DataLoader;
 using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Execution;
+using HotChocolate.Types;
 
 namespace Chat.Server
 {
-    public class Mutation
+    [ExtendObjectType(Name = "Mutation")]
+    public class UserMutations
     {
         public async Task<CreateUserPayload> CreateUser(
             CreateUserInput input,
@@ -114,9 +116,9 @@ namespace Chat.Server
                 people[1].Id, people[0].Id, cancellationToken)
                 .ConfigureAwait(false);
 
-        
+
             return new InviteFriendPayload(
-                people[1].AddFriendId(people[0].Id), 
+                people[1].AddFriendId(people[0].Id),
                 input.ClientMutationId);
         }
     }

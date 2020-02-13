@@ -15,13 +15,17 @@ namespace Chat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services
                 .AddRepositories()
                 .AddDataLoaderRegistry()
                 .AddGraphQL(
                     SchemaBuilder.New()
                         .AddQueryType<Query>()
-                        .AddMutationType<Mutation>()
+                        .AddMutationType(d => d.Name("Mutation"))
+                        .AddType<UserMutations>()
+                        .AddType<MessageMutations>()
                         .AddType<PersonExtension>()
                         .AddType<MessageExtension>());
 

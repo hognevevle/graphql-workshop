@@ -5,27 +5,35 @@ namespace Chat.Server
     public class Message
     {
         public Message(
+            Guid senderId,
+            Guid recipientId,
+            string text)
+            : this(Guid.NewGuid(), senderId, recipientId, text, DateTime.UtcNow)
+        {
+        }
+
+        public Message(
             Guid id,
             Guid senderId,
             Guid recipientId,
-            Guid correlationId,
-            string text)
+            string text,
+            DateTime sent)
         {
             Id = id;
             SenderId = senderId;
             RecipientId = recipientId;
-            CorrelationId = correlationId;
             Text = text;
+            Sent = sent;
         }
 
         public Guid Id { get; }
-
-        public Guid CorrelationId { get; }
 
         public Guid SenderId { get; }
 
         public Guid RecipientId { get; }
 
         public string Text { get; }
+
+        public DateTime Sent { get; }
     }
 }

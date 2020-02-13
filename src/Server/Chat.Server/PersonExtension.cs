@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace Chat.Server
         [UsePaging]
         [UseFiltering]
         [UseSorting]
-        public async Task<IQueryable<Message>> GetMessages(
+        public async Task<IQueryable<Message>> GetMessagesAsync(
             [State("CurrentUserEmail")]string email,
             [DataLoader]PersonByEmailDataLoader personByEmail,
             [Parent]Person recipient,
@@ -30,6 +31,19 @@ namespace Chat.Server
                 .ConfigureAwait(false);
 
             return repository.GetMessages(sender.Id, recipient.Id);
+        }
+
+        [UsePaging]
+        [UseFiltering]
+        [UseSorting]
+        public async Task<IEnumerable<Person>> GetFriendsAsync(
+            [Parent]Person recipient,
+            [DataLoader]PersonByIdDataLoader personById,
+            CancellationToken cancellationToken)
+        {
+            return await personById.LoadAsync(
+                recipient.FriendIds, cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }
