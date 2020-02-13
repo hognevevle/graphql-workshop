@@ -11,6 +11,7 @@ namespace Chat.Server
             string name,
             string email,
             DateTime lastSeen,
+            Uri? imageUri,
             IReadOnlyList<Guid> friendIds)
         {
             Id = id;
@@ -30,6 +31,8 @@ namespace Chat.Server
         public string Email { get; }
 
         public DateTime LastSeen { get; }
+
+        public Uri? ImageUri { get; }
 
         public IReadOnlyList<Guid> FriendIds { get; }
     }

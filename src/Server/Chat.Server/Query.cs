@@ -2,9 +2,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Chat.Server.DataLoader;
+using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Types;
-using Chat.Server.Repositories;
 using HotChocolate.Types.Relay;
 
 namespace Chat.Server
