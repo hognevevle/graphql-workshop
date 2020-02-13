@@ -1,4 +1,5 @@
 using System;
+using HotChocolate;
 
 namespace Chat.Server
 {
@@ -28,8 +29,10 @@ namespace Chat.Server
 
         public Guid Id { get; }
 
+        [GraphQLIgnore]
         public Guid SenderId { get; }
 
+        [GraphQLIgnore]
         public Guid RecipientId { get; }
 
         public string Text { get; }

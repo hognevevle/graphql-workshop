@@ -32,5 +32,25 @@ namespace Chat.Server
 
             return Direction.Incoming;
         }
+
+        public async Task<Person> GetSenderAsync(
+            [Parent]Message message,
+            [DataLoader]PersonByIdDataLoader personById,
+            CancellationToken cancellationToken)
+        {
+            return await personById.LoadAsync(
+                message.SenderId, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<Person> GetRecipientAsync(
+            [Parent]Message message,
+            [DataLoader]PersonByIdDataLoader personById,
+            CancellationToken cancellationToken)
+        {
+            return await personById.LoadAsync(
+                message.RecipientId, cancellationToken)
+                .ConfigureAwait(false);
+        }
     }
 }

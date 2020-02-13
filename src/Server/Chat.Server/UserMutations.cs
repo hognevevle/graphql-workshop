@@ -116,6 +116,9 @@ namespace Chat.Server
                 people[1].Id, people[0].Id, cancellationToken)
                 .ConfigureAwait(false);
 
+            await personRepository.AddFriendIdAsync(
+                people[0].Id, people[1].Id, cancellationToken)
+                .ConfigureAwait(false);
 
             return new InviteFriendPayload(
                 people[1].AddFriendId(people[0].Id),
