@@ -18,11 +18,6 @@ namespace Chat.Server.Repositories
 
             _messages.Indexes.CreateOne(
                 new CreateIndexModel<Message>(
-                    Builders<Message>.IndexKeys.Ascending(x => x.CorrelationId),
-                    new CreateIndexOptions { Unique = false }));
-
-            _messages.Indexes.CreateOne(
-                new CreateIndexModel<Message>(
                     Builders<Message>.IndexKeys.Ascending(x => x.SenderId),
                     new CreateIndexOptions { Unique = false }));
 
@@ -32,30 +27,22 @@ namespace Chat.Server.Repositories
                     new CreateIndexOptions { Unique = false }));
         }
 
-        public IQueryable<Message> GetMessages(Guid personId)
+        public IQueryable<Message> GetMessages(
+            Guid senderId,
+            Guid recipientId)
         {
-            return _messages.AsQueryable();
+            return _messages.AsQueryable().Where(t =>
+                (t.SenderId == senderId && t.RecipientId == recipientId)
+                || (t.RecipientId == senderId && t.SenderId == recipientId));
         }
 
-        public async Task AddMessagesAsync(
-            IEnumerable<Message> messages,
+        public async Task AddMessageAsync(
+            Message message,
             CancellationToken cancellationToken)
         {
-            await _messages.InsertManyAsync(
-                messages,
+            await _messages.InsertOneAsync(
+                message,
                 options: default,
-                cancellationToken)
-                .ConfigureAwait(false);
-        }
-
-        public async Task MarkAsReadAsync(
-            Guid correlationId, 
-            CancellationToken cancellationToken)
-        {
-            await _messages.UpdateManyAsync(
-                Builders<Message>.Filter.Eq(t => t.CorrelationId, correlationId),
-                Builders<Message>.Update.Set(t => t.Read, DateTime.UtcNow),
-                options: default(UpdateOptions),
                 cancellationToken)
                 .ConfigureAwait(false);
         }

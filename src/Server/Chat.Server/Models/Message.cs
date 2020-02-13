@@ -8,18 +8,14 @@ namespace Chat.Server
             Guid id,
             Guid senderId,
             Guid recipientId,
-            Direction direction,
-            string text,
-            DateTime sent,
-            DateTime read)
+            Guid correlationId,
+            string text)
         {
             Id = id;
             SenderId = senderId;
             RecipientId = recipientId;
-            Direction = direction;
+            CorrelationId = correlationId;
             Text = text;
-            Sent = sent;
-            Read = read;
         }
 
         public Guid Id { get; }
@@ -30,12 +26,6 @@ namespace Chat.Server
 
         public Guid RecipientId { get; }
 
-        public Direction Direction { get; }
-
         public string Text { get; }
-
-        public DateTime Sent { get; }
-
-        public DateTime? Read { get; }
     }
 }

@@ -1,6 +1,3 @@
-using HotChocolate.Types;
-using HotChocolate.Types.Relay;
-
 namespace Chat.Server
 {
     public class InviteFriendPayload
@@ -14,11 +11,5 @@ namespace Chat.Server
         public Person Me { get; }
 
         public string? ClientMutationId { get; }
-    }
-
-    [ExtendObjectType(Name = "Person")]
-    public class PersonExtension
-        : INode
-    {
     }
 }
