@@ -6,19 +6,17 @@ using StrawberryShake;
 namespace Chat.Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class Person
-        : IPerson
+    public class User
+        : IUser
     {
-        public Person(
+        public User(
             System.Guid id, 
             string name, 
-            string email, 
-            System.DateTimeOffset lastSeen)
+            string email)
         {
             Id = id;
             Name = name;
             Email = email;
-            LastSeen = lastSeen;
         }
 
         public System.Guid Id { get; }
@@ -26,7 +24,5 @@ namespace Chat.Client
         public string Name { get; }
 
         public string Email { get; }
-
-        public System.DateTimeOffset LastSeen { get; }
     }
 }

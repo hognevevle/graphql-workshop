@@ -1,16 +1,20 @@
 ﻿<li class="person">
-  <img class="person-avatar" src="@AvatarUrl" alt="avatar" />
+  <img
+    class="person-avatar"
+    src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
+    alt="avatar"
+  />
   <div class="person-about">
-    <div class="person-name">@Name</div>
+    <div class="person-name">@User.Name</div>
     <div class="person-status">
-      <span class="status-icon--@Status fa fa-circle"></span>
-      @if (@Status == "online")
+      <span class="status-icon--@GetStatus() fa fa-circle"></span>
+      @if (@GetStatus() == "online")
       {
-        <span class="status-text">@Status</span>
+        <span class="status-text">@GetStatus()</span>
       }
       else
       {
-        <span class="status-text">@LastSeen</span>
+        <span class="status-text">@User.LastSeen</span>
       }
     </div>
   </div>
@@ -18,14 +22,10 @@
 
 @code {
     [Parameter]
-    public string AvatarUrl { get; set; }
+    public IPerson User { get; set; }
 
-    [Parameter]
-    public string LastSeen { get; set; }
-
-    [Parameter]
-    public string Name { get; set; }
-
-    [Parameter]
-    public string Status { get; set; }
+    private string GetStatus()
+    {
+      return "online";
+    }
 }

@@ -8,6 +8,6 @@ namespace Chat.Client
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public interface IPersonConnection
     {
-        IReadOnlyList<IPerson1> Nodes { get; }
+        IReadOnlyList<IPerson> Nodes { get; }
     }
 }

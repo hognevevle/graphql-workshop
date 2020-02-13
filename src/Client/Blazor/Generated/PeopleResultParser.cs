@@ -14,7 +14,9 @@ namespace Chat.Client
     public class PeopleResultParser
         : JsonResultParserBase<IPeople>
     {
+        private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
+        private readonly IValueSerializer _dateTimeSerializer;
 
         public PeopleResultParser(IValueSerializerCollection serializerResolver)
         {
@@ -22,7 +24,9 @@ namespace Chat.Client
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
+            _uuidSerializer = serializerResolver.Get("Uuid");
             _stringSerializer = serializerResolver.Get("String");
+            _dateTimeSerializer = serializerResolver.Get("DateTime");
         }
 
         protected override IPeople ParserData(JsonElement data)
@@ -54,7 +58,7 @@ namespace Chat.Client
             );
         }
 
-        private IReadOnlyList<IPerson1> ParsePeoplePeopleNodes(
+        private IReadOnlyList<IPerson> ParsePeoplePeopleNodes(
             JsonElement parent,
             string field)
         {
@@ -69,13 +73,16 @@ namespace Chat.Client
             }
 
             int objLength = obj.GetArrayLength();
-            var list = new IPerson1[objLength];
+            var list = new IPerson[objLength];
             for (int objIndex = 0; objIndex < objLength; objIndex++)
             {
                 JsonElement element = obj[objIndex];
-                list[objIndex] = new Person1
+                list[objIndex] = new Person
                 (
-                    DeserializeString(element, "email")
+                    DeserializeUuid(element, "id"),
+                    DeserializeString(element, "name"),
+                    DeserializeString(element, "email"),
+                    DeserializeDateTime(element, "lastSeen")
                 );
 
             }
@@ -83,10 +90,22 @@ namespace Chat.Client
             return list;
         }
 
+        private System.Guid DeserializeUuid(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
+        }
+
         private string DeserializeString(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (string)_stringSerializer.Deserialize(value.GetString());
+        }
+
+        private System.DateTimeOffset DeserializeDateTime(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (System.DateTimeOffset)_dateTimeSerializer.Deserialize(value.GetString());
         }
     }
 }

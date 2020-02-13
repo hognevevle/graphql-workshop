@@ -10,11 +10,11 @@ namespace Chat.Client
         : IMe
     {
         public Me1(
-            IPerson me)
+            IUser me)
         {
             Me = me;
         }
 
-        public IPerson Me { get; }
+        public IUser Me { get; }
     }
 }
