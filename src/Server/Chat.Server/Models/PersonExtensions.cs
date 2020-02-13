@@ -20,7 +20,10 @@ namespace Chat.Server
                 person.Name,
                 person.Email,
                 person.LastSeen,
+                person.ImageUri,
                 new List<Guid>(person.FriendIds) { id });
         }
     }
+
+    
 }

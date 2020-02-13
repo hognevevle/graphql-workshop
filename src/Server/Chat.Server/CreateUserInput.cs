@@ -1,3 +1,5 @@
+using System;
+
 namespace Chat.Server
 {
     public class CreateUserInput
@@ -6,7 +8,7 @@ namespace Chat.Server
             string name,
             string email,
             string password,
-            byte[]? image,
+            Uri? image,
             string? clientMutationId)
         {
             Name = name;
@@ -22,7 +24,7 @@ namespace Chat.Server
 
         public string Password { get; }
 
-        public byte[]? Image { get; }
+        public Uri? Image { get; }
 
         public string? ClientMutationId { get; }
     }

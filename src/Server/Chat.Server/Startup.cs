@@ -1,15 +1,11 @@
 using System.Threading.Tasks;
-using System;
-using System.Collections.Immutable;
-using Chat.Server.Repositories;
-using HotChocolate;
-using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Driver;
+using HotChocolate;
+using HotChocolate.AspNetCore;
 
 namespace Chat.Server
 {
@@ -19,20 +15,15 @@ namespace Chat.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMongoDatabase>(sp => new MongoClient().GetDatabase("chat2"));
-            services.AddSingleton<IUserRepository>(sp => new UserRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<User>(nameof(User))));
-            services.AddSingleton<IPersonRepository>(sp => new PersonRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<Person>(nameof(Person))));
-            services.AddSingleton<IMessageRepository>(sp => new MessageRepository(sp.GetRequiredService<IMongoDatabase>().GetCollection<Message>(nameof(Message))));
-            services.AddSingleton<IImageStorage, InMemoryImageStorage>();
-
-            services.AddDataLoaderRegistry();
-
-            services.AddCors();
-
-            services.AddGraphQL(
-                SchemaBuilder.New()
-                    .AddQueryType<Query>()
-                    .AddMutationType<Mutation>());
+            services
+                .AddRepositories()
+                .AddDataLoaderRegistry()
+                .AddGraphQL(
+                    SchemaBuilder.New()
+                        .AddQueryType<Query>()
+                        .AddMutationType<Mutation>()
+                        .AddType<PersonExtension>()
+                        .AddType<MessageExtension>());
 
             services.AddQueryRequestInterceptor((context, builder, ct) =>
             {

@@ -8,14 +8,10 @@ namespace Chat.Server.Repositories
 {
     public interface IMessageRepository
     {
-        IQueryable<Message> GetMessages(Guid personId);
+        IQueryable<Message> GetMessages(Guid senderId, Guid recipientId);
 
-        Task AddMessagesAsync(
-            IEnumerable<Message> messages, 
-            CancellationToken cancellationToken);
-
-        Task MarkAsReadAsync(
-            Guid correlationId, 
+        Task AddMessageAsync(
+            Message message, 
             CancellationToken cancellationToken);
     }
 }

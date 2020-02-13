@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -8,7 +8,6 @@ using Chat.Server.DataLoader;
 using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Types.Relay;
 
 namespace Chat.Server
 {
@@ -18,7 +17,6 @@ namespace Chat.Server
             CreateUserInput input,
             [Service]IUserRepository userRepository,
             [Service]IPersonRepository personRepository,
-            [Service]IImageStorage imageStorage,
             CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(input.Name))
@@ -68,6 +66,7 @@ namespace Chat.Server
                 input.Name,
                 input.Email,
                 DateTime.UtcNow,
+                input.Image,
                 Array.Empty<Guid>());
 
             await userRepository.AddUserAsync(
@@ -77,13 +76,6 @@ namespace Chat.Server
             await personRepository.AddPersonAsync(
                 person, cancellationToken)
                 .ConfigureAwait(false);
-
-            if (input.Image is { })
-            {
-                await imageStorage.SaveImageAsync(
-                    user.Id, input.Image, cancellationToken)
-                    .ConfigureAwait(false);
-            }
 
             return new CreateUserPayload(user, input.ClientMutationId);
         }
