@@ -36,16 +36,17 @@ namespace Chat.Client
 
         }
 
-        private IPerson ParseMeMe(
+        private IUser ParseMeMe(
             JsonElement parent,
             string field)
         {
             JsonElement obj = parent.GetProperty(field);
 
-            return new Person
+            return new User
             (
                 DeserializeUuid(obj, "id"),
-                DeserializeString(obj, "name")
+                DeserializeString(obj, "name"),
+                DeserializeString(obj, "email")
             );
         }
 

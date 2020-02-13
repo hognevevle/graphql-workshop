@@ -5,29 +5,35 @@
     <input class="people-filter-input" type="text" placeholder="search" />
     <span class="people-filter-icon fa fa-search"></span>
   </div>
-  <ul class="people-list">
-    @if (operation?.Data?.People?.Nodes != null)
-    {
-      @foreach (var person in operation.Data.People.Nodes)
+  @if (@isLoading)
+  {
+    <Spinner />
+  }
+  else
+  {
+    <ul class="people-list">
+      @if (operation?.Data?.People?.Nodes != null)
       {
-        <Person
-          @key="person"
-          AvatarUrl="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg"
-          LastSeen="yesterday"
-          Name="@person.Email"
-          Status="online"
-        />
+        @foreach (var person in operation.Data.People.Nodes)
+        {
+          <Person
+            @key="person.Id"
+            User="person"
+          />
+        }
       }
-    }
-  </ul>
+    </ul>
+  }
 </div>
 
 @code {
+    private bool isLoading = true;
     private IOperationResult<IPeople>? operation;
 
     protected override async Task OnInitializedAsync()
     {
         operation = await ChatClient.PeopleAsync();
+        isLoading = false;
         StateHasChanged();
     }
 }

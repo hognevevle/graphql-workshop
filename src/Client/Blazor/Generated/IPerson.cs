@@ -11,5 +11,9 @@ namespace Chat.Client
         System.Guid Id { get; }
 
         string Name { get; }
+
+        string Email { get; }
+
+        System.DateTimeOffset LastSeen { get; }
     }
 }

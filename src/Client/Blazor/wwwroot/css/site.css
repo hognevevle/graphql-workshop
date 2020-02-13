@@ -14,7 +14,7 @@ body {
 
 body {
   margin: 0;
-  background-color: #444753;
+  background-color: #c5ddeb;
   font: 14px/20px "Lato", Arial, sans-serif;
   color: white;
 }
@@ -31,6 +31,7 @@ app {
   display: flex;
   flex: 0 0 260px;
   flex-direction: column;
+  background-color: #444753;
 }
 
 .people-filter {
@@ -332,6 +333,54 @@ app {
 
 .status-icon-viewer {
   color: #94c2ed;
+}
+
+@keyframes spinner-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  z-index: 30;
+}
+
+.spinner-centered {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner-quater {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  margin: 6px;
+  border: 6px solid #fff;
+  border-radius: 100%;
+  animation: spinner-rotation 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.spinner > .spinner-quater:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.spinner > .spinner-quater:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.spinner > .spinner-quater:nth-child(3) {
+  animation-delay: -0.15s;
 }
 
 #blazor-error-ui {

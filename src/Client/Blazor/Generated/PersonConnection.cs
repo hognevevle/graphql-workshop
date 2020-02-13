@@ -10,11 +10,11 @@ namespace Chat.Client
         : IPersonConnection
     {
         public PersonConnection(
-            IReadOnlyList<IPerson1> nodes)
+            IReadOnlyList<IPerson> nodes)
         {
             Nodes = nodes;
         }
 
-        public IReadOnlyList<IPerson1> Nodes { get; }
+        public IReadOnlyList<IPerson> Nodes { get; }
     }
 }

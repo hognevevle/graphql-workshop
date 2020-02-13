@@ -1,14 +1,26 @@
 query me {
   me {
-    id
-    name
+    ...user
   }
+}
+
+fragment user on Person {
+  id
+  name
+  email
 }
 
 query people {
   people(where: { email_not: "foo@bar.com" }) {
     nodes {
-      email
+      ...person
     }
   }
+}
+
+fragment person on Person {
+  id
+  name
+  email
+  lastSeen
 }
