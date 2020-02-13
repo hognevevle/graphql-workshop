@@ -30,7 +30,9 @@ namespace Chat.Server
             services.AddGraphQL(
                 SchemaBuilder.New()
                     .AddQueryType<Query>()
-                    .AddMutationType<Mutation>());
+                    .AddMutationType<Mutation>()
+                    .AddType<PersonExtension>()
+                    .EnableRelaySupport());
 
             services.AddQueryRequestInterceptor((context, builder, ct) => 
             {
