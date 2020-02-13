@@ -5,25 +5,24 @@
     <input class="people-filter-input" type="text" placeholder="search" />
     <span class="people-filter-icon fa fa-search"></span>
   </div>
-  @if (@isLoading)
-  {
-    <Spinner />
-  }
-  else
-  {
-    <ul class="people-list">
-      @if (operation?.Data?.People?.Nodes != null)
+  <ul class="people-list">
+    @if (@isLoading)
+    {
+      <PersonPlaceholder />
+      <PersonPlaceholder />
+      <PersonPlaceholder />
+    }
+    else if (operation?.Data?.People?.Nodes != null)
+    {
+      @foreach (var person in operation.Data.People.Nodes)
       {
-        @foreach (var person in operation.Data.People.Nodes)
-        {
-          <Person
-            @key="person.Id"
-            User="person"
-          />
-        }
+        <Person
+          @key="person.Id"
+          User="person"
+        />
       }
-    </ul>
-  }
+    }
+  </ul>
 </div>
 
 @code {
