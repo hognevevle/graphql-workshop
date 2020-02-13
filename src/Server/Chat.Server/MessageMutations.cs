@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Chat.Server.DataLoader;
@@ -16,17 +17,17 @@ namespace Chat.Server
         public async Task<SendMessagePayload> SendMessageAsync(
             SendMessageInput input,
             FieldNode field,
-            [State("CurrentUserEmail")]string email,
+            [State("CurrentUserEmail")]string senderEmail,
             [DataLoader]PersonByEmailDataLoader personByEmail,
-            [DataLoader]PersonByIdDataLoader personById,
             [Service]IMessageRepository messageRepository, 
             CancellationToken cancellationToken)
         {
-            Person recipient = await personById.LoadAsync(
-                input.RecipientId, cancellationToken)
-                .ConfigureAwait(false);
+            IReadOnlyList<Person> participants = 
+                await personByEmail.LoadAsync(
+                    cancellationToken, senderEmail, input.RecipientEmail)
+                    .ConfigureAwait(false);
 
-            if (recipient is null)
+            if (participants[1] is null)
             {
                 throw new QueryException(
                     ErrorBuilder.New()
@@ -36,9 +37,8 @@ namespace Chat.Server
                         .Build());
             }
 
-            Person sender = await personByEmail.LoadAsync(
-                email, cancellationToken)
-                .ConfigureAwait(false);
+            Person sender = participants[0];
+            Person recipient = participants[1];
 
             var message = new Message(
                 sender.Id,

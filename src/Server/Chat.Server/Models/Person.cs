@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using HotChocolate;
 
 namespace Chat.Server
 {
@@ -24,6 +25,7 @@ namespace Chat.Server
 
         public Guid Id { get; }
 
+        [GraphQLIgnore]
         public Guid UserId { get; }
 
         public string Name { get; }
@@ -34,6 +36,7 @@ namespace Chat.Server
 
         public Uri? ImageUri { get; }
 
+        [GraphQLIgnore]
         public IReadOnlyList<Guid> FriendIds { get; }
     }
 }
