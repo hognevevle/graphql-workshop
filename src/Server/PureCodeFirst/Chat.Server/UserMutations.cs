@@ -84,8 +84,8 @@ namespace Chat.Server
 
         public async Task<InviteFriendPayload> InviteFriendAsync(
             InviteFriendInput input,
-            [State("CurrentUserEmail")]string myEmail,
-            [DataLoader]PersonByEmailDataLoader personByEmail,
+            [GlobalState]string currentUserEmail,
+            PersonByEmailDataLoader personByEmail,
             [Service]IPersonRepository personRepository,
             CancellationToken cancellationToken)
         {
@@ -100,7 +100,7 @@ namespace Chat.Server
 
             IReadOnlyList<Person> people =
                 await personByEmail.LoadAsync(
-                    cancellationToken, input.Email, myEmail)
+                    cancellationToken, input.Email, currentUserEmail)
                     .ConfigureAwait(false);
 
             if (people[0] is null)

@@ -12,10 +12,10 @@ namespace Chat.Server
     public class Query
     {
         public Task<Person> GetMeAsync(
-            [State("CurrentUserEmail")]string email,
-            [DataLoader]PersonByEmailDataLoader personByEmail,
+            [GlobalState]string currentUserEmail,
+            PersonByEmailDataLoader personByEmail,
             CancellationToken cancellationToken) =>
-            personByEmail.LoadAsync(email, cancellationToken);
+            personByEmail.LoadAsync(currentUserEmail, cancellationToken);
 
         [UsePaging]
         [UseFiltering]

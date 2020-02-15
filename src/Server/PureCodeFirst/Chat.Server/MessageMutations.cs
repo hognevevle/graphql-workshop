@@ -17,14 +17,14 @@ namespace Chat.Server
         public async Task<SendMessagePayload> SendMessageAsync(
             SendMessageInput input,
             FieldNode field,
-            [State("CurrentUserEmail")]string senderEmail,
-            [DataLoader]PersonByEmailDataLoader personByEmail,
+            [GlobalState]string currentUserEmail,
+            PersonByEmailDataLoader personByEmail,
             [Service]IMessageRepository messageRepository, 
             CancellationToken cancellationToken)
         {
             IReadOnlyList<Person> participants = 
                 await personByEmail.LoadAsync(
-                    cancellationToken, senderEmail, input.RecipientEmail)
+                    cancellationToken, currentUserEmail, input.RecipientEmail)
                     .ConfigureAwait(false);
 
             if (participants[1] is null)

@@ -20,14 +20,14 @@ namespace Chat.Server
         [UseFiltering]
         [UseSorting]
         public async Task<IQueryable<Message>> GetMessagesAsync(
-            [State("CurrentUserEmail")]string email,
-            [DataLoader]PersonByEmailDataLoader personByEmail,
+            [GlobalState]string currentUserEmail,
+            PersonByEmailDataLoader personByEmail,
             [Parent]Person recipient,
             [Service]IMessageRepository repository,
             CancellationToken cancellationToken)
         {
             Person sender = await personByEmail.LoadAsync(
-                email, cancellationToken)
+                currentUserEmail, cancellationToken)
                 .ConfigureAwait(false);
 
             return repository.GetMessages(sender.Id, recipient.Id);
@@ -38,7 +38,7 @@ namespace Chat.Server
         [UseSorting]
         public async Task<IEnumerable<Person>> GetFriendsAsync(
             [Parent]Person recipient,
-            [DataLoader]PersonByIdDataLoader personById,
+            PersonByIdDataLoader personById,
             CancellationToken cancellationToken)
         {
             return await personById.LoadAsync(

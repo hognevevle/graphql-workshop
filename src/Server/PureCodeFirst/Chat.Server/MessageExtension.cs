@@ -10,13 +10,13 @@ namespace Chat.Server
     public class MessageExtension
     {
         public async Task<Direction> GetDirectionAsync(
-            [State("CurrentUserEmail")]string email,
-            [DataLoader]PersonByEmailDataLoader personByEmail,
+            [GlobalState]string currentUserEmail,
+            PersonByEmailDataLoader personByEmail,
             [Parent]Message message,
             CancellationToken cancellationToken)
         {
             Person sender = await personByEmail.LoadAsync(
-                email, cancellationToken)
+                currentUserEmail, cancellationToken)
                 .ConfigureAwait(false);
 
             if (message.RecipientId == message.SenderId
@@ -35,7 +35,7 @@ namespace Chat.Server
 
         public async Task<Person> GetSenderAsync(
             [Parent]Message message,
-            [DataLoader]PersonByIdDataLoader personById,
+            PersonByIdDataLoader personById,
             CancellationToken cancellationToken)
         {
             return await personById.LoadAsync(
@@ -45,7 +45,7 @@ namespace Chat.Server
 
         public async Task<Person> GetRecipientAsync(
             [Parent]Message message,
-            [DataLoader]PersonByIdDataLoader personById,
+            PersonByIdDataLoader personById,
             CancellationToken cancellationToken)
         {
             return await personById.LoadAsync(
