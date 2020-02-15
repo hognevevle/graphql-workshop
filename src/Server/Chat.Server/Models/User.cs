@@ -1,4 +1,5 @@
 using System;
+using HotChocolate;
 
 namespace Chat.Server
 {
@@ -24,8 +25,10 @@ namespace Chat.Server
 
         public string Email { get; }
 
+        [GraphQLIgnore]
         public string PasswordHash { get; }
 
+        [GraphQLIgnore]
         public string Salt { get; }
     }
 }

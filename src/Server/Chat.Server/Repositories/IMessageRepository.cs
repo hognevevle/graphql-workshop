@@ -8,7 +8,9 @@ namespace Chat.Server.Repositories
 {
     public interface IMessageRepository
     {
-        IQueryable<Message> GetMessages(Guid senderId, Guid recipientId);
+        IQueryable<Message> GetMessages(
+            Guid senderId, 
+            Guid recipientId);
 
         Task AddMessageAsync(
             Message message, 
