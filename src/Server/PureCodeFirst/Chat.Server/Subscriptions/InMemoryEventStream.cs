@@ -8,16 +8,14 @@ namespace Chat.Server.Subscriptions
     public class InMemoryEventStream<TMessage>
         : IEventStream<TMessage>
     {
-        private readonly Channel<IEventMessage> _channel;
+        private readonly Channel<TMessage> _channel;
         private InMemoryEventStreamEnumerator _enumerator;
         private bool _isCompleted;
 
-        public InMemoryEventStream()
+        public InMemoryEventStream(Channel<TMessage> channel)
         {
             _channel = Channel.CreateUnbounded<IEventMessage>();
         }
-
-        public event EventHandler Completed;
 
         public IAsyncEnumerator<IEventMessage> GetAsyncEnumerator(
             CancellationToken cancellationToken = default)
@@ -137,7 +135,8 @@ namespace Chat.Server.Subscriptions
         }
     }
 
-    public interface IEventStream<TMessage> : IAsyncEnumerable<TMessage>
+    public interface IEventStream<TMessage> 
+        : IAsyncEnumerable<TMessage>
     {
     }
 }

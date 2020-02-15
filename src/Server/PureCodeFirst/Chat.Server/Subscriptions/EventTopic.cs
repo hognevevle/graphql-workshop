@@ -13,7 +13,9 @@ namespace Chat.Server.Subscriptions
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly Channel<TMessage> _incoming = Channel.CreateUnbounded<TMessage>();
         private readonly List<Channel<TMessage>> _outgoing = new List<Channel<TMessage>>();
-        public event EventHandler<EventArgs> Unsubscribed;
+        private bool _disposed;
+
+        public event EventHandler<EventArgs>? Unsubscribed;
 
         public EventTopic()
         {
@@ -25,10 +27,78 @@ namespace Chat.Server.Subscriptions
             _incoming.Writer.TryWrite(message);
         }
 
-        public ValueTask<InMemoryEventStream<TMessage>> SubscribeAsync(
+        public async ValueTask CompleteAsync()
+        {
+            await _semaphore.WaitAsync().ConfigureAwait(false);
+
+            if (_outgoing.Count > 0)
+            {
+                for (int i = 0; i < _outgoing.Count; i++)
+                {
+                    _outgoing[i].Writer.TryComplete();
+                }
+                _outgoing.Clear();
+            }
+
+            Dispose();
+        }
+
+        public async ValueTask<InMemoryEventStream<TMessage>> SubscribeAsync(
             CancellationToken cancellationToken)
         {
+            await _semaphore.WaitAsync().ConfigureAwait(false);
 
+            try
+            {
+                var channel = Channel.CreateUnbounded<TMessage>();
+                var stream = new InMemoryEventStream<TMessage>(channel);
+                _outgoing.Add(channel);
+
+                return stream;
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
+        public async Task<bool> TryClose()
+        {
+            await _semaphore.WaitAsync().ConfigureAwait(false);
+
+            try
+            {
+                if (_outgoing.Count > 0)
+                {
+                    ImmutableHashSet<Channel<TMessage>> closedChannel =
+                        ImmutableHashSet<Channel<TMessage>>.Empty;
+
+                    for (int i = 0; i < _outgoing.Count; i++)
+                    {
+                        if (_outgoing[i].Reader.Completion.IsCompleted)
+                        {
+                            closedChannel = closedChannel.Add(_outgoing[i]);
+                        }
+                    }
+
+                    _outgoing.RemoveAll(c => closedChannel.Contains(c));
+                }
+
+                if (_outgoing.Count == 0)
+                {
+                    Dispose();
+                    return true;
+                }
+
+                return false;
+            }
+            finally
+            {
+                if (!_disposed)
+                {
+                    _semaphore.Release();
+                }
+            }
         }
 
         private void BeginProcessing()
@@ -83,20 +153,22 @@ namespace Chat.Server.Subscriptions
 
         public void Dispose()
         {
-            _semaphore.Wait();
-
-            try
+            if (!_disposed)
             {
-                for (int i = 0; i < _outgoing.Count; i++)
+                try
                 {
-                    _outgoing[i].Writer.TryComplete();;
+                    for (int i = 0; i < _outgoing.Count; i++)
+                    {
+                        _outgoing[i].Writer.TryComplete(); ;
+                    }
+                    _outgoing.Clear();
                 }
-                _outgoing.Clear();
-            }
-            finally
-            {
-                _incoming.Writer.TryComplete();
-                _semaphore.Dispose();
+                finally
+                {
+                    _incoming.Writer.TryComplete();
+                    _semaphore.Dispose();
+                }
+                _disposed = true;
             }
         }
     }
