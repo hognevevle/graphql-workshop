@@ -1,16 +1,7 @@
-query me {
+query initialData {
   me {
-    ...user
+    ...person
   }
-}
-
-fragment user on Person {
-  id
-  name
-  email
-}
-
-query people {
   people(where: { email_not: "foo@bar.com" }) {
     nodes {
       ...person
@@ -22,5 +13,24 @@ fragment person on Person {
   id
   name
   email
+  imageUri
+  isOnline
   lastSeen
+}
+
+query chat($personId: Uuid!) {
+  me {
+    messages(where: { recipientId: $personId, OR: { senderId: $personId } }) {
+      nodes {
+        ...message
+      }
+    }
+  }
+}
+
+fragment message on Message {
+  direction
+  id
+  sent
+  text
 }

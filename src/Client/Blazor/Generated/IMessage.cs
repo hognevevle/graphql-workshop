@@ -6,8 +6,14 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IPersonConnection
+    public interface IMessage
     {
-        IReadOnlyList<IPerson> Nodes { get; }
+        Direction Direction { get; }
+
+        System.Guid Id { get; }
+
+        System.DateTimeOffset Sent { get; }
+
+        string Text { get; }
     }
 }

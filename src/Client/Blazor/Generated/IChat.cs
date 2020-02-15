@@ -6,8 +6,8 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IPersonConnection
+    public interface IChat
     {
-        IReadOnlyList<IPerson> Nodes { get; }
+        IPerson1 Me { get; }
     }
 }

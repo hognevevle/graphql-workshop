@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using StrawberryShake;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public interface IPerson
@@ -13,6 +13,10 @@ namespace Chat.Client
         string Name { get; }
 
         string Email { get; }
+
+        System.Uri ImageUri { get; }
+
+        bool IsOnline { get; }
 
         System.DateTimeOffset LastSeen { get; }
     }

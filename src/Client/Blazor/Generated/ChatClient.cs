@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using StrawberryShake;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public class ChatClient
@@ -20,17 +20,17 @@ namespace Chat.Client
             _executor = executorPool.CreateExecutor(_clientName);
         }
 
-        public Task<IOperationResult<IMe>> MeAsync(
+        public Task<IOperationResult<IInitialData>> InitialDataAsync(
             CancellationToken cancellationToken = default)
         {
 
             return _executor.ExecuteAsync(
-                new MeOperation(),
+                new InitialDataOperation(),
                 cancellationToken);
         }
 
-        public Task<IOperationResult<IMe>> MeAsync(
-            MeOperation operation,
+        public Task<IOperationResult<IInitialData>> InitialDataAsync(
+            InitialDataOperation operation,
             CancellationToken cancellationToken = default)
         {
             if (operation is null)
@@ -41,17 +41,18 @@ namespace Chat.Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<IPeople>> PeopleAsync(
+        public Task<IOperationResult<IChat>> ChatAsync(
+            Optional<System.Guid> personId = default,
             CancellationToken cancellationToken = default)
         {
 
             return _executor.ExecuteAsync(
-                new PeopleOperation(),
+                new ChatOperation { PersonId = personId },
                 cancellationToken);
         }
 
-        public Task<IOperationResult<IPeople>> PeopleAsync(
-            PeopleOperation operation,
+        public Task<IOperationResult<IChat>> ChatAsync(
+            ChatOperation operation,
             CancellationToken cancellationToken = default)
         {
             if (operation is null)

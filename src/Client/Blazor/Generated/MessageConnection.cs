@@ -6,15 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class PersonConnection
-        : IPersonConnection
+    public class MessageConnection
+        : IMessageConnection
     {
-        public PersonConnection(
-            IReadOnlyList<IPerson> nodes)
+        public MessageConnection(
+            IReadOnlyList<IMessage> nodes)
         {
             Nodes = nodes;
         }
 
-        public IReadOnlyList<IPerson> Nodes { get; }
+        public IReadOnlyList<IMessage> Nodes { get; }
     }
 }

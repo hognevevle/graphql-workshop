@@ -15,5 +15,4 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.1" />
     <PackageReference Include="StrawberryShake" Version="11.0.0-preview.84" />
   </ItemGroup>
-
 </Project>

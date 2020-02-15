@@ -5,23 +5,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using StrawberryShake;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public interface IChatClient
     {
-        Task<IOperationResult<IMe>> MeAsync(
+        Task<IOperationResult<IInitialData>> InitialDataAsync(
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<IMe>> MeAsync(
-            MeOperation operation,
+        Task<IOperationResult<IInitialData>> InitialDataAsync(
+            InitialDataOperation operation,
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<IPeople>> PeopleAsync(
+        Task<IOperationResult<IChat>> ChatAsync(
+            Optional<System.Guid> personId = default,
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<IPeople>> PeopleAsync(
-            PeopleOperation operation,
+        Task<IOperationResult<IChat>> ChatAsync(
+            ChatOperation operation,
             CancellationToken cancellationToken = default);
     }
 }

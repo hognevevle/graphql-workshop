@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using StrawberryShake;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class Me1
-        : IMe
+    public class Person1
+        : IPerson1
     {
-        public Me1(
-            IUser me)
+        public Person1(
+            IMessageConnection messages)
         {
-            Me = me;
+            Messages = messages;
         }
 
-        public IUser Me { get; }
+        public IMessageConnection Messages { get; }
     }
 }

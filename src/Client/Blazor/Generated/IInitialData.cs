@@ -6,8 +6,10 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IPersonConnection
+    public interface IInitialData
     {
-        IReadOnlyList<IPerson> Nodes { get; }
+        IPerson Me { get; }
+
+        IPersonConnection People { get; }
     }
 }

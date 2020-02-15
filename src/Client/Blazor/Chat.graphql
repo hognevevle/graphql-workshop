@@ -3,6 +3,12 @@ schema {
   mutation: Mutation
 }
 
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserPayload!
+  inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
+  sendMessage(input: SendMessageInput!): SendMessagePayload!
+}
+
 "The multiplier path scalar represents a valid GraphQL multiplier path string."
 scalar MultiplierPath
 
@@ -11,18 +17,15 @@ type Query {
   people(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
 }
 
-type Mutation {
-  createUser(input: CreateUserInput!): CreateUserPayload!
-  inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
-}
-
 type Person {
   email: String!
-  friendIds: [Uuid]!
+  friends(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
   id: Uuid!
+  imageUri: Url
+  isOnline: Boolean!
   lastSeen: DateTime!
+  messages(after: String before: String first: PaginationAmount last: PaginationAmount order_by: MessageSort where: MessageFilter): MessageConnection
   name: String!
-  userId: Uuid!
 }
 
 input PersonFilter {
@@ -72,18 +75,6 @@ input PersonFilter {
   name_not_starts_with: String
   name_starts_with: String
   OR: [PersonFilter!]
-  userId: Uuid
-  userId_gt: Uuid
-  userId_gte: Uuid
-  userId_in: [Uuid!]
-  userId_lt: Uuid
-  userId_lte: Uuid
-  userId_not: Uuid
-  userId_not_gt: Uuid
-  userId_not_gte: Uuid
-  userId_not_in: [Uuid!]
-  userId_not_lt: Uuid
-  userId_not_lte: Uuid
 }
 
 input PersonSort {
@@ -91,7 +82,6 @@ input PersonSort {
   id: SortOperationKind
   lastSeen: SortOperationKind
   name: SortOperationKind
-  userId: SortOperationKind
 }
 
 scalar PaginationAmount
@@ -105,6 +95,97 @@ type PersonConnection {
   "Information to aid in pagination."
   pageInfo: PageInfo!
   totalCount: Int!
+}
+
+"A connection to a list of items."
+type MessageConnection {
+  "A list of edges."
+  edges: [MessageEdge!]
+  "A flattened list of the nodes."
+  nodes: [Message]
+  "Information to aid in pagination."
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type Message {
+  direction: Direction!
+  id: Uuid!
+  recipientId: Uuid!
+  senderId: Uuid!
+  sent: DateTime!
+  text: String!
+}
+
+input MessageFilter {
+  AND: [MessageFilter!]
+  id: Uuid
+  id_gt: Uuid
+  id_gte: Uuid
+  id_in: [Uuid!]
+  id_lt: Uuid
+  id_lte: Uuid
+  id_not: Uuid
+  id_not_gt: Uuid
+  id_not_gte: Uuid
+  id_not_in: [Uuid!]
+  id_not_lt: Uuid
+  id_not_lte: Uuid
+  OR: [MessageFilter!]
+  recipientId: Uuid
+  recipientId_gt: Uuid
+  recipientId_gte: Uuid
+  recipientId_in: [Uuid!]
+  recipientId_lt: Uuid
+  recipientId_lte: Uuid
+  recipientId_not: Uuid
+  recipientId_not_gt: Uuid
+  recipientId_not_gte: Uuid
+  recipientId_not_in: [Uuid!]
+  recipientId_not_lt: Uuid
+  recipientId_not_lte: Uuid
+  senderId: Uuid
+  senderId_gt: Uuid
+  senderId_gte: Uuid
+  senderId_in: [Uuid!]
+  senderId_lt: Uuid
+  senderId_lte: Uuid
+  senderId_not: Uuid
+  senderId_not_gt: Uuid
+  senderId_not_gte: Uuid
+  senderId_not_in: [Uuid!]
+  senderId_not_lt: Uuid
+  senderId_not_lte: Uuid
+  sent: DateTime
+  sent_gt: DateTime
+  sent_gte: DateTime
+  sent_in: [DateTime!]
+  sent_lt: DateTime
+  sent_lte: DateTime
+  sent_not: DateTime
+  sent_not_gt: DateTime
+  sent_not_gte: DateTime
+  sent_not_in: [DateTime!]
+  sent_not_lt: DateTime
+  sent_not_lte: DateTime
+  text: String
+  text_contains: String
+  text_ends_with: String
+  text_in: [String!]
+  text_not: String
+  text_not_contains: String
+  text_not_ends_with: String
+  text_not_in: [String!]
+  text_not_starts_with: String
+  text_starts_with: String
+}
+
+input MessageSort {
+  id: SortOperationKind
+  recipientId: SortOperationKind
+  senderId: SortOperationKind
+  sent: SortOperationKind
+  text: SortOperationKind
 }
 
 enum SortOperationKind {
@@ -132,6 +213,14 @@ type PersonEdge {
   node: Person
 }
 
+"An edge in a connection."
+type MessageEdge {
+  "A cursor for use in pagination."
+  cursor: String!
+  "The item at the end of the edge."
+  node: Message
+}
+
 type CreateUserPayload {
   clientMutationId: String
   user: User!
@@ -140,7 +229,7 @@ type CreateUserPayload {
 input CreateUserInput {
   clientMutationId: String
   email: String!
-  image: [Byte!]
+  image: Url
   name: String!
   password: String!
 }
@@ -155,10 +244,30 @@ type InviteFriendPayload {
   me: Person!
 }
 
+type SendMessagePayload {
+  clientMutationId: String
+  message: Message!
+  recipient: Person!
+  sender: Person!
+}
+
+input SendMessageInput {
+  clientMutationId: String
+  recipientEmail: String!
+  text: String!
+}
+
+enum Direction {
+  INCOMING
+  OUTGOING
+}
+
 scalar Uuid
 
 "The `DateTime` scalar represents an ISO-8601 compliant date time type."
 scalar DateTime
+
+scalar Url
 
 type User {
   email: String!
@@ -167,9 +276,6 @@ type User {
   personId: Uuid!
   salt: String!
 }
-
-"The `Byte` scalar type represents non-fractional whole numeric values. Byte can represent values between 0 and 255."
-scalar Byte
 
 "The cost directives is used to express the complexity of a field."
 directive @cost("Defines the complexity of the field." complexity: Int! = 1 "Defines field arguments that act as complexity multipliers." multipliers: [MultiplierPath!]) on FIELD_DEFINITION

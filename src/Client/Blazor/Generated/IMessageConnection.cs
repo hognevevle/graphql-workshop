@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using StrawberryShake;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IMe
+    public interface IMessageConnection
     {
-        IUser Me { get; }
+        IReadOnlyList<IMessage> Nodes { get; }
     }
 }

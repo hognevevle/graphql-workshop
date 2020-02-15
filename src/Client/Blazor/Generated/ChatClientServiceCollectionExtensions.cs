@@ -12,7 +12,7 @@ using StrawberryShake.Http.Subscriptions;
 using StrawberryShake.Serializers;
 using StrawberryShake.Transport;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public static class ChatClientServiceCollectionExtensions
@@ -38,8 +38,9 @@ namespace Chat.Client
                     sp.GetRequiredService<IClientOptions>().GetResultParsers(_clientName)));
 
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
-                .AddResultParser(serializers => new MeResultParser(serializers))
-                .AddResultParser(serializers => new PeopleResultParser(serializers))
+                .AddValueSerializer(() => new DirectionValueSerializer())
+                .AddResultParser(serializers => new InitialDataResultParser(serializers))
+                .AddResultParser(serializers => new ChatResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(builder => builder.UseHttpDefaultPipeline());
 

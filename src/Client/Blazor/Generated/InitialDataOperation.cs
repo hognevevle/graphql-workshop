@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using StrawberryShake;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class PeopleOperation
-        : IOperation<IPeople>
+    public class InitialDataOperation
+        : IOperation<IInitialData>
     {
-        public string Name => "people";
+        public string Name => "initialData";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Query;
 
-        public Type ResultType => typeof(IPeople);
+        public Type ResultType => typeof(IInitialData);
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {

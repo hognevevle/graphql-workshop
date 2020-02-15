@@ -8,37 +8,51 @@ using StrawberryShake.Http;
 using StrawberryShake.Http.Subscriptions;
 using StrawberryShake.Transport;
 
-namespace Chat.Client
+namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class PeopleResultParser
-        : JsonResultParserBase<IPeople>
+    public class ChatResultParser
+        : JsonResultParserBase<IChat>
     {
+        private readonly IValueSerializer _directionSerializer;
         private readonly IValueSerializer _uuidSerializer;
-        private readonly IValueSerializer _stringSerializer;
         private readonly IValueSerializer _dateTimeSerializer;
+        private readonly IValueSerializer _stringSerializer;
 
-        public PeopleResultParser(IValueSerializerCollection serializerResolver)
+        public ChatResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
+            _directionSerializer = serializerResolver.Get("Direction");
             _uuidSerializer = serializerResolver.Get("Uuid");
-            _stringSerializer = serializerResolver.Get("String");
             _dateTimeSerializer = serializerResolver.Get("DateTime");
+            _stringSerializer = serializerResolver.Get("String");
         }
 
-        protected override IPeople ParserData(JsonElement data)
+        protected override IChat ParserData(JsonElement data)
         {
-            return new People1
+            return new Chat
             (
-                ParsePeoplePeople(data, "people")
+                ParseChatMe(data, "me")
             );
 
         }
 
-        private IPersonConnection ParsePeoplePeople(
+        private IPerson1 ParseChatMe(
+            JsonElement parent,
+            string field)
+        {
+            JsonElement obj = parent.GetProperty(field);
+
+            return new Person1
+            (
+                ParseChatMeMessages(obj, "messages")
+            );
+        }
+
+        private IMessageConnection ParseChatMeMessages(
             JsonElement parent,
             string field)
         {
@@ -52,13 +66,13 @@ namespace Chat.Client
                 return null;
             }
 
-            return new PersonConnection
+            return new MessageConnection
             (
-                ParsePeoplePeopleNodes(obj, "nodes")
+                ParseChatMeMessagesNodes(obj, "nodes")
             );
         }
 
-        private IReadOnlyList<IPerson> ParsePeoplePeopleNodes(
+        private IReadOnlyList<IMessage> ParseChatMeMessagesNodes(
             JsonElement parent,
             string field)
         {
@@ -73,21 +87,27 @@ namespace Chat.Client
             }
 
             int objLength = obj.GetArrayLength();
-            var list = new IPerson[objLength];
+            var list = new IMessage[objLength];
             for (int objIndex = 0; objIndex < objLength; objIndex++)
             {
                 JsonElement element = obj[objIndex];
-                list[objIndex] = new Person
+                list[objIndex] = new Message
                 (
+                    DeserializeDirection(element, "direction"),
                     DeserializeUuid(element, "id"),
-                    DeserializeString(element, "name"),
-                    DeserializeString(element, "email"),
-                    DeserializeDateTime(element, "lastSeen")
+                    DeserializeDateTime(element, "sent"),
+                    DeserializeString(element, "text")
                 );
 
             }
 
             return list;
+        }
+
+        private Direction DeserializeDirection(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (Direction)_directionSerializer.Deserialize(value.GetString());
         }
 
         private System.Guid DeserializeUuid(JsonElement obj, string fieldName)
@@ -96,16 +116,16 @@ namespace Chat.Client
             return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
         }
 
-        private string DeserializeString(JsonElement obj, string fieldName)
-        {
-            JsonElement value = obj.GetProperty(fieldName);
-            return (string)_stringSerializer.Deserialize(value.GetString());
-        }
-
         private System.DateTimeOffset DeserializeDateTime(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (System.DateTimeOffset)_dateTimeSerializer.Deserialize(value.GetString());
+        }
+
+        private string DeserializeString(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (string)_stringSerializer.Deserialize(value.GetString());
         }
     }
 }
