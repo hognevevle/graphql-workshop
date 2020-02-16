@@ -8,7 +8,11 @@
       {
         <div>Loading...</div>
       }
-      else if (Messages?.Nodes != null)
+      else if (User != null && Messages?.Nodes == null)
+      {
+        <div>No Messages...</div>
+      }
+      else if (User != null && Messages?.Nodes != null)
       {
         @foreach (var message in Messages.Nodes)
         {
@@ -23,6 +27,10 @@
           <TypingIndicator />
         }
       }
+      else
+      {
+        <div>No Chat selected...</div>
+      }
     </ul>
   </div>
   <Footer />
@@ -35,8 +43,8 @@
     public bool IsLoading { get; set; }
 
     [Parameter]
-    public IMessageConnection Messages { get; set; }
+    public IMessageConnection? Messages { get; set; }
 
     [Parameter]
-    public IPerson User { get; set; }
+    public IPerson? User { get; set; }
 }

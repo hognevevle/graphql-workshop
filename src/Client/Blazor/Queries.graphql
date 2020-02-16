@@ -31,6 +31,18 @@ query chat($personId: Uuid!) {
 fragment message on Message {
   direction
   id
+  recipient {
+    ...participant
+  }
+  sender {
+    ...participant
+  }
   sent
   text
+}
+
+fragment participant on Person {
+  id
+  name
+  isOnline
 }

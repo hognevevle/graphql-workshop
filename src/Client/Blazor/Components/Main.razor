@@ -7,7 +7,7 @@
 <MessageList
   IsLoading="@isLoadingChat"
   Messages="@chat?.Data?.Me?.Messages"
-  User="@initialData?.Data?.Me"
+  User="null"
 />
 
 @code {
@@ -22,7 +22,7 @@
         isLoadingInitialData = false;
         StateHasChanged();
 
-        var user = initialData?.Data?.Me;
+        IPerson? user = null;//initialData?.Data?.Me;
 
         if (user != null)
         {

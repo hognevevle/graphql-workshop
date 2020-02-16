@@ -12,11 +12,15 @@ namespace Client
         public Message(
             Direction direction, 
             System.Guid id, 
+            IParticipant recipient, 
+            IParticipant sender, 
             System.DateTimeOffset sent, 
             string text)
         {
             Direction = direction;
             Id = id;
+            Recipient = recipient;
+            Sender = sender;
             Sent = sent;
             Text = text;
         }
@@ -24,6 +28,10 @@ namespace Client
         public Direction Direction { get; }
 
         public System.Guid Id { get; }
+
+        public IParticipant Recipient { get; }
+
+        public IParticipant Sender { get; }
 
         public System.DateTimeOffset Sent { get; }
 
