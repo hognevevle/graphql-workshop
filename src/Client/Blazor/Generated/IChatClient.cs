@@ -11,6 +11,7 @@ namespace Client
     public interface IChatClient
     {
         Task<IOperationResult<IInitialData>> InitialDataAsync(
+            Optional<System.Guid> userId = default,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IInitialData>> InitialDataAsync(

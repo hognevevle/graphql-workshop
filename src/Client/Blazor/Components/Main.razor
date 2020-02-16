@@ -13,23 +13,16 @@
 @code {
     private bool isLoadingInitialData = true;
     private IOperationResult<IInitialData>? initialData;
-    private bool isLoadingChat = true;
+    private bool isLoadingChat = false;
     private IOperationResult<IChat>? chat;
+
+    [Parameter]
+    public IPerson User { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        initialData = await ChatClient.InitialDataAsync();
+        initialData = await ChatClient.InitialDataAsync(User.Id);
         isLoadingInitialData = false;
-        StateHasChanged();
-
-        IPerson? user = null;//initialData?.Data?.Me;
-
-        if (user != null)
-        {
-            chat = await ChatClient.ChatAsync(user.Id);
-        }
-
-        isLoadingChat = false;
         StateHasChanged();
     }
 }

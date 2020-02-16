@@ -37,27 +37,9 @@ namespace Client
         {
             return new InitialData
             (
-                ParseInitialDataMe(data, "me"),
                 ParseInitialDataPeople(data, "people")
             );
 
-        }
-
-        private IPerson ParseInitialDataMe(
-            JsonElement parent,
-            string field)
-        {
-            JsonElement obj = parent.GetProperty(field);
-
-            return new Person
-            (
-                DeserializeUuid(obj, "id"),
-                DeserializeString(obj, "name"),
-                DeserializeString(obj, "email"),
-                DeserializeNullableUrl(obj, "imageUri"),
-                DeserializeBoolean(obj, "isOnline"),
-                DeserializeDateTime(obj, "lastSeen")
-            );
         }
 
         private IPersonConnection ParseInitialDataPeople(

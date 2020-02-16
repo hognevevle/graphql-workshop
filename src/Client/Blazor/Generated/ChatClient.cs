@@ -21,11 +21,12 @@ namespace Client
         }
 
         public Task<IOperationResult<IInitialData>> InitialDataAsync(
+            Optional<System.Guid> userId = default,
             CancellationToken cancellationToken = default)
         {
 
             return _executor.ExecuteAsync(
-                new InitialDataOperation(),
+                new InitialDataOperation { UserId = userId },
                 cancellationToken);
         }
 
