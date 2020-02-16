@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace Chat.Server.Subscriptions
 {
+    public interface IEventTopic
+    {
+        event EventHandler<EventArgs>? Unsubscribed;
+
+        ValueTask CompleteAsync();
+        
+        Task<bool> TryClose();
+    }
+
     public sealed class EventTopic<TMessage>
-        : IDisposable
+        : IEventTopic
+        , IDisposable
     {
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly Channel<TMessage> _incoming = Channel.CreateUnbounded<TMessage>();

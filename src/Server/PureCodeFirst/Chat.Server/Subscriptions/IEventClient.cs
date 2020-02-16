@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -10,63 +12,84 @@ namespace Chat.Server.Subscriptions
 
     public interface IEventSubscription
     {
-        IAsyncEnumerable<TMessage> Subscribe<TSession, TMessage>(TSession session)
-            where TSession : notnull;
+        ValueTask<IEventStream<TMessage>> SubscribeAsync<TTopic, TMessage>(
+            TTopic topic,
+            CancellationToken cancellationToken = default)
+            where TTopic : notnull;
     }
 
     public interface IEventSender
     {
-        ValueTask SendAsync<TSession, TMessage>(
-            TSession session,
+        ValueTask SendAsync<TTopic, TMessage>(
+            TTopic topic,
             TMessage message,
             CancellationToken cancellationToken = default)
-            where TSession : notnull;
+            where TTopic : notnull;
 
-        ValueTask CompleteAsync<TSession>(TSession session)
-            where TSession : notnull;
+        ValueTask CompleteAsync<TTopic>(TTopic topic)
+            where TTopic : notnull;
     }
 
-    public class InMemorySubscription
+    [System.Serializable]
+    public class InvalidMessageTypeException : Exception
+    {
+        public InvalidMessageTypeException() { }
+        public InvalidMessageTypeException(string message)
+            : base(message) { }
+        public InvalidMessageTypeException(string message, Exception inner)
+            : base(message, inner) { }
+        protected InvalidMessageTypeException(
+            SerializationInfo info,
+            StreamingContext context)
+            : base(info, context) { }
+    }
+
+    public class InMemoryEventHandler
         : IEventSubscription
         , IEventSender
     {
-        private readonly ConcurrentDictionary<object, List<object>> _subscriptions =
-            new ConcurrentDictionary<object, List<object>>();
+        private readonly ConcurrentDictionary<object, IEventTopic> _topics =
+            new ConcurrentDictionary<object, IEventTopic>();
 
-        public async ValueTask SendAsync<TSession, TMessage>(
-            TSession session,
+        public ValueTask SendAsync<TTopic, TMessage>(
+            TTopic topic,
             TMessage message,
             CancellationToken cancellationToken = default)
-            where TSession : notnull
+            where TTopic : notnull
         {
-            List<object> channel = _subscriptions.GetOrAdd(session, s => new List<object>());
+            IEventTopic eventTopic = _topics.GetOrAdd(topic, s => new EventTopic<TMessage>());
 
-            await channel.Writer.WriteAsync(
-                message, cancellationToken)
-                .ConfigureAwait(false);
-        }
-
-        public ValueTask CompleteAsync<TSession>(TSession session)
-            where TSession : notnull
-        {
-            if (_subscriptions.TryRemove(session, out Channel<object?>? channel))
+            if (eventTopic is EventTopic<TMessage> et)
             {
-                channel.Writer.TryComplete();
+                et.TryWrite(message);
+                return default;
             }
-            return default;
+
+            throw new InvalidMessageTypeException();
         }
 
-        public IAsyncEnumerable<TMessage> Subscribe<TSession, TMessage>(TSession session)
-            where TSession : notnull
+        public async ValueTask CompleteAsync<TTopic>(TTopic topic)
+            where TTopic : notnull
         {
-            Channel<object?> channel = _subscriptions.GetOrAdd(session, s => CreateChannel());
-
-
-
+            if (_topics.TryGetValue(topic, out IEventTopic? eventTopic))
+            {
+                await eventTopic.CompleteAsync();
+            }
         }
 
-        private InMemoryEventStream<TMessage> CreateEventStream<TMessage>() => null;
+        public async ValueTask<IEventStream<TMessage>> SubscribeAsync<TTopic, TMessage>(
+            TTopic topic,
+            CancellationToken cancellationToken = default)
+            where TTopic : notnull
+        {
+            IEventTopic eventTopic = _topics.GetOrAdd(topic, s => new EventTopic<TMessage>());
 
+            if (eventTopic is EventTopic<TMessage> et)
+            {
+                return await et.SubscribeAsync(cancellationToken).ConfigureAwait(false);
+            }
 
+            throw new InvalidMessageTypeException();
+        }
     }
 }

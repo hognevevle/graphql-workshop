@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using HotChocolate;
 using HotChocolate.AspNetCore;
+using Chat.Server.Subscriptions;
 
 namespace Chat.Server
 {
@@ -17,6 +18,10 @@ namespace Chat.Server
         {
             services.AddCors();
 
+            services.AddSingleton<InMemoryEventHandler>();
+            services.AddSingleton<IEventSender>(sp => sp.GetRequiredService<InMemoryEventHandler>());
+            services.AddSingleton<IEventSubscription>(sp => sp.GetRequiredService<InMemoryEventHandler>());
+
             services
                 .AddRepositories()
                 .AddDataLoaderRegistry()
@@ -26,12 +31,14 @@ namespace Chat.Server
                         .AddMutationType(d => d.Name("Mutation"))
                         .AddType<UserMutations>()
                         .AddType<MessageMutations>()
+                        .AddSubscriptionType(d => d.Name("Subscription"))
+                        .AddType<MessageSubscriptions>()
                         .AddType<PersonExtension>()
                         .AddType<MessageExtension>());
 
             services.AddQueryRequestInterceptor((context, builder, ct) =>
             {
-                builder.AddProperty("CurrentUserEmail", "foo@bar.com");
+                builder.AddProperty("currentUserEmail", "foo@bar.com");
                 return Task.CompletedTask;
             });
         }
@@ -50,6 +57,8 @@ namespace Chat.Server
                 .AllowAnyOrigin());
 
             app.UseRouting();
+
+            app.UseWebSockets();
 
             app.UseGraphQL();
 

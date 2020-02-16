@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Chat.Server.DataLoader;
 using Chat.Server.Repositories;
+using Chat.Server.Subscriptions;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Language;
@@ -19,10 +20,11 @@ namespace Chat.Server
             FieldNode field,
             [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
-            [Service]IMessageRepository messageRepository, 
+            [Service]IMessageRepository messageRepository,
+            [Service]IEventSender eventSender,
             CancellationToken cancellationToken)
         {
-            IReadOnlyList<Person> participants = 
+            IReadOnlyList<Person> participants =
                 await personByEmail.LoadAsync(
                     cancellationToken, currentUserEmail, input.RecipientEmail)
                     .ConfigureAwait(false);
@@ -49,10 +51,14 @@ namespace Chat.Server
                 message, cancellationToken)
                 .ConfigureAwait(false);
 
+            await eventSender.SendAsync(
+                recipient.Email, message, cancellationToken)
+                .ConfigureAwait(false);
+
             return new SendMessagePayload(
-                sender, 
-                recipient, 
-                message, 
+                sender,
+                recipient,
+                message,
                 input.ClientMutationId);
         }
     }
