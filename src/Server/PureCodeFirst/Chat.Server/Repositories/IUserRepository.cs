@@ -5,7 +5,7 @@ namespace Chat.Server.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetUserAsync(
+        Task<User?> GetUserAsync(
             string email,
             CancellationToken cancellationToken = default);
 

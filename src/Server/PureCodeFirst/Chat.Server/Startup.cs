@@ -10,12 +10,14 @@ using Chat.Server.Subscriptions;
 
 namespace Chat.Server
 {
-    public class Startup
+    public partial class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            ConfigureAuthenticationServices(services);
+
             services.AddCors();
 
             services.AddSingleton<InMemoryEventHandler>();
@@ -57,6 +59,8 @@ namespace Chat.Server
                 .AllowAnyOrigin());
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseWebSockets();
 

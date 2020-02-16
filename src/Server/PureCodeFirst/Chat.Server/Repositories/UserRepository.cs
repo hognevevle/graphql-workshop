@@ -27,7 +27,7 @@ namespace Chat.Server.Repositories
                     new CreateIndexOptions { Unique = true }));
         }
 
-        public async Task<User> GetUserAsync(
+        public async Task<User?> GetUserAsync(
             string email,
             CancellationToken cancellationToken = default)
         {

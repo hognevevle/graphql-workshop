@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -9,6 +11,7 @@ using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Types;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Chat.Server
 {
@@ -124,5 +127,122 @@ namespace Chat.Server
                 people[1].AddFriendId(people[0].Id),
                 input.ClientMutationId);
         }
+
+        public async Task<LoginPayload> LoginAsync(
+            LoginInput input,
+            [Service]IUserRepository userRepository,
+            [Service]PersonByEmailDataLoader personByEmail,
+            CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrEmpty(input.Email))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetMessage("The email mustn't be empty.")
+                        .SetCode("EMAIL_EMPTY")
+                        .Build());
+            }
+
+            if (string.IsNullOrEmpty(input.Password))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetMessage("The password mustn't be empty.")
+                        .SetCode("PASSWORD_EMPTY")
+                        .Build());
+            }
+
+            User? user = await userRepository.GetUserAsync(
+                input.Email, cancellationToken)
+                .ConfigureAwait(false);
+
+            if (user is null)
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetMessage("The specified username or password are invalid.")
+                        .SetCode("INVALID_CREDENTIALS")
+                        .Build());
+            }
+
+            using var sha = SHA512.Create();
+            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password + user.Salt));
+
+            if (!Convert.ToBase64String(hash).Equals(user.PasswordHash, StringComparison.Ordinal))
+            {
+                throw new QueryException(
+                    ErrorBuilder.New()
+                        .SetMessage("The specified username or password are invalid.")
+                        .SetCode("INVALID_CREDENTIALS")
+                        .Build());
+            }
+
+            var identity = new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, user.Email)
+            });
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = identity,
+                Expires = DateTime.UtcNow.AddMinutes(30),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(Startup.SharedSecret),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            Person me = await personByEmail.LoadAsync(
+                input.Email, cancellationToken)
+                .ConfigureAwait(false);
+            
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            string tokenString = tokenHandler.WriteToken(token);
+
+            return new LoginPayload(me, tokenString, "bearer", input.ClientMutationId);
+        }
+    }
+
+    public class LoginInput
+    {
+        public LoginInput(
+            string email,
+            string password,
+            string? clientMutationId)
+        {
+            Email = email;
+            Password = password;
+            ClientMutationId = clientMutationId;
+        }
+
+        public string Email { get; }
+
+        public string Password { get; }
+
+        public string? ClientMutationId { get; }
+    }
+
+    public class LoginPayload
+    {
+        public LoginPayload(
+            Person me,
+            string token,
+            string scheme,
+            string? clientMutationId)
+        {
+            Me = me;
+            Token = token;
+            Scheme = scheme;
+            ClientMutationId = clientMutationId;
+        }
+
+        public Person Me { get; }
+
+        public string Token { get; }
+
+        public string Scheme { get; }
+
+        public string? ClientMutationId { get; }
     }
 }
