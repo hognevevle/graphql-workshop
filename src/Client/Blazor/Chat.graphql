@@ -1,12 +1,17 @@
 schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
 }
 
 type Mutation {
   createUser(input: CreateUserInput!): CreateUserPayload!
   inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
   sendMessage(input: SendMessageInput!): SendMessagePayload!
+}
+
+type Subscription {
+  onMessageReceived: Message!
 }
 
 "The multiplier path scalar represents a valid GraphQL multiplier path string."
@@ -111,8 +116,8 @@ type MessageConnection {
 type Message {
   direction: Direction!
   id: Uuid!
-  recipientId: Uuid!
-  senderId: Uuid!
+  recipient: Person!
+  sender: Person!
   sent: DateTime!
   text: String!
 }
@@ -132,30 +137,6 @@ input MessageFilter {
   id_not_lt: Uuid
   id_not_lte: Uuid
   OR: [MessageFilter!]
-  recipientId: Uuid
-  recipientId_gt: Uuid
-  recipientId_gte: Uuid
-  recipientId_in: [Uuid!]
-  recipientId_lt: Uuid
-  recipientId_lte: Uuid
-  recipientId_not: Uuid
-  recipientId_not_gt: Uuid
-  recipientId_not_gte: Uuid
-  recipientId_not_in: [Uuid!]
-  recipientId_not_lt: Uuid
-  recipientId_not_lte: Uuid
-  senderId: Uuid
-  senderId_gt: Uuid
-  senderId_gte: Uuid
-  senderId_in: [Uuid!]
-  senderId_lt: Uuid
-  senderId_lte: Uuid
-  senderId_not: Uuid
-  senderId_not_gt: Uuid
-  senderId_not_gte: Uuid
-  senderId_not_in: [Uuid!]
-  senderId_not_lt: Uuid
-  senderId_not_lte: Uuid
   sent: DateTime
   sent_gt: DateTime
   sent_gte: DateTime
@@ -182,8 +163,6 @@ input MessageFilter {
 
 input MessageSort {
   id: SortOperationKind
-  recipientId: SortOperationKind
-  senderId: SortOperationKind
   sent: SortOperationKind
   text: SortOperationKind
 }
@@ -272,9 +251,7 @@ scalar Url
 type User {
   email: String!
   id: Uuid!
-  passwordHash: String!
   personId: Uuid!
-  salt: String!
 }
 
 "The cost directives is used to express the complexity of a field."

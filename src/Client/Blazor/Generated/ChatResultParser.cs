@@ -18,6 +18,7 @@ namespace Client
         private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _dateTimeSerializer;
         private readonly IValueSerializer _stringSerializer;
+        private readonly IValueSerializer _booleanSerializer;
 
         public ChatResultParser(IValueSerializerCollection serializerResolver)
         {
@@ -29,6 +30,7 @@ namespace Client
             _uuidSerializer = serializerResolver.Get("Uuid");
             _dateTimeSerializer = serializerResolver.Get("DateTime");
             _stringSerializer = serializerResolver.Get("String");
+            _booleanSerializer = serializerResolver.Get("Boolean");
         }
 
         protected override IChat ParserData(JsonElement data)
@@ -95,6 +97,8 @@ namespace Client
                 (
                     DeserializeDirection(element, "direction"),
                     DeserializeUuid(element, "id"),
+                    ParseChatMeMessagesNodesRecipient(element, "recipient"),
+                    ParseChatMeMessagesNodesSender(element, "sender"),
                     DeserializeDateTime(element, "sent"),
                     DeserializeString(element, "text")
                 );
@@ -102,6 +106,34 @@ namespace Client
             }
 
             return list;
+        }
+
+        private IParticipant ParseChatMeMessagesNodesRecipient(
+            JsonElement parent,
+            string field)
+        {
+            JsonElement obj = parent.GetProperty(field);
+
+            return new Participant
+            (
+                DeserializeUuid(obj, "id"),
+                DeserializeString(obj, "name"),
+                DeserializeBoolean(obj, "isOnline")
+            );
+        }
+
+        private IParticipant ParseChatMeMessagesNodesSender(
+            JsonElement parent,
+            string field)
+        {
+            JsonElement obj = parent.GetProperty(field);
+
+            return new Participant
+            (
+                DeserializeUuid(obj, "id"),
+                DeserializeString(obj, "name"),
+                DeserializeBoolean(obj, "isOnline")
+            );
         }
 
         private Direction DeserializeDirection(JsonElement obj, string fieldName)
@@ -126,6 +158,11 @@ namespace Client
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (string)_stringSerializer.Deserialize(value.GetString());
+        }
+        private bool DeserializeBoolean(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (bool)_booleanSerializer.Deserialize(value.GetBoolean());
         }
     }
 }
