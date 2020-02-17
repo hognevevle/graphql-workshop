@@ -33,6 +33,7 @@ namespace Chat.Server
                     SchemaBuilder.New()
                         .AddQueryType<Query>()
                         .AddMutationType(d => d.Name("Mutation"))
+                        .AddType<PersonMutations>()
                         .AddType<UserMutations>()
                         .AddType<MessageMutations>()
                         .AddSubscriptionType(d => d.Name("Subscription"))
