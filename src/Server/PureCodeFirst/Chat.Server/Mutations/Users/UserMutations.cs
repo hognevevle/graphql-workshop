@@ -203,46 +203,4 @@ namespace Chat.Server
             return new LoginPayload(me, tokenString, "bearer", input.ClientMutationId);
         }
     }
-
-    public class LoginInput
-    {
-        public LoginInput(
-            string email,
-            string password,
-            string? clientMutationId)
-        {
-            Email = email;
-            Password = password;
-            ClientMutationId = clientMutationId;
-        }
-
-        public string Email { get; }
-
-        public string Password { get; }
-
-        public string? ClientMutationId { get; }
-    }
-
-    public class LoginPayload
-    {
-        public LoginPayload(
-            Person me,
-            string token,
-            string scheme,
-            string? clientMutationId)
-        {
-            Me = me;
-            Token = token;
-            Scheme = scheme;
-            ClientMutationId = clientMutationId;
-        }
-
-        public Person Me { get; }
-
-        public string Token { get; }
-
-        public string Scheme { get; }
-
-        public string? ClientMutationId { get; }
-    }
 }

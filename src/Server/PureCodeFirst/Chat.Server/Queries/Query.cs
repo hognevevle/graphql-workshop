@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,5 +24,17 @@ namespace Chat.Server
         public IQueryable<Person> GetPeople(
             [Service]IPersonRepository personRepository) =>
             personRepository.GetPersons();
+ 
+        public Task<Person> GetPersonByEmailAsync(
+            string email,
+            PersonByEmailDataLoader personByEmail,
+            CancellationToken cancellationToken) => 
+            personByEmail.LoadAsync(email, cancellationToken);
+
+        public Task<Person> GetPersonByIdAsync(
+            Guid id,
+            PersonByIdDataLoader personById,
+            CancellationToken cancellationToken) => 
+            personById.LoadAsync(id, cancellationToken);
     }
 }
