@@ -1,8 +1,5 @@
-query initialData {
-  me {
-    ...person
-  }
-  people(where: { email_not: "foo@bar.com" }) {
+query initialData($userId: Uuid!) {
+  people(where: { id_not: $userId }) {
     nodes {
       ...person
     }

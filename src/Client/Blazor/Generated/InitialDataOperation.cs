@@ -17,9 +17,18 @@ namespace Client
 
         public Type ResultType => typeof(IInitialData);
 
+        public Optional<System.Guid> UserId { get; set; }
+
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
-            return Array.Empty<VariableValue>();
+            var variables = new List<VariableValue>();
+
+            if (UserId.HasValue)
+            {
+                variables.Add(new VariableValue("userId", "Uuid", UserId.Value));
+            }
+
+            return variables;
         }
     }
 }

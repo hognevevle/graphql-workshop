@@ -7,6 +7,7 @@ schema {
 type Mutation {
   createUser(input: CreateUserInput!): CreateUserPayload!
   inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
+  login(input: LoginInput!): LoginPayload!
   sendMessage(input: SendMessageInput!): SendMessagePayload!
 }
 
@@ -218,9 +219,22 @@ input InviteFriendInput {
   email: String!
 }
 
+input LoginInput {
+  clientMutationId: String
+  email: String!
+  password: String!
+}
+
 type InviteFriendPayload {
   clientMutationId: String
   me: Person!
+}
+
+type LoginPayload {
+  clientMutationId: String
+  me: Person!
+  scheme: String!
+  token: String!
 }
 
 type SendMessagePayload {

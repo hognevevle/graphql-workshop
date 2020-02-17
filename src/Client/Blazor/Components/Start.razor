@@ -1,0 +1,20 @@
+@if (user == null)
+{
+  @if (showSignUpForm)
+  {
+    <SignUp />
+  }
+  else
+  {
+    <SignIn />
+  }
+}
+else
+{
+  <Main User="@user" />
+}
+
+@code {
+    private bool showSignUpForm;
+    private IPerson? user = null;
+}

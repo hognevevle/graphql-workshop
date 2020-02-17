@@ -10,14 +10,10 @@ namespace Client
         : IInitialData
     {
         public InitialData(
-            IPerson me, 
             IPersonConnection people)
         {
-            Me = me;
             People = people;
         }
-
-        public IPerson Me { get; }
 
         public IPersonConnection People { get; }
     }
