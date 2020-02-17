@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace Chat.Server.Subscriptions
 {
-
-
     public interface IEventSubscription
     {
         ValueTask<IEventStream<TMessage>> SubscribeAsync<TTopic, TMessage>(
@@ -30,7 +28,7 @@ namespace Chat.Server.Subscriptions
             where TTopic : notnull;
     }
 
-    [System.Serializable]
+    [Serializable]
     public class InvalidMessageTypeException : Exception
     {
         public InvalidMessageTypeException() { }

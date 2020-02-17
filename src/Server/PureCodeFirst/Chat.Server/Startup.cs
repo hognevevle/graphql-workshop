@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using Chat.Server.Subscriptions;
+using HotChocolate.Types;
+using HotChocolate.AspNetCore.Voyager;
 
 namespace Chat.Server
 {
@@ -64,7 +66,7 @@ namespace Chat.Server
 
             app.UseWebSockets();
 
-            app.UseGraphQL();
+            app.UseGraphQL().UseVoyager();
 
             app.UseEndpoints(endpoints =>
             {
