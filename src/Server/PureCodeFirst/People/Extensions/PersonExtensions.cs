@@ -24,6 +24,4 @@ namespace Chat.Server.People
                 new List<Guid>(person.FriendIds) { id });
         }
     }
-
-    
 }
