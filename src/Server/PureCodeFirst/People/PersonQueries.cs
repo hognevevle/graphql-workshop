@@ -9,7 +9,7 @@ using HotChocolate.Types.Relay;
 namespace Chat.Server.People
 {
     [ExtendObjectType(Name = "Query")]
-    public class PersionQueries
+    public class PersonQueries
     {
         public Task<Person> GetMeAsync(
             [GlobalState]string currentUserEmail,

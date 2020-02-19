@@ -38,5 +38,22 @@ namespace Chat.Server.People
 
         [GraphQLIgnore]
         public IReadOnlyList<Guid> FriendIds { get; }
+
+        public Person AddFriendId(Guid id)
+        {
+            if (FriendIds.Contains(id))
+            {
+                return this;
+            }
+
+            return new Person(
+                Id,
+                UserId,
+                Name,
+                Email,
+                LastSeen,
+                ImageUri,
+                new List<Guid>(FriendIds) { id });
+        }
     }
 }

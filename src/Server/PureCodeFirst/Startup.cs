@@ -28,7 +28,7 @@ namespace Chat.Server
                 .AddGraphQL(
                     SchemaBuilder.New()
                         .AddQueryType(d => d.Name("Query"))
-                        .AddType<PersionQueries>()
+                        .AddType<PersonQueries>()
                         .AddMutationType(d => d.Name("Mutation"))
                         .AddType<PersonMutations>()
                         .AddType<UserMutations>()
