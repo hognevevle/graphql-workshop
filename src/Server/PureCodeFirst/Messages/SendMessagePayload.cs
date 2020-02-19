@@ -1,4 +1,6 @@
-namespace Chat.Server
+using Chat.Server.People;
+
+namespace Chat.Server.Messages
 {
     public class SendMessagePayload
     {

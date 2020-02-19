@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Chat.Server.Repositories;
 using GreenDonut;
 
-namespace Chat.Server.DataLoader
+namespace Chat.Server.People
 {
     public class PersonByIdDataLoader
         : DataLoaderBase<Guid, Person>

@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Server/PureCodeFirst/Chat.Server/bin/Debug/netcoreapp3.1/Chat.Server.dll",
+            "program": "${workspaceFolder}/src/Server/PureCodeFirst/bin/Debug/netcoreapp3.1/Chat.Server.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src/Server/PureCodeFirst/Chat.Server",
+            "cwd": "${workspaceFolder}/src/Server/PureCodeFirst",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",

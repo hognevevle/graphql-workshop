@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Chat.Server.Repositories
+namespace Chat.Server.Users
 {
     public interface IUserRepository
     {

@@ -1,4 +1,6 @@
-namespace Chat.Server
+using Chat.Server.People;
+
+namespace Chat.Server.Users
 {
     public class LoginPayload
     {

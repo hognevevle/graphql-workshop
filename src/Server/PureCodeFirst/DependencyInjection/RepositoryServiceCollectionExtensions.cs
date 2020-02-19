@@ -1,5 +1,7 @@
-using Chat.Server.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Chat.Server.Messages;
+using Chat.Server.People;
+using Chat.Server.Users;
 using MongoDB.Driver;
 
 namespace Chat.Server

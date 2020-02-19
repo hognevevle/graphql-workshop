@@ -1,9 +1,9 @@
-using System.Linq;
-using System.Collections.Immutable;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 
-namespace Chat.Server
+namespace Chat.Server.People
 {
     public static class PersonExtensions
     {

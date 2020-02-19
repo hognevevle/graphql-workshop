@@ -1,6 +1,6 @@
 using System;
 
-namespace Chat.Server
+namespace Chat.Server.Messages
 {
     public class SendMessageInput
     {

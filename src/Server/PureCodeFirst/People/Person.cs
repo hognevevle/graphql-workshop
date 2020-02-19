@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using HotChocolate;
 
-namespace Chat.Server
+namespace Chat.Server.People
 {
     public class Person
     {

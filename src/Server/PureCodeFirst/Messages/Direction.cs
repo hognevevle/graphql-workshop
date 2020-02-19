@@ -1,4 +1,4 @@
-namespace Chat.Server
+namespace Chat.Server.Messages
 {
     public enum Direction
     {

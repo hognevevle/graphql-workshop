@@ -1,10 +1,10 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Chat.Server.DataLoader;
+using Chat.Server.People;
 using HotChocolate;
 using HotChocolate.Types;
 
-namespace Chat.Server
+namespace Chat.Server.Messages
 {
     [ExtendObjectType(Name = "Message")]
     public class MessageExtension

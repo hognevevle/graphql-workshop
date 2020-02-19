@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
-namespace Chat.Server.Repositories
+namespace Chat.Server.Messages
 {
     public class MessageRepository
         : IMessageRepository

@@ -1,6 +1,6 @@
 using System;
 
-namespace Chat.Server
+namespace Chat.Server.Users
 {
     public class CreateUserInput
     {

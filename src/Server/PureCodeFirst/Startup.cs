@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Chat.Server.Messages;
+using Chat.Server.People;
+using Chat.Server.Subscriptions;
+using Chat.Server.Users;
 using HotChocolate;
 using HotChocolate.AspNetCore;
-using Chat.Server.Subscriptions;
-using HotChocolate.Types;
 using HotChocolate.AspNetCore.Voyager;
 
 namespace Chat.Server
@@ -31,7 +33,8 @@ namespace Chat.Server
                 .AddDataLoaderRegistry()
                 .AddGraphQL(
                     SchemaBuilder.New()
-                        .AddQueryType<Query>()
+                        .AddQueryType(d => d.Name("Query"))
+                        .AddType<PersionQueries>()
                         .AddMutationType(d => d.Name("Mutation"))
                         .AddType<PersonMutations>()
                         .AddType<UserMutations>()

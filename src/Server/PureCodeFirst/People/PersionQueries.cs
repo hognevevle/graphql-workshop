@@ -2,14 +2,13 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Chat.Server.DataLoader;
-using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 
-namespace Chat.Server
+namespace Chat.Server.People
 {
+    [ExtendObjectType(Name = "Query")]
     public class PersionQueries
     {
         public Task<Person> GetMeAsync(

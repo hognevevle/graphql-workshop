@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Chat.Server.Messages;
 using Chat.Server.Subscriptions;
 using HotChocolate;
 using HotChocolate.Types;

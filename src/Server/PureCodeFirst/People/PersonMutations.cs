@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Chat.Server.DataLoader;
-using Chat.Server.Repositories;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 
-namespace Chat.Server
+namespace Chat.Server.People
 {
     [ExtendObjectType(Name = "Mutation")]
     public class PersonMutations

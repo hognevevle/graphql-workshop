@@ -1,11 +1,11 @@
-using System.Net;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace Chat.Server.Repositories
+namespace Chat.Server.Users
 {
     public class UserRepository
         : IUserRepository

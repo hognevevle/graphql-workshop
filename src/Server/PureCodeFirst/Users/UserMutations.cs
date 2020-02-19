@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
-using Chat.Server.DataLoader;
-using Chat.Server.Repositories;
+using Chat.Server.People;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 
-namespace Chat.Server
+namespace Chat.Server.Users
 {
     [ExtendObjectType(Name = "Mutation")]
     public class UserMutations

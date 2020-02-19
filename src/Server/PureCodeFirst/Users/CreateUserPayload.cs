@@ -1,4 +1,4 @@
-namespace Chat.Server
+namespace Chat.Server.Users
 {
     public class CreateUserPayload
     {

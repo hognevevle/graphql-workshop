@@ -1,4 +1,4 @@
-namespace Chat.Server
+namespace Chat.Server.People
 {
     public class InviteFriendInput
     {

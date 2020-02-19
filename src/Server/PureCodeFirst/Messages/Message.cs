@@ -1,7 +1,7 @@
 using System;
 using HotChocolate;
 
-namespace Chat.Server
+namespace Chat.Server.Messages
 {
     public class Message
     {
