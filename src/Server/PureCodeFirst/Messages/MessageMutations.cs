@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Chat.Server.People;
-using Chat.Server.Subscriptions;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Language;
+using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 
 namespace Chat.Server.Messages
@@ -20,7 +20,7 @@ namespace Chat.Server.Messages
             [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
             [Service]IMessageRepository messageRepository,
-            [Service]IEventDispatcher eventSender,
+            [Service]IEventDispatcher eventDispatcher,
             CancellationToken cancellationToken)
         {
             IReadOnlyList<Person> participants =
@@ -50,7 +50,7 @@ namespace Chat.Server.Messages
                 message, cancellationToken)
                 .ConfigureAwait(false);
 
-            await eventSender.SendAsync(
+            await eventDispatcher.SendAsync(
                 recipient.Email, message, cancellationToken)
                 .ConfigureAwait(false);
 

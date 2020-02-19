@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Chat.Server.Messages;
-using Chat.Server.Subscriptions;
 using HotChocolate;
+using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 
-namespace Chat.Server
+namespace Chat.Server.Messages
 {
     [ExtendObjectType(Name = "Subscription")]
     public class MessageSubscriptions
@@ -14,10 +13,10 @@ namespace Chat.Server
         [Subscribe]
         public async ValueTask<IAsyncEnumerable<Message>> OnMessageReceived(
             [GlobalState]string currentUserEmail,
-            [Service]IEventSubscription eventSubscription,
+            [Service]IEventTopicObserver eventTopicObserver,
             CancellationToken cancellationToken)
         {
-            return await eventSubscription.SubscribeAsync<string, Message>(
+            return await eventTopicObserver.SubscribeAsync<string, Message>(
                 currentUserEmail, cancellationToken)
                 .ConfigureAwait(false);
         }

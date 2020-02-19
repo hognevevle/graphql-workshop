@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Chat.Server.Messages;
 using Chat.Server.People;
-using Chat.Server.Subscriptions;
 using Chat.Server.Users;
 using HotChocolate;
 using HotChocolate.AspNetCore;
@@ -16,21 +15,16 @@ namespace Chat.Server
 {
     public partial class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureAuthenticationServices(services);
 
             services.AddCors();
 
-            services.AddSingleton<InMemoryEventHandler>();
-            services.AddSingleton<IEventSender>(sp => sp.GetRequiredService<InMemoryEventHandler>());
-            services.AddSingleton<IEventSubscription>(sp => sp.GetRequiredService<InMemoryEventHandler>());
-
             services
                 .AddRepositories()
                 .AddDataLoaderRegistry()
+                .AddInMemorySubscriptions()
                 .AddGraphQL(
                     SchemaBuilder.New()
                         .AddQueryType(d => d.Name("Query"))
