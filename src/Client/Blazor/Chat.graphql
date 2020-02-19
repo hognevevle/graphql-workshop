@@ -21,6 +21,8 @@ scalar MultiplierPath
 type Query {
   me: Person!
   people(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
+  personByEmail(email: String!): Person!
+  personById(id: Uuid!): Person!
 }
 
 type Person {
@@ -201,6 +203,8 @@ type MessageEdge {
   node: Message
 }
 
+scalar Uuid
+
 type CreateUserPayload {
   clientMutationId: String
   user: User!
@@ -254,8 +258,6 @@ enum Direction {
   INCOMING
   OUTGOING
 }
-
-scalar Uuid
 
 "The `DateTime` scalar represents an ISO-8601 compliant date time type."
 scalar DateTime

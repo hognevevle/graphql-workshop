@@ -6,15 +6,12 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class Chat
-        : IChat
+    public interface ILoginPayload
     {
-        public Chat(
-            IPerson1 me)
-        {
-            Me = me;
-        }
+        IPerson Me { get; }
 
-        public IPerson1 Me { get; }
+        string Scheme { get; }
+
+        string Token { get; }
     }
 }

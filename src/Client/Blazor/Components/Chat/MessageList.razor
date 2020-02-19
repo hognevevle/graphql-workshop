@@ -8,17 +8,17 @@
       {
         <div>Loading...</div>
       }
-      else if (User != null && Messages?.Nodes == null)
+      else if (Recipient != null && Recipient?.Messages?.Nodes == null)
       {
         <div>No Messages...</div>
       }
-      else if (User != null && Messages?.Nodes != null)
+      else if (Recipient != null && Recipient?.Messages?.Nodes != null)
       {
-        @foreach (var message in Messages.Nodes)
+        @foreach (var message in Recipient?.Messages.Nodes)
         {
           <ChatMessage
             Message="@message"
-            Person="@User"
+            Sender="@message.Sender"
           />
         }
 
@@ -43,8 +43,5 @@
     public bool IsLoading { get; set; }
 
     [Parameter]
-    public IMessageConnection? Messages { get; set; }
-
-    [Parameter]
-    public IPerson? User { get; set; }
+    public IRecipient? Recipient { get; set; }
 }

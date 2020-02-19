@@ -1,20 +1,33 @@
-@if (user == null)
+@inject IChatClient ChatClient
+
+@if (signin?.Data?.Login?.Me == null)
 {
-  @if (showSignUpForm)
+  if (showSignUpForm)
   {
-    <SignUp />
+    <SignUpForm />
   }
   else
   {
-    <SignIn />
+    <SignInForm HandleSignin="@(async (model) => { await OnHandleSignIn(model); })" />
   }
 }
 else
 {
-  <Main User="@user" />
+  <Main User="@signin?.Data?.Login?.Me" />
 }
 
 @code {
     private bool showSignUpForm;
-    private IPerson? user = null;
+    private IOperationResult<ISignin>? signin;
+
+    private async Task OnHandleSignIn(SignInModel model)
+    {
+        Console.WriteLine(model.Email);
+
+        signin = await ChatClient.SigninAsync(new LoginInput
+        {
+            Email = model.Email,
+            Password = model.Password
+        });
+    }
 }

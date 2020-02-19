@@ -6,8 +6,12 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IPerson1
+    public class LoginInput
     {
-        IMessageConnection Messages { get; }
+        public Optional<string> ClientMutationId { get; set; }
+
+        public Optional<string> Email { get; set; }
+
+        public Optional<string> Password { get; set; }
     }
 }

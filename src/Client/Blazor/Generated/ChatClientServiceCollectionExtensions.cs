@@ -39,8 +39,10 @@ namespace Client
 
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
                 .AddValueSerializer(() => new DirectionValueSerializer())
-                .AddResultParser(serializers => new InitialDataResultParser(serializers))
-                .AddResultParser(serializers => new ChatResultParser(serializers))
+                .AddValueSerializer(() => new LoginInputSerializer())
+                .AddResultParser(serializers => new GetPeopleResultParser(serializers))
+                .AddResultParser(serializers => new LoadChatResultParser(serializers))
+                .AddResultParser(serializers => new SigninResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(builder => builder.UseHttpDefaultPipeline());
 

@@ -1,0 +1,40 @@
+<div class="signin">
+  <h1>Signin</h1>
+
+  <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label>
+      <InputText
+        placeholder="Email"
+        @bind-Value="@model.Email"
+      />
+    </label>
+
+    <label>
+      <InputText
+        type="password"
+        placeholder="Password"
+        @bind-Value="@model.Password"
+      />
+    </label>
+
+    <button type="submit">Sign in</button>
+  </EditForm>
+</div>
+
+@code {
+    private readonly SignInModel model = new SignInModel();
+
+    [Parameter]
+    public EventCallback<SignInModel> HandleSignin { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        if (HandleSignin.HasDelegate)
+        {
+            await HandleSignin.InvokeAsync(model);
+        }
+    }
+}

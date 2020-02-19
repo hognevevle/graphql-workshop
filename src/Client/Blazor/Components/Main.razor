@@ -1,28 +1,27 @@
 @inject IChatClient ChatClient
 
 <PeopleList
-  IsLoading="@isLoadingInitialData"
-  People="@initialData?.Data?.People"
+  IsLoading="@isLoadingPeople"
+  People="@people?.Data?.People"
 />
 <MessageList
   IsLoading="@isLoadingChat"
-  Messages="@chat?.Data?.Me?.Messages"
-  User="null"
+  Recipient="@chat?.Data?.PersonById"
 />
 
 @code {
-    private bool isLoadingInitialData = true;
-    private IOperationResult<IInitialData>? initialData;
+    private bool isLoadingPeople = true;
+    private IOperationResult<IGetPeople>? people;
     private bool isLoadingChat = false;
-    private IOperationResult<IChat>? chat;
+    private IOperationResult<ILoadChat>? chat;
 
     [Parameter]
     public IPerson User { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        initialData = await ChatClient.InitialDataAsync(User.Id);
-        isLoadingInitialData = false;
+        people = await ChatClient.GetPeopleAsync(User.Id);
+        isLoadingPeople = false;
         StateHasChanged();
     }
 }
