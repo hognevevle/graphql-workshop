@@ -11,12 +11,18 @@ namespace Chat.Server.People
     [ExtendObjectType(Name = "Query")]
     public class PersonQueries
     {
+        /// <summary>
+        /// Gets the currently logged in user.
+        /// </summary>
         public Task<Person> GetMeAsync(
             [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
             CancellationToken cancellationToken) =>
             personByEmail.LoadAsync(currentUserEmail, cancellationToken);
 
+        /// <summary>
+        /// Gets access to all the people known to this service.
+        /// </summary>
         [UsePaging]
         [UseFiltering]
         [UseSorting]
