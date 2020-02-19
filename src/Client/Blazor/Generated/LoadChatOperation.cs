@@ -6,26 +6,26 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class InitialDataOperation
-        : IOperation<IInitialData>
+    public class LoadChatOperation
+        : IOperation<ILoadChat>
     {
-        public string Name => "initialData";
+        public string Name => "loadChat";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Query;
 
-        public Type ResultType => typeof(IInitialData);
+        public Type ResultType => typeof(ILoadChat);
 
-        public Optional<System.Guid> UserId { get; set; }
+        public Optional<System.Guid> RecipientId { get; set; }
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
             var variables = new List<VariableValue>();
 
-            if (UserId.HasValue)
+            if (RecipientId.HasValue)
             {
-                variables.Add(new VariableValue("userId", "Uuid", UserId.Value));
+                variables.Add(new VariableValue("recipientId", "Uuid", RecipientId.Value));
             }
 
             return variables;

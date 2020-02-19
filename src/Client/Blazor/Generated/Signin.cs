@@ -6,8 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IInitialData
+    public class Signin
+        : ISignin
     {
-        IPersonConnection People { get; }
+        public Signin(
+            ILoginPayload login)
+        {
+            Login = login;
+        }
+
+        public ILoginPayload Login { get; }
     }
 }

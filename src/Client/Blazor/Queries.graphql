@@ -1,4 +1,4 @@
-query initialData($userId: Uuid!) {
+query getPeople($userId: Uuid!) {
   people(where: { id_not: $userId }) {
     nodes {
       ...person
@@ -6,22 +6,19 @@ query initialData($userId: Uuid!) {
   }
 }
 
-fragment person on Person {
-  id
-  name
-  email
-  imageUri
-  isOnline
-  lastSeen
+query loadChat($recipientId: Uuid!) {
+  personById(id: $recipientId) {
+    ...recipient
+  }
 }
 
-query chat($personId: Uuid!) {
-  me {
-    messages(where: { recipientId: $personId, OR: { senderId: $personId } }) {
-      nodes {
-        ...message
-      }
+mutation signin($input: LoginInput!) {
+  login(input: $input) {
+    me {
+      ...person
     }
+    scheme
+    token
   }
 }
 
@@ -42,4 +39,22 @@ fragment participant on Person {
   id
   name
   isOnline
+}
+
+fragment person on Person {
+  id
+  name
+  email
+  imageUri
+  isOnline
+  lastSeen
+}
+
+fragment recipient on Person {
+  ...person
+  messages {
+    nodes {
+      ...message
+    }
+  }
 }
