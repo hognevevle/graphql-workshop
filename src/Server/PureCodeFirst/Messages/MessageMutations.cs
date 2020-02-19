@@ -20,7 +20,7 @@ namespace Chat.Server.Messages
             [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
             [Service]IMessageRepository messageRepository,
-            [Service]IEventSender eventSender,
+            [Service]IEventDispatcher eventSender,
             CancellationToken cancellationToken)
         {
             IReadOnlyList<Person> participants =
