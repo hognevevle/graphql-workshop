@@ -392,10 +392,10 @@ app {
   width: 52px;
   height: 52px;
   margin: 6px;
-  border: 6px solid #fff;
+  border: 6px solid #75b1e8;
   border-radius: 100%;
   animation: spinner-rotation 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  border-color: #75b1e8 transparent transparent transparent;
 }
 
 .spinner > .spinner-quater:nth-child(1) {
@@ -455,7 +455,11 @@ app {
   flex: 0 0 auto;
   margin: 10px 0;
   padding: 0 0 0 20px;
-  color: rgba(0, 0, 0, 0.5);
+  color: #e38968;
+}
+
+.dialog > form > .validation-message {
+  margin: 5px 0;
 }
 
 .dialog > form > label {
@@ -486,8 +490,13 @@ app {
   border-radius: 3px;
   padding: 10px 8px;
   font-size: 1.15em;
-  background-color: #75b1e8;
+  background-color: #94c2ed;
   color: #fff;
+  cursor: pointer;
+}
+
+.dialog > form > button:hover {
+  background-color: #75b1e8;
 }
 
 .dialog > footer {
@@ -504,6 +513,11 @@ app {
 
 .dialog > footer > p > a {
   text-decoration: none;
+  color: #94c2ed;
+  cursor: pointer;
+}
+
+.dialog > footer > p > a:hover {
   color: #75b1e8;
 }
 
