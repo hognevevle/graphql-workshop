@@ -4,6 +4,13 @@ schema {
   subscription: Subscription
 }
 
+type Query {
+  me: Person!
+  people(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
+  personByEmail(email: String!): Person!
+  personById(id: Uuid!): Person!
+}
+
 type Mutation {
   createUser(input: CreateUserInput!): CreateUserPayload!
   inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
@@ -18,14 +25,8 @@ type Subscription {
 "The multiplier path scalar represents a valid GraphQL multiplier path string."
 scalar MultiplierPath
 
-type Query {
-  me: Person!
-  people(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
-  personByEmail(email: String!): Person!
-  personById(id: Uuid!): Person!
-}
-
 type Person {
+  addFriendId(id: Uuid!): Person!
   email: String!
   friends(after: String before: String first: PaginationAmount last: PaginationAmount order_by: PersonSort where: PersonFilter): PersonConnection
   id: Uuid!
@@ -205,6 +206,16 @@ type MessageEdge {
 
 scalar Uuid
 
+type InviteFriendPayload {
+  clientMutationId: String
+  me: Person!
+}
+
+input InviteFriendInput {
+  clientMutationId: String
+  email: String!
+}
+
 type CreateUserPayload {
   clientMutationId: String
   user: User!
@@ -218,20 +229,10 @@ input CreateUserInput {
   password: String!
 }
 
-input InviteFriendInput {
-  clientMutationId: String
-  email: String!
-}
-
 input LoginInput {
   clientMutationId: String
   email: String!
   password: String!
-}
-
-type InviteFriendPayload {
-  clientMutationId: String
-  me: Person!
 }
 
 type LoginPayload {

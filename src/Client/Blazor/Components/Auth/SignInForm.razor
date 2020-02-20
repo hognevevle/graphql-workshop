@@ -1,4 +1,4 @@
-<div class="signin">
+<div class="dialog">
   <h1>Signin</h1>
 
   <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
@@ -7,6 +7,7 @@
 
     <label>
       <InputText
+        type="email"
         placeholder="Email"
         @bind-Value="@model.Email"
       />
@@ -20,12 +21,21 @@
       />
     </label>
 
-    <button type="submit">Sign in</button>
+    <footer>
+      <button type="submit">Sign in</button>
+
+      <p>Not registered yet?</p>
+
+      <button @onclick="ClickSignup">Sign up</button>
+    </footer>
   </EditForm>
 </div>
 
 @code {
     private readonly SignInModel model = new SignInModel();
+
+    [Parameter]
+    public EventCallback ClickSignup { get; set; }
 
     [Parameter]
     public EventCallback<SignInModel> HandleSignin { get; set; }
