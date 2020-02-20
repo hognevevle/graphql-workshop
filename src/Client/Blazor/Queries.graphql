@@ -12,13 +12,21 @@ query loadChat($recipientId: Uuid!) {
   }
 }
 
-mutation signin($input: LoginInput!) {
-  login(input: $input) {
+mutation signin($signIn: LoginInput!) {
+  login(input: $signIn) {
     me {
       ...person
     }
     scheme
     token
+  }
+}
+
+mutation signup($newUser: CreateUserInput!) {
+  createUser(input: $newUser) {
+    user {
+      email
+    }
   }
 }
 

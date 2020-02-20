@@ -6,26 +6,26 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SigninOperation
-        : IOperation<ISignin>
+    public class SignupOperation
+        : IOperation<ISignup>
     {
-        public string Name => "signin";
+        public string Name => "signup";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Mutation;
 
-        public Type ResultType => typeof(ISignin);
+        public Type ResultType => typeof(ISignup);
 
-        public Optional<LoginInput> SignIn { get; set; }
+        public Optional<CreateUserInput> NewUser { get; set; }
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
             var variables = new List<VariableValue>();
 
-            if (SignIn.HasValue)
+            if (NewUser.HasValue)
             {
-                variables.Add(new VariableValue("signIn", "LoginInput", SignIn.Value));
+                variables.Add(new VariableValue("newUser", "CreateUserInput", NewUser.Value));
             }
 
             return variables;

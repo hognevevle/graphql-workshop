@@ -27,11 +27,19 @@ namespace Client
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<ISignin>> SigninAsync(
-            Optional<LoginInput> input = default,
+            Optional<LoginInput> signIn = default,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<ISignin>> SigninAsync(
             SigninOperation operation,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<ISignup>> SignupAsync(
+            Optional<CreateUserInput> newUser = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<ISignup>> SignupAsync(
+            SignupOperation operation,
             CancellationToken cancellationToken = default);
     }
 }

@@ -4,11 +4,11 @@
 {
   if (showSignUpForm)
   {
-    <SignUpForm />
+    <SignUpForm ClickBack="OnClickBack" HandleSignup="@(async (model) => { await OnHandleSignUp(model); })" />
   }
   else
   {
-    <SignInForm HandleSignin="@(async (model) => { await OnHandleSignIn(model); })" />
+    <SignInForm ClickSignup="OnClickSignUp" HandleSignin="@(async (model) => { await OnHandleSignIn(model); })" />
   }
 }
 else
@@ -19,14 +19,33 @@ else
 @code {
     private bool showSignUpForm;
     private IOperationResult<ISignin>? signin;
+    private IOperationResult<ISignup>? signup;
+
+    private void OnClickBack()
+    {
+        showSignUpForm = false;
+    }
+
+    private void OnClickSignUp()
+    {
+        showSignUpForm = true;
+    }
 
     private async Task OnHandleSignIn(SignInModel model)
     {
-        Console.WriteLine(model.Email);
-
         signin = await ChatClient.SigninAsync(new LoginInput
         {
             Email = model.Email,
+            Password = model.Password
+        });
+    }
+
+    private async Task OnHandleSignUp(SignUpModel model)
+    {
+        signup = await ChatClient.SignupAsync(new CreateUserInput
+        {
+            Email = model.Email,
+            Name = model.Name,
             Password = model.Password
         });
     }

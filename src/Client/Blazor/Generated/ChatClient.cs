@@ -65,21 +65,47 @@ namespace Client
         }
 
         public Task<IOperationResult<ISignin>> SigninAsync(
-            Optional<LoginInput> input = default,
+            Optional<LoginInput> signIn = default,
             CancellationToken cancellationToken = default)
         {
-            if (input.HasValue && input.Value is null)
+            if (signIn.HasValue && signIn.Value is null)
             {
-                throw new ArgumentNullException(nameof(input));
+                throw new ArgumentNullException(nameof(signIn));
             }
 
             return _executor.ExecuteAsync(
-                new SigninOperation { Input = input },
+                new SigninOperation { SignIn = signIn },
                 cancellationToken);
         }
 
         public Task<IOperationResult<ISignin>> SigninAsync(
             SigninOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public Task<IOperationResult<ISignup>> SignupAsync(
+            Optional<CreateUserInput> newUser = default,
+            CancellationToken cancellationToken = default)
+        {
+            if (newUser.HasValue && newUser.Value is null)
+            {
+                throw new ArgumentNullException(nameof(newUser));
+            }
+
+            return _executor.ExecuteAsync(
+                new SignupOperation { NewUser = newUser },
+                cancellationToken);
+        }
+
+        public Task<IOperationResult<ISignup>> SignupAsync(
+            SignupOperation operation,
             CancellationToken cancellationToken = default)
         {
             if (operation is null)

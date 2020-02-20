@@ -1,5 +1,55 @@
-<div class="signup">
-  <input type="text">
-  <input type="password">
-  <button>Sign up</button>
+<div class="dialog">
+  <h1>Signup</h1>
+
+  <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label>
+      <InputText
+        type="text"
+        placeholder="Name"
+        @bind-Value="@model.Name"
+      />
+    </label>
+
+    <label>
+      <InputText
+        type="email"
+        placeholder="Email"
+        @bind-Value="@model.Email"
+      />
+    </label>
+
+    <label>
+      <InputText
+        type="password"
+        placeholder="Password"
+        @bind-Value="@model.Password"
+      />
+    </label>
+
+    <footer>
+      <button @onclick="ClickBack">Back</button>
+      <button type="submit">Sign up</button>
+    </footer>
+  </EditForm>
 </div>
+
+@code {
+    private readonly SignUpModel model = new SignUpModel();
+
+    [Parameter]
+    public EventCallback ClickBack { get; set; }
+
+    [Parameter]
+    public EventCallback<SignUpModel> HandleSignup { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        if (HandleSignup.HasDelegate)
+        {
+            await HandleSignup.InvokeAsync(model);
+        }
+    }
+}
