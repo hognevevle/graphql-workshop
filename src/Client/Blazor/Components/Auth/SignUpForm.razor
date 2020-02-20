@@ -1,5 +1,8 @@
 <div class="dialog">
-  <h1>Signup</h1>
+  <header>
+    <h1>Sign Up</h1>
+    <p>Please fill in this form to create an account!</p>
+  </header>
 
   <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
@@ -29,11 +32,22 @@
       />
     </label>
 
-    <footer>
-      <button @onclick="ClickBack">Back</button>
-      <button type="submit">Sign up</button>
-    </footer>
+    <label>
+      <InputCheckbox
+        @bind-Value="@model.Accept"
+      />
+      I accept the Terms of Use and Privacy Policy.
+    </label>
+
+    <button type="submit">Sign Up</button>
   </EditForm>
+
+  <footer>
+    <p>
+      Already have an account?
+      Sign in <a href="javascript:void(0);" @onclick="ClickBack">here.</a>
+    </p>
+  </footer>
 </div>
 
 @code {

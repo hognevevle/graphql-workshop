@@ -1,5 +1,8 @@
 <div class="dialog">
-  <h1>Signin</h1>
+  <header>
+    <h1>Sign In</h1>
+    <p>Please fill in the form to sign in!</p>
+  </header>
 
   <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
@@ -21,14 +24,15 @@
       />
     </label>
 
-    <footer>
-      <button type="submit">Sign in</button>
-
-      <p>Not registered yet?</p>
-
-      <button @onclick="ClickSignup">Sign up</button>
-    </footer>
+    <button type="submit">Sign in</button>
   </EditForm>
+
+  <footer>
+    <p>
+      Don't have an account yet?
+      Sign up <a href="javascript:void(0);" @onclick="ClickSignup">here</a>.
+    </p>
+  </footer>
 </div>
 
 @code {
