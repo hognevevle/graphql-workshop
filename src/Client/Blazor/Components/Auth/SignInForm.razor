@@ -24,13 +24,13 @@
       />
     </label>
 
-    <button type="submit">Sign in</button>
+    <button type="submit">Sign In</button>
   </EditForm>
 
   <footer>
     <p>
       Don't have an account yet?
-      Sign up <a href="javascript:void(0);" @onclick="ClickSignup">here</a>.
+      Sign up <a href="javascript:void(0);" @onclick="ClickSignUp">here</a>.
     </p>
   </footer>
 </div>
@@ -39,16 +39,16 @@
     private readonly SignInModel model = new SignInModel();
 
     [Parameter]
-    public EventCallback ClickSignup { get; set; }
+    public EventCallback ClickSignUp { get; set; }
 
     [Parameter]
-    public EventCallback<SignInModel> HandleSignin { get; set; }
+    public EventCallback<SignInModel> HandleSignIn { get; set; }
 
     private async Task HandleValidSubmit()
     {
-        if (HandleSignin.HasDelegate)
+        if (HandleSignIn.HasDelegate)
         {
-            await HandleSignin.InvokeAsync(model);
+            await HandleSignIn.InvokeAsync(model);
         }
     }
 }

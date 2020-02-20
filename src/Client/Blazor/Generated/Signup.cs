@@ -6,10 +6,10 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class Signup
-        : ISignup
+    public class SignUp
+        : ISignUp
     {
-        public Signup(
+        public SignUp(
             ICreateUserPayload createUser)
         {
             CreateUser = createUser;

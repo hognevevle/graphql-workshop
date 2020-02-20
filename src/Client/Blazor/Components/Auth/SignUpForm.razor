@@ -45,7 +45,7 @@
   <footer>
     <p>
       Already have an account?
-      Sign in <a href="javascript:void(0);" @onclick="ClickBack">here.</a>
+      Sign in <a href="javascript:void(0);" @onclick="ClickSignIn">here.</a>
     </p>
   </footer>
 </div>
@@ -54,16 +54,16 @@
     private readonly SignUpModel model = new SignUpModel();
 
     [Parameter]
-    public EventCallback ClickBack { get; set; }
+    public EventCallback ClickSignIn { get; set; }
 
     [Parameter]
-    public EventCallback<SignUpModel> HandleSignup { get; set; }
+    public EventCallback<SignUpModel> HandleSignUp { get; set; }
 
     private async Task HandleValidSubmit()
     {
-        if (HandleSignup.HasDelegate)
+        if (HandleSignUp.HasDelegate)
         {
-            await HandleSignup.InvokeAsync(model);
+            await HandleSignUp.InvokeAsync(model);
         }
     }
 }

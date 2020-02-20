@@ -6,10 +6,10 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class Signin
-        : ISignin
+    public class SignIn
+        : ISignIn
     {
-        public Signin(
+        public SignIn(
             ILoginPayload login)
         {
             Login = login;

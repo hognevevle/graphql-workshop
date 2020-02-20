@@ -64,7 +64,7 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<ISignin>> SigninAsync(
+        public Task<IOperationResult<ISignIn>> SignInAsync(
             Optional<LoginInput> signIn = default,
             CancellationToken cancellationToken = default)
         {
@@ -74,12 +74,12 @@ namespace Client
             }
 
             return _executor.ExecuteAsync(
-                new SigninOperation { SignIn = signIn },
+                new SignInOperation { SignIn = signIn },
                 cancellationToken);
         }
 
-        public Task<IOperationResult<ISignin>> SigninAsync(
-            SigninOperation operation,
+        public Task<IOperationResult<ISignIn>> SignInAsync(
+            SignInOperation operation,
             CancellationToken cancellationToken = default)
         {
             if (operation is null)
@@ -90,7 +90,7 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<ISignup>> SignupAsync(
+        public Task<IOperationResult<ISignUp>> SignUpAsync(
             Optional<CreateUserInput> newUser = default,
             CancellationToken cancellationToken = default)
         {
@@ -100,12 +100,12 @@ namespace Client
             }
 
             return _executor.ExecuteAsync(
-                new SignupOperation { NewUser = newUser },
+                new SignUpOperation { NewUser = newUser },
                 cancellationToken);
         }
 
-        public Task<IOperationResult<ISignup>> SignupAsync(
-            SignupOperation operation,
+        public Task<IOperationResult<ISignUp>> SignUpAsync(
+            SignUpOperation operation,
             CancellationToken cancellationToken = default)
         {
             if (operation is null)

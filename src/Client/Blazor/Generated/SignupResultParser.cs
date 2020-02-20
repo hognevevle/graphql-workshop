@@ -11,12 +11,12 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SignupResultParser
-        : JsonResultParserBase<ISignup>
+    public class SignUpResultParser
+        : JsonResultParserBase<ISignUp>
     {
         private readonly IValueSerializer _stringSerializer;
 
-        public SignupResultParser(IValueSerializerCollection serializerResolver)
+        public SignUpResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
@@ -25,16 +25,16 @@ namespace Client
             _stringSerializer = serializerResolver.Get("String");
         }
 
-        protected override ISignup ParserData(JsonElement data)
+        protected override ISignUp ParserData(JsonElement data)
         {
-            return new Signup
+            return new SignUp
             (
-                ParseSignupCreateUser(data, "createUser")
+                ParseSignUpCreateUser(data, "createUser")
             );
 
         }
 
-        private ICreateUserPayload ParseSignupCreateUser(
+        private ICreateUserPayload ParseSignUpCreateUser(
             JsonElement parent,
             string field)
         {
@@ -42,11 +42,11 @@ namespace Client
 
             return new CreateUserPayload
             (
-                ParseSignupCreateUserUser(obj, "user")
+                ParseSignUpCreateUserUser(obj, "user")
             );
         }
 
-        private IUser ParseSignupCreateUserUser(
+        private IUser ParseSignUpCreateUserUser(
             JsonElement parent,
             string field)
         {

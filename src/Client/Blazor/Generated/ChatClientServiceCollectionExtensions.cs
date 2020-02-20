@@ -43,8 +43,8 @@ namespace Client
                 .AddValueSerializer(() => new CreateUserInputSerializer())
                 .AddResultParser(serializers => new GetPeopleResultParser(serializers))
                 .AddResultParser(serializers => new LoadChatResultParser(serializers))
-                .AddResultParser(serializers => new SigninResultParser(serializers))
-                .AddResultParser(serializers => new SignupResultParser(serializers))
+                .AddResultParser(serializers => new SignInResultParser(serializers))
+                .AddResultParser(serializers => new SignUpResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(builder => builder.UseHttpDefaultPipeline());
 
