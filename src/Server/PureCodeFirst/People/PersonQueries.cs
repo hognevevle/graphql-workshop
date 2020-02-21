@@ -3,11 +3,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore.Authorization;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 
 namespace Chat.Server.People
 {
+    [Authorize]
     [ExtendObjectType(Name = "Query")]
     public class PersonQueries
     {

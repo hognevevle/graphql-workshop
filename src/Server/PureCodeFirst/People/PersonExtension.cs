@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -12,23 +13,19 @@ namespace Chat.Server.People
     [ExtendObjectType(Name = "Person")]
     public class PersonExtension
     {
-        public bool IsOnline() => true;
+        public bool IsOnline([Parent]Person person) => 
+            person.LastSeen < DateTime.UtcNow.AddMinutes(10);
 
         [UsePaging]
         [UseFiltering]
         [UseSorting]
-        public async Task<IQueryable<Message>> GetMessagesAsync(
-            [GlobalState]string currentUserEmail,
-            PersonByEmailDataLoader personByEmail,
+        public IQueryable<Message> GetMessagesAsync(
+            [GlobalState]Guid currentPersonId,
             [Parent]Person recipient,
             [Service]IMessageRepository repository,
             CancellationToken cancellationToken)
         {
-            Person sender = await personByEmail.LoadAsync(
-                currentUserEmail, cancellationToken)
-                .ConfigureAwait(false);
-
-            return repository.GetMessages(sender.Id, recipient.Id);
+            return repository.GetMessages(currentPersonId, recipient.Id);
         }
 
         [UsePaging]
