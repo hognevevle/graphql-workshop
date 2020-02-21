@@ -21,28 +21,28 @@ namespace Client
         };
         private readonly byte[] _hash = new byte[]
         {
-            48,
-            101,
-            115,
-            55,
-            113,
-            105,
-            118,
-            115,
-            118,
-            51,
-            70,
-            53,
-            116,
+            85,
             54,
-            48,
-            56,
-            106,
-            70,
+            81,
+            102,
+            51,
+            102,
+            81,
+            105,
+            49,
+            88,
+            105,
+            88,
+            86,
+            102,
+            105,
+            107,
             50,
-            72,
-            114,
-            65,
+            107,
+            98,
+            71,
+            107,
+            103,
             61,
             61
         };
@@ -277,7 +277,7 @@ namespace Client
             105,
             103,
             110,
-            105,
+            73,
             110,
             40,
             36,
@@ -398,7 +398,7 @@ namespace Client
             105,
             103,
             110,
-            117,
+            85,
             112,
             40,
             36,
@@ -928,7 +928,7 @@ namespace Client
               }
             }
             
-            mutation signin($signIn: LoginInput!) {
+            mutation signIn($signIn: LoginInput!) {
               login(input: $signIn) {
                 me {
                   ... person
@@ -938,7 +938,7 @@ namespace Client
               }
             }
             
-            mutation signup($newUser: CreateUserInput!) {
+            mutation signUp($newUser: CreateUserInput!) {
               createUser(input: $newUser) {
                 user {
                   email

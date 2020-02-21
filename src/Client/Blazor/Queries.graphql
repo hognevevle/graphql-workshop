@@ -12,7 +12,7 @@ query loadChat($recipientId: Uuid!) {
   }
 }
 
-mutation signin($signIn: LoginInput!) {
+mutation signIn($signIn: LoginInput!) {
   login(input: $signIn) {
     me {
       ...person
@@ -22,7 +22,7 @@ mutation signin($signIn: LoginInput!) {
   }
 }
 
-mutation signup($newUser: CreateUserInput!) {
+mutation signUp($newUser: CreateUserInput!) {
   createUser(input: $newUser) {
     user {
       email

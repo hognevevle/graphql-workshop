@@ -1,27 +1,27 @@
 @inject IChatClient ChatClient
 
-@if (signin?.Data?.Login?.Me == null)
+@if (signIn?.Data?.Login?.Me == null)
 {
   if (showSignUpForm)
   {
-    <SignUpForm ClickBack="OnClickBack" HandleSignup="@(async (model) => { await OnHandleSignUp(model); })" />
+    <SignUpForm ClickSignIn="OnClickSignIn" HandleSignUp="@(async (model) => { await OnHandleSignUp(model); })" />
   }
   else
   {
-    <SignInForm ClickSignup="OnClickSignUp" HandleSignin="@(async (model) => { await OnHandleSignIn(model); })" />
+    <SignInForm ClickSignUp="OnClickSignUp" HandleSignIn="@(async (model) => { await OnHandleSignIn(model); })" />
   }
 }
 else
 {
-  <Main User="@signin?.Data?.Login?.Me" />
+  <Main User="@signIn?.Data?.Login?.Me" />
 }
 
 @code {
     private bool showSignUpForm;
-    private IOperationResult<ISignin>? signin;
-    private IOperationResult<ISignup>? signup;
+    private IOperationResult<ISignIn>? signIn;
+    private IOperationResult<ISignUp>? signUp;
 
-    private void OnClickBack()
+    private void OnClickSignIn()
     {
         showSignUpForm = false;
     }
@@ -33,7 +33,7 @@ else
 
     private async Task OnHandleSignIn(SignInModel model)
     {
-        signin = await ChatClient.SigninAsync(new LoginInput
+        signIn = await ChatClient.SignInAsync(new LoginInput
         {
             Email = model.Email,
             Password = model.Password
@@ -42,7 +42,7 @@ else
 
     private async Task OnHandleSignUp(SignUpModel model)
     {
-        signup = await ChatClient.SignupAsync(new CreateUserInput
+        signUp = await ChatClient.SignUpAsync(new CreateUserInput
         {
             Email = model.Email,
             Name = model.Name,

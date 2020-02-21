@@ -11,8 +11,8 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SigninResultParser
-        : JsonResultParserBase<ISignin>
+    public class SignInResultParser
+        : JsonResultParserBase<ISignIn>
     {
         private readonly IValueSerializer _stringSerializer;
         private readonly IValueSerializer _uuidSerializer;
@@ -20,7 +20,7 @@ namespace Client
         private readonly IValueSerializer _booleanSerializer;
         private readonly IValueSerializer _dateTimeSerializer;
 
-        public SigninResultParser(IValueSerializerCollection serializerResolver)
+        public SignInResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
@@ -33,16 +33,16 @@ namespace Client
             _dateTimeSerializer = serializerResolver.Get("DateTime");
         }
 
-        protected override ISignin ParserData(JsonElement data)
+        protected override ISignIn ParserData(JsonElement data)
         {
-            return new Signin
+            return new SignIn
             (
-                ParseSigninLogin(data, "login")
+                ParseSignInLogin(data, "login")
             );
 
         }
 
-        private ILoginPayload ParseSigninLogin(
+        private ILoginPayload ParseSignInLogin(
             JsonElement parent,
             string field)
         {
@@ -50,13 +50,13 @@ namespace Client
 
             return new LoginPayload
             (
-                ParseSigninLoginMe(obj, "me"),
+                ParseSignInLoginMe(obj, "me"),
                 DeserializeString(obj, "scheme"),
                 DeserializeString(obj, "token")
             );
         }
 
-        private IPerson ParseSigninLoginMe(
+        private IPerson ParseSignInLoginMe(
             JsonElement parent,
             string field)
         {

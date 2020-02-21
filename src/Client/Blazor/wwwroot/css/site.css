@@ -392,10 +392,10 @@ app {
   width: 52px;
   height: 52px;
   margin: 6px;
-  border: 6px solid #fff;
+  border: 6px solid #75b1e8;
   border-radius: 100%;
   animation: spinner-rotation 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: #fff transparent transparent transparent;
+  border-color: #75b1e8 transparent transparent transparent;
 }
 
 .spinner > .spinner-quater:nth-child(1) {
@@ -414,19 +414,33 @@ app {
 
 .dialog {
   display: flex;
-  flex: 0 0 400px;
   flex-direction: column;
   margin: auto;
-  border-radius: 8px;
-  padding: 25px 30px;
-  height: 300px;
-  background: #444753;
+  border-radius: 3px;
+  width: 350px;
+  background: #fff;
+
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.25);
 }
 
-.dialog > h1 {
+.dialog > header {
   flex: 0 0 auto;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 30px 20px 15px;
+}
+
+.dialog > header > h1 {
   margin: 0;
-  padding: 0 0 10px;
+  padding: 0 0 15px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.dialog > header > p {
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .dialog > form {
@@ -434,15 +448,27 @@ app {
   flex: 1 1 auto;
   flex-direction: column;
   margin: 0;
-  padding: 0;
+  padding: 10px 20px;
+}
+
+.dialog > form > .validation-errors {
+  flex: 0 0 auto;
+  margin: 10px 0;
+  padding: 0 0 0 20px;
+  color: #e38968;
+}
+
+.dialog > form > .validation-message {
+  margin: 5px 0;
 }
 
 .dialog > form > label {
   display: flex;
   flex: 0 0 auto;
   flex-direction: row;
-  margin: 0;
-  padding: 10px 0;
+  margin: 10px 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .dialog > form > label > input[type="email"],
@@ -451,24 +477,48 @@ app {
   flex: 1 1 auto;
   margin: 0;
   border: 0;
-  border-radius: 2px;
-  padding: 5px 8px;
+  border-radius: 3px;
+  padding: 10px 8px;
   font-size: 1.15em;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-.dialog > form > footer {
+.dialog > form > button {
+  flex: 1 1 auto;
+  margin: 10px 0 0;
+  border: 0;
+  border-radius: 3px;
+  padding: 10px 8px;
+  font-size: 1.15em;
+  background-color: #94c2ed;
+  color: #fff;
+  cursor: pointer;
+}
+
+.dialog > form > button:hover {
+  background-color: #75b1e8;
+}
+
+.dialog > footer {
   flex: 1 1 auto;
   margin: 0;
-  padding: 10px 0 0;
+  padding: 20px 20px 30px;
 }
 
-.dialog > form > footer > button {
-  flex: 0 0 auto;
+.dialog > footer > p {
   margin: 0;
-  border: 0;
-  border-radius: 2px;
-  padding: 5px 8px;
-  font-size: 1.15em;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.dialog > footer > p > a {
+  text-decoration: none;
+  color: #94c2ed;
+  cursor: pointer;
+}
+
+.dialog > footer > p > a:hover {
+  color: #75b1e8;
 }
 
 /* Blazor Misc */

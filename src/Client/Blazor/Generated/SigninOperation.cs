@@ -6,16 +6,16 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SigninOperation
-        : IOperation<ISignin>
+    public class SignInOperation
+        : IOperation<ISignIn>
     {
-        public string Name => "signin";
+        public string Name => "signIn";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Mutation;
 
-        public Type ResultType => typeof(ISignin);
+        public Type ResultType => typeof(ISignIn);
 
         public Optional<LoginInput> SignIn { get; set; }
 
