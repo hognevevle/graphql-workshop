@@ -46,7 +46,6 @@ namespace Client
             Optional<System.Guid> recipientId = default,
             CancellationToken cancellationToken = default)
         {
-
             return _executor.ExecuteAsync(
                 new LoadChatOperation { RecipientId = recipientId },
                 cancellationToken);
