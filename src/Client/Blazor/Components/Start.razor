@@ -1,52 +1,95 @@
 @inject IChatClient ChatClient
+@inject ISessionStorageService SessionStore
 
-@if (signIn?.Data?.Login?.Me == null)
+@if (_me == null)
 {
-  if (showSignUpForm)
+  if (_showSignUpForm)
   {
-    <SignUpForm ClickSignIn="OnClickSignIn" HandleSignUp="@(async (model) => { await OnHandleSignUp(model); })" />
+    <SignUpForm
+      ClickSignIn="OnClickSignIn"
+      HandleSignUp="@(async (model) => { await OnHandleSignUp(model); })"
+    />
   }
   else
   {
-    <SignInForm ClickSignUp="OnClickSignUp" HandleSignIn="@(async (model) => { await OnHandleSignIn(model); })" />
+    <SignInForm
+      ClickSignUp="OnClickSignUp"
+      HandleSignIn="@(async (model) => { await OnHandleSignIn(model); })"
+    />
   }
 }
 else
 {
-  <Main User="@signIn?.Data?.Login?.Me" />
+  <Main
+    User="@_me"
+    ClickSignOut="OnClickSignOut"
+  />
 }
 
 @code {
-    private bool showSignUpForm;
-    private IOperationResult<ISignIn>? signIn;
-    private IOperationResult<ISignUp>? signUp;
+    private IPerson? _me;
+    private bool _showSignUpForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _me = (await SessionStore.GetItemAsync<PersonFromStore>("Me"))?
+            .ToPerson();
+    }
 
     private void OnClickSignIn()
     {
-        showSignUpForm = false;
+        _showSignUpForm = false;
+    }
+
+    private async Task OnClickSignOut()
+    {
+        await SessionStore.RemoveItemAsync("Me");
+        await SessionStore.RemoveItemAsync("Token");
+        _me = null;
+        _showSignUpForm = false;
     }
 
     private void OnClickSignUp()
     {
-        showSignUpForm = true;
+        _showSignUpForm = true;
     }
 
     private async Task OnHandleSignIn(SignInModel model)
     {
-        signIn = await ChatClient.SignInAsync(new LoginInput
+        var signIn = await ChatClient.SignInAsync(new LoginInput
         {
             Email = model.Email,
             Password = model.Password
         });
+
+        if (signIn.HasErrors)
+        {
+            // todo: error handling
+        }
+        else
+        {
+            _me = signIn.Data.Login.Me;
+            await SessionStore.SetItemAsync("Me", _me);
+            await SessionStore.SetItemAsync("Token", signIn.Data.Login.Token);
+        }
     }
 
     private async Task OnHandleSignUp(SignUpModel model)
     {
-        signUp = await ChatClient.SignUpAsync(new CreateUserInput
+        var signUp = await ChatClient.SignUpAsync(new CreateUserInput
         {
             Email = model.Email,
             Name = model.Name,
             Password = model.Password
         });
+
+        if (signUp.HasErrors)
+        {
+            // todo: error handling
+        }
+        else
+        {
+            _showSignUpForm = false;
+        }
     }
 }

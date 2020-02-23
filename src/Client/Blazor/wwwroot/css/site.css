@@ -67,7 +67,7 @@ app {
   flex: 1 1 auto;
   flex-direction: column;
   margin: 0;
-  padding: 20px;
+  padding: 20px 0;
 }
 
 .person {
@@ -75,7 +75,13 @@ app {
   flex: 0 0 auto;
   flex-direction: row;
   align-items: center;
-  padding-bottom: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.person:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease-in-out;
 }
 
 .person-about {
@@ -83,6 +89,12 @@ app {
   flex: 0 0 auto;
   flex-direction: column;
   padding: 0 8px 0 16px;
+}
+
+.person-avatar {
+  border-radius: 27px;
+  width: 54px;
+  height: 54px;
 }
 
 .person-avatar-placeholder {
@@ -155,6 +167,21 @@ app {
   padding: 0 16px;
 }
 
+.chat-avatar--offline,
+.chat-avatar--online {
+  border-radius: 27px;
+  width: 54px;
+  height: 54px;
+}
+
+.chat-avatar--online {
+  border: 2px solid #86bb71;
+}
+
+.chat-avatar--offline {
+  border: 2px solid #e38968;
+}
+
 .chat-with {
   font-size: 16px;
   font-weight: bold;
@@ -170,6 +197,7 @@ app {
 }
 
 .chat-history {
+  display: flex;
   flex: 1 1 auto;
   border-bottom: 2px solid white;
   padding: 30px 30px 20px;
@@ -253,6 +281,13 @@ app {
 .message--outgoing .message-text:after {
   right: 20px;
   border-bottom-color: #94c2ed;
+}
+
+.info {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
 }
 
 .typing {

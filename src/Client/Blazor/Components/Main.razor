@@ -1,27 +1,40 @@
 @inject IChatClient ChatClient
 
 <PeopleList
-  IsLoading="@isLoadingPeople"
-  People="@people?.Data?.People"
+  IsLoading="@_isLoadingPeople"
+  People="@_people"
 />
 <MessageList
-  IsLoading="@isLoadingChat"
-  Recipient="@chat?.Data?.PersonById"
+  IsLoading="@_isLoadingRecipient"
+  Recipient="@_recipient"
 />
 
 @code {
-    private bool isLoadingPeople = true;
-    private IOperationResult<IGetPeople>? people;
-    private bool isLoadingChat = false;
-    private IOperationResult<ILoadChat>? chat;
+    private bool _isLoadingPeople = true;
+    private bool _isLoadingRecipient = false;
+    private IPersonConnection? _people;
+    private IRecipient? _recipient;
 
     [Parameter]
-    public IPerson User { get; set; }
+    public EventCallback ClickSignOut { get; set; }
+
+    [Parameter]
+    public IPerson User { get; set; } = default(IPerson);
 
     protected override async Task OnInitializedAsync()
     {
-        people = await ChatClient.GetPeopleAsync(User.Id);
-        isLoadingPeople = false;
+        var people = await ChatClient.GetPeopleAsync();//User.Id);
+
+        if (people.HasErrors)
+        {
+            // todo: error handling
+        }
+        else
+        {
+            _people = people.Data.People;
+        }
+
+        _isLoadingPeople = false;
         StateHasChanged();
     }
 }
