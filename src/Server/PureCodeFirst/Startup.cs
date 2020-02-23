@@ -11,6 +11,7 @@ using Chat.Server.Users;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Voyager;
+using HotChocolate.Types;
 
 namespace Chat.Server
 {
@@ -39,7 +40,8 @@ namespace Chat.Server
                         .AddType<PersonSubscriptions>()
                         .AddType<PersonExtension>()
                         .AddType<MessageExtension>()
-                        .AddAuthorizeDirectiveType());
+                        .AddAuthorizeDirectiveType()
+                        .BindClrType<Guid, IdType>());
 
             services.AddQueryRequestInterceptor(async (context, builder, ct) =>
             {
