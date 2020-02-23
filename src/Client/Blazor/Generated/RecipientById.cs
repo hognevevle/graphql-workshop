@@ -6,10 +6,10 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class LoadChat
-        : ILoadChat
+    public class RecipientById
+        : IRecipientById
     {
-        public LoadChat(
+        public RecipientById(
             IRecipient personById)
         {
             PersonById = personById;

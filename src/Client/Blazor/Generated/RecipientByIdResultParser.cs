@@ -11,8 +11,8 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class LoadChatResultParser
-        : JsonResultParserBase<ILoadChat>
+    public class RecipientByIdResultParser
+        : JsonResultParserBase<IRecipientById>
     {
         private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
@@ -21,7 +21,7 @@ namespace Client
         private readonly IValueSerializer _dateTimeSerializer;
         private readonly IValueSerializer _directionSerializer;
 
-        public LoadChatResultParser(IValueSerializerCollection serializerResolver)
+        public RecipientByIdResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
@@ -35,16 +35,16 @@ namespace Client
             _directionSerializer = serializerResolver.Get("Direction");
         }
 
-        protected override ILoadChat ParserData(JsonElement data)
+        protected override IRecipientById ParserData(JsonElement data)
         {
-            return new LoadChat
+            return new RecipientById
             (
-                ParseLoadChatPersonById(data, "personById")
+                ParseGetRecipientPersonById(data, "personById")
             );
 
         }
 
-        private IRecipient ParseLoadChatPersonById(
+        private IRecipient ParseGetRecipientPersonById(
             JsonElement parent,
             string field)
         {
@@ -52,7 +52,7 @@ namespace Client
 
             return new Recipient
             (
-                ParseLoadChatPersonByIdMessages(obj, "messages"),
+                ParseGetRecipientPersonByIdMessages(obj, "messages"),
                 DeserializeUuid(obj, "id"),
                 DeserializeString(obj, "name"),
                 DeserializeString(obj, "email"),
@@ -62,7 +62,7 @@ namespace Client
             );
         }
 
-        private IMessageConnection ParseLoadChatPersonByIdMessages(
+        private IMessageConnection ParseGetRecipientPersonByIdMessages(
             JsonElement parent,
             string field)
         {
@@ -78,11 +78,11 @@ namespace Client
 
             return new MessageConnection
             (
-                ParseLoadChatPersonByIdMessagesNodes(obj, "nodes")
+                ParseGetRecipientPersonByIdMessagesNodes(obj, "nodes")
             );
         }
 
-        private IReadOnlyList<IMessage> ParseLoadChatPersonByIdMessagesNodes(
+        private IReadOnlyList<IMessage> ParseGetRecipientPersonByIdMessagesNodes(
             JsonElement parent,
             string field)
         {
@@ -105,8 +105,8 @@ namespace Client
                 (
                     DeserializeDirection(element, "direction"),
                     DeserializeUuid(element, "id"),
-                    ParseLoadChatPersonByIdMessagesNodesRecipient(element, "recipient"),
-                    ParseLoadChatPersonByIdMessagesNodesSender(element, "sender"),
+                    ParseGetRecipientPersonByIdMessagesNodesRecipient(element, "recipient"),
+                    ParseGetRecipientPersonByIdMessagesNodesSender(element, "sender"),
                     DeserializeDateTime(element, "sent"),
                     DeserializeString(element, "text")
                 );
@@ -116,7 +116,7 @@ namespace Client
             return list;
         }
 
-        private IParticipant ParseLoadChatPersonByIdMessagesNodesRecipient(
+        private IParticipant ParseGetRecipientPersonByIdMessagesNodesRecipient(
             JsonElement parent,
             string field)
         {
@@ -130,7 +130,7 @@ namespace Client
             );
         }
 
-        private IParticipant ParseLoadChatPersonByIdMessagesNodesSender(
+        private IParticipant ParseGetRecipientPersonByIdMessagesNodesSender(
             JsonElement parent,
             string field)
         {

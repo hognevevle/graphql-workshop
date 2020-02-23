@@ -17,6 +17,7 @@
         <PersonItem
           @key="person.Id"
           User="@person"
+          ClickPerson="ClickPerson"
         />
       }
     }
@@ -24,6 +25,9 @@
 </div>
 
 @code {
+    [Parameter]
+    public EventCallback<IPerson> ClickPerson { get; set; }
+
     [Parameter]
     public bool IsLoading { get; set; }
 

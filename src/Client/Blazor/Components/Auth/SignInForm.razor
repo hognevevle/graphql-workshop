@@ -4,7 +4,7 @@
     <p>Please fill in the form to sign in!</p>
   </header>
 
-  <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
+  <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -44,7 +44,7 @@
     [Parameter]
     public EventCallback<SignInModel> HandleSignIn { get; set; }
 
-    private async Task HandleValidSubmit()
+    private async Task OnValidSubmit()
     {
         if (HandleSignIn.HasDelegate)
         {

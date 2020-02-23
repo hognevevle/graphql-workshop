@@ -10,19 +10,27 @@ namespace Client
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public interface IChatClient
     {
-        Task<IOperationResult<IGetPeople>> GetPeopleAsync(
+        Task<IOperationResult<IPeople>> GetPeopleAsync(
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<IGetPeople>> GetPeopleAsync(
+        Task<IOperationResult<IPeople>> GetPeopleAsync(
             GetPeopleOperation operation,
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<ILoadChat>> LoadChatAsync(
+        Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
             Optional<System.Guid> recipientId = default,
             CancellationToken cancellationToken = default);
 
-        Task<IOperationResult<ILoadChat>> LoadChatAsync(
-            LoadChatOperation operation,
+        Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
+            GetPeopleAndRecipientOperation operation,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<IRecipientById>> GetRecipientAsync(
+            Optional<System.Guid> recipientId = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<IRecipientById>> GetRecipientAsync(
+            GetRecipientOperation operation,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<ISignIn>> SignInAsync(

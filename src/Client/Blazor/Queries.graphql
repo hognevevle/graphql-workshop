@@ -1,9 +1,5 @@
 query getPeople {
-  people {
-    nodes {
-      ...person
-    }
-  }
+  ...people
 }
 
 # query getPeople($userId: Uuid!) {
@@ -14,10 +10,13 @@ query getPeople {
 #   }
 # }
 
-query loadChat($recipientId: Uuid!) {
-  personById(id: $recipientId) {
-    ...recipient
-  }
+query getPeopleAndRecipient($recipientId: Uuid!) {
+  ...people
+  ...recipientById
+}
+
+query getRecipient($recipientId: Uuid!) {
+  ...recipientById
 }
 
 mutation signIn($signIn: LoginInput!) {
@@ -57,6 +56,14 @@ fragment participant on Person {
   isOnline
 }
 
+fragment people on Query {
+  people {
+    nodes {
+      ...person
+    }
+  }
+}
+
 fragment person on Person {
   id
   name
@@ -64,6 +71,12 @@ fragment person on Person {
   imageUri
   isOnline
   lastSeen
+}
+
+fragment recipientById on Query {
+  personById(id: $recipientId) {
+    ...recipient
+  }
 }
 
 fragment recipient on Person {

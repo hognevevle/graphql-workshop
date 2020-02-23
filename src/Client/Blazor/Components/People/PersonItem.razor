@@ -1,4 +1,4 @@
-﻿<li class="person">
+﻿<li class="person" @onclick="OnClickPerson">
   <img
     class="person-avatar"
     src="img/chillicream-logo.svg"
@@ -22,5 +22,16 @@
 
 @code {
     [Parameter]
+    public EventCallback<IPerson> ClickPerson { get; set; }
+
+    [Parameter]
     public IPerson User { get; set; }
+
+    private async Task OnClickPerson()
+    {
+        if (ClickPerson.HasDelegate)
+        {
+            await ClickPerson.InvokeAsync(User);
+        }
+    }
 }

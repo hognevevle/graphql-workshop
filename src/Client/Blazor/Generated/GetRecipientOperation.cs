@@ -6,16 +6,16 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class LoadChatOperation
-        : IOperation<ILoadChat>
+    public class GetRecipientOperation
+        : IOperation<IRecipientById>
     {
-        public string Name => "loadChat";
+        public string Name => "getRecipient";
 
         public IDocument Document => Queries.Default;
 
         public OperationKind Kind => OperationKind.Query;
 
-        public Type ResultType => typeof(ILoadChat);
+        public Type ResultType => typeof(IRecipientById);
 
         public Optional<System.Guid> RecipientId { get; set; }
 

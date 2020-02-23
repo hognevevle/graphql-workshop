@@ -1,8 +1,10 @@
 @inject IChatClient ChatClient
+@inject ISessionStorageService SessionStore
 
 <PeopleList
   IsLoading="@_isLoadingPeople"
   People="@_people"
+  ClickPerson="OnClickPerson"
 />
 <MessageList
   IsLoading="@_isLoadingRecipient"
@@ -23,18 +25,74 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var people = await ChatClient.GetPeopleAsync();//User.Id);
+        var recipientId = await SessionStore.GetItemAsync<Guid>("RecipientId");
 
-        if (people.HasErrors)
+        if (recipientId == Guid.Empty)
         {
-            // todo: error handling
+            await LoadPeople(Guid.Empty);
         }
         else
         {
-            _people = people.Data.People;
+            await LoadPeopleAndRecipient(Guid.Empty, recipientId);
         }
 
         _isLoadingPeople = false;
         StateHasChanged();
+    }
+
+    private async Task OnClickPerson(IPerson user)
+    {
+        var operation = await ChatClient.GetRecipientAsync(user.Id);
+
+        if (operation.HasErrors)
+        {
+            // todo: error handling
+        }
+
+        _recipient = operation.Data?.PersonById;
+
+        if (_recipient == null)
+        {
+            await SessionStore.RemoveItemAsync("RecipientId");
+        }
+        else
+        {
+            await SessionStore.SetItemAsync("RecipientId", _recipient.Id);
+        }
+    }
+
+    private async Task LoadPeople(Guid userId)
+    {
+        var operation = await ChatClient.GetPeopleAsync();//userId);
+
+        if (operation.HasErrors)
+        {
+            // todo: error handling
+        }
+        
+        _people = operation.Data?.People;
+    }
+
+    private async Task LoadPeopleAndRecipient(Guid userId, Guid recipientId)
+    {
+        var operation = await ChatClient.GetPeopleAndRecipientAsync(recipientId);//userId, recipientId);
+
+        if (operation.HasErrors)
+        {
+            // todo: error handling
+
+            var firstError = operation.Errors[0];
+            
+            if (firstError.Exception != null &&
+                firstError.Extensions.ContainsKey("code") &&
+                firstError.Extensions["code"].ToString() == "EXEC_NON_NULL_VIOLATION")
+            {
+                await SessionStore.RemoveItemAsync("RecipientId");
+                await LoadPeople(Guid.Empty);
+            }
+        }
+        
+        _people = operation.Data?.People;
+        _recipient = operation.Data?.PersonById;
     }
 }

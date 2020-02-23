@@ -11,8 +11,8 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class GetPeopleResultParser
-        : JsonResultParserBase<IGetPeople>
+    public class PeopleResultParser
+        : JsonResultParserBase<IPeople>
     {
         private readonly IValueSerializer _uuidSerializer;
         private readonly IValueSerializer _stringSerializer;
@@ -20,7 +20,7 @@ namespace Client
         private readonly IValueSerializer _booleanSerializer;
         private readonly IValueSerializer _dateTimeSerializer;
 
-        public GetPeopleResultParser(IValueSerializerCollection serializerResolver)
+        public PeopleResultParser(IValueSerializerCollection serializerResolver)
         {
             if (serializerResolver is null)
             {
@@ -33,9 +33,9 @@ namespace Client
             _dateTimeSerializer = serializerResolver.Get("DateTime");
         }
 
-        protected override IGetPeople ParserData(JsonElement data)
+        protected override IPeople ParserData(JsonElement data)
         {
-            return new GetPeople
+            return new People1
             (
                 ParseGetPeoplePeople(data, "people")
             );
