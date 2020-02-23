@@ -25,15 +25,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var recipientId = await SessionStore.GetItemAsync<Guid>("RecipientId");
+        var recipientId = await SessionStore.GetItemAsync<string>("RecipientId");
 
-        if (recipientId == Guid.Empty)
+        if (recipientId == string.Empty)
         {
-            await LoadPeople(Guid.Empty);
+            await LoadPeople(string.Empty);
         }
         else
         {
-            await LoadPeopleAndRecipient(Guid.Empty, recipientId);
+            await LoadPeopleAndRecipient(string.Empty, recipientId);
         }
 
         _isLoadingPeople = false;
@@ -61,7 +61,7 @@
         }
     }
 
-    private async Task LoadPeople(Guid userId)
+    private async Task LoadPeople(string userId)
     {
         var operation = await ChatClient.GetPeopleAsync();//userId);
 
@@ -88,7 +88,7 @@
                 firstError.Extensions["code"].ToString() == "EXEC_NON_NULL_VIOLATION")
             {
                 await SessionStore.RemoveItemAsync("RecipientId");
-                await LoadPeople(Guid.Empty);
+                await LoadPeople(string.Empty);
             }
         }
         
