@@ -27,7 +27,7 @@
     {
         var recipientId = await SessionStore.GetItemAsync<string>("RecipientId");
 
-        if (recipientId == string.Empty)
+        if (string.IsNullOrWhiteSpace(recipientId))
         {
             await LoadPeople(string.Empty);
         }
