@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Chat.Server.People;
 using HotChocolate;
 using HotChocolate.Execution;
+using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 
 namespace Chat.Server.Users
@@ -87,6 +88,7 @@ namespace Chat.Server.Users
             LoginInput input,
             [Service]IUserRepository userRepository,
             [Service]PersonByEmailDataLoader personByEmail,
+            [Service]IEventDispatcher eventDispatcher,
             CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(input.Email))
@@ -132,9 +134,15 @@ namespace Chat.Server.Users
                         .Build());
             }
 
+            Person me = await personByEmail.LoadAsync(
+                input.Email, cancellationToken)
+                .ConfigureAwait(false);
+
             var identity = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Name, user.Email)
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(WellKnownClaimTypes.UserId, me.Id.ToString()),
             });
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -148,12 +156,10 @@ namespace Chat.Server.Users
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
-            Person me = await personByEmail.LoadAsync(
-                input.Email, cancellationToken)
-                .ConfigureAwait(false);
-            
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             string tokenString = tokenHandler.WriteToken(token);
+
+            await eventDispatcher.SendAsync<string, Person>("online", me);
 
             return new LoginPayload(me, tokenString, "bearer", input.ClientMutationId);
         }

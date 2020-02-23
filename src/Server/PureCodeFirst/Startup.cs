@@ -1,4 +1,5 @@
-using System.Threading.Tasks;
+using System;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Chat.Server.Users;
 using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Voyager;
+using HotChocolate.Types;
 
 namespace Chat.Server
 {
@@ -35,13 +37,31 @@ namespace Chat.Server
                         .AddType<MessageMutations>()
                         .AddSubscriptionType(d => d.Name("Subscription"))
                         .AddType<MessageSubscriptions>()
+                        .AddType<PersonSubscriptions>()
                         .AddType<PersonExtension>()
-                        .AddType<MessageExtension>());
+                        .AddType<MessageExtension>()
+                        .AddAuthorizeDirectiveType()
+                        .BindClrType<Guid, IdType>());
 
-            services.AddQueryRequestInterceptor((context, builder, ct) =>
+            services.AddQueryRequestInterceptor(async (context, builder, ct) =>
             {
-                builder.AddProperty("currentUserEmail", "foo@bar.com");
-                return Task.CompletedTask;
+                if (context.User.Identity.IsAuthenticated)
+                {
+                    var personId = 
+                        Guid.Parse(context.User.FindFirst(WellKnownClaimTypes.UserId).Value);
+
+                    builder.AddProperty(
+                        "currentPersonId",
+                        personId);
+
+                    builder.AddProperty(
+                        "currentUserEmail",
+                        context.User.FindFirst(ClaimTypes.Email).Value);
+
+                    IPersonRepository personRepository = 
+                        context.RequestServices.GetRequiredService<IPersonRepository>();
+                    await personRepository.UpdateLastSeenAsync(personId, DateTime.UtcNow, ct);
+                }
             });
         }
 

@@ -11,7 +11,7 @@ namespace Chat.Server.Messages
     public class MessageSubscriptions
     {
         [Subscribe]
-        public async ValueTask<IAsyncEnumerable<Message>> OnMessageReceived(
+        public async Task<IAsyncEnumerable<Message>> OnMessageReceivedAsync(
             [GlobalState]string currentUserEmail,
             [Service]IEventTopicObserver eventTopicObserver,
             CancellationToken cancellationToken)
