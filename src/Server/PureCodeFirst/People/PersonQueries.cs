@@ -9,13 +9,13 @@ using HotChocolate.Types.Relay;
 
 namespace Chat.Server.People
 {
-    [Authorize]
     [ExtendObjectType(Name = "Query")]
     public class PersonQueries
     {
         /// <summary>
         /// Gets the currently logged in user.
         /// </summary>
+        [Authorize]
         public Task<Person> GetMeAsync(
             [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
@@ -28,16 +28,19 @@ namespace Chat.Server.People
         [UsePaging]
         [UseFiltering]
         [UseSorting]
+        [Authorize]
         public IQueryable<Person> GetPeople(
             [Service]IPersonRepository personRepository) =>
             personRepository.GetPersons();
  
+        [Authorize]
         public Task<Person> GetPersonByEmailAsync(
             string email,
             PersonByEmailDataLoader personByEmail,
             CancellationToken cancellationToken) => 
             personByEmail.LoadAsync(email, cancellationToken);
 
+        [Authorize]
         public Task<Person> GetPersonByIdAsync(
             Guid id,
             PersonByIdDataLoader personById,

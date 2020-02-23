@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 
 namespace Chat.Server.People
@@ -54,17 +53,5 @@ namespace Chat.Server.People
                 people[1].AddFriendId(people[0].Id),
                 input.ClientMutationId);
         }
-    }
-
-    [ExtendObjectType(Name = "Subscription")]
-    public class PersonSubscriptions
-    {
-        [Subscribe]
-        public async ValueTask<IAsyncEnumerable<Person>> OnOnlineAsync(
-            [Service]IEventTopicObserver eventTopicObserver,
-            CancellationToken cancellationToken) =>
-            await eventTopicObserver.SubscribeAsync<string, Person>(
-                "online", cancellationToken)
-                .ConfigureAwait(false);
     }
 }

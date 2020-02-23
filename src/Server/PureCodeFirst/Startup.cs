@@ -12,7 +12,6 @@ using HotChocolate;
 using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Voyager;
 
-
 namespace Chat.Server
 {
     public partial class Startup
@@ -60,7 +59,6 @@ namespace Chat.Server
                     IPersonRepository personRepository = 
                         context.RequestServices.GetRequiredService<IPersonRepository>();
                     await personRepository.UpdateLastSeenAsync(personId, DateTime.UtcNow, ct);
-
                 }
             });
         }
