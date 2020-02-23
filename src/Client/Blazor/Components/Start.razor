@@ -20,15 +20,32 @@
 }
 else
 {
-  <Main User="@_me" />
+  <Main
+    User="@_me"
+    ClickSignOut="OnClickSignOut"
+  />
 }
 
 @code {
     private IPerson? _me;
     private bool _showSignUpForm;
 
+    protected override async Task OnInitializedAsync()
+    {
+        _me = (await SessionStore.GetItemAsync<PersonFromStore>("Me"))?
+            .ToPerson();
+    }
+
     private void OnClickSignIn()
     {
+        _showSignUpForm = false;
+    }
+
+    private async Task OnClickSignOut()
+    {
+        await SessionStore.RemoveItemAsync("Me");
+        await SessionStore.RemoveItemAsync("Token");
+        _me = null;
         _showSignUpForm = false;
     }
 
@@ -51,8 +68,9 @@ else
         }
         else
         {
-            await SessionStore.SetItemAsync("Token", signIn.Data.Login.Token);
             _me = signIn.Data.Login.Me;
+            await SessionStore.SetItemAsync("Me", _me);
+            await SessionStore.SetItemAsync("Token", signIn.Data.Login.Token);
         }
     }
 

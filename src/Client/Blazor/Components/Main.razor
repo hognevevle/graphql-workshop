@@ -16,11 +16,14 @@
     private IRecipient? _recipient;
 
     [Parameter]
+    public EventCallback ClickSignOut { get; set; }
+
+    [Parameter]
     public IPerson User { get; set; } = default(IPerson);
 
     protected override async Task OnInitializedAsync()
     {
-        var people = await ChatClient.GetPeopleAsync(User.Id);
+        var people = await ChatClient.GetPeopleAsync();//User.Id);
 
         if (people.HasErrors)
         {

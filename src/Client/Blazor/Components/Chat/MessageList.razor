@@ -1,19 +1,23 @@
 ﻿@inject IChatClient ChatClient
 
 <div class="chat">
-  <Header />
+  @if (Recipient != null)
+  {
+    <Header Recipient="@Recipient" />
+  }
+
   <div class="chat-history">
-    <ul class="messages">
-      @if (IsLoading)
-      {
-        <div>Loading...</div>
-      }
-      else if (Recipient != null && Recipient?.Messages?.Nodes == null)
-      {
-        <div>No Messages...</div>
-      }
-      else if (Recipient != null && Recipient?.Messages?.Nodes != null)
-      {
+    @if (IsLoading)
+    {
+      <Info Text="Loading..." />
+    }
+    else if (Recipient != null && Recipient?.Messages?.Nodes == null)
+    {
+      <Info Text="Start writing messages..." />
+    }
+    else if (Recipient != null && Recipient?.Messages?.Nodes != null)
+    {
+      <ul class="messages">
         @foreach (var message in Recipient?.Messages.Nodes)
         {
           <ChatMessage
@@ -22,22 +26,26 @@
           />
         }
 
-        @if (isSenderTyping)
+        @if (_isSenderTyping)
         {
           <TypingIndicator />
         }
-      }
-      else
-      {
-        <div>No Chat selected...</div>
-      }
-    </ul>
+      </ul>
+    }
+    else
+    {
+      <Info Text="Select a person to start a chat..." />
+    }
   </div>
-  <Footer />
+
+  @if (Recipient != null)
+  {
+    <Footer />
+  }
 </div>
 
 @code {
-    private bool isSenderTyping = true;
+    private bool _isSenderTyping = true;
 
     [Parameter]
     public bool IsLoading { get; set; }

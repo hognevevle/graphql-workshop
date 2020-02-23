@@ -1,10 +1,18 @@
-query getPeople($userId: Uuid!) {
-  people(where: { id_not: $userId }) {
+query getPeople {
+  people {
     nodes {
       ...person
     }
   }
 }
+
+# query getPeople($userId: Uuid!) {
+#   people(where: { id_not: $userId }) {
+#     nodes {
+#       ...person
+#     }
+#   }
+# }
 
 query loadChat($recipientId: Uuid!) {
   personById(id: $recipientId) {

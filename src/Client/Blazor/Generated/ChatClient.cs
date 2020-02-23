@@ -21,12 +21,11 @@ namespace Client
         }
 
         public Task<IOperationResult<IGetPeople>> GetPeopleAsync(
-            Optional<System.Guid> userId = default,
             CancellationToken cancellationToken = default)
         {
 
             return _executor.ExecuteAsync(
-                new GetPeopleOperation { UserId = userId },
+                new GetPeopleOperation(),
                 cancellationToken);
         }
 
@@ -46,6 +45,7 @@ namespace Client
             Optional<System.Guid> recipientId = default,
             CancellationToken cancellationToken = default)
         {
+
             return _executor.ExecuteAsync(
                 new LoadChatOperation { RecipientId = recipientId },
                 cancellationToken);
