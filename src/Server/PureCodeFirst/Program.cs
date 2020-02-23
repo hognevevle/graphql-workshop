@@ -1,4 +1,7 @@
+using System.IO;
+using HotChocolate;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Chat.Server
@@ -7,7 +10,21 @@ namespace Chat.Server
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            if (args.Length == 1 && args[0] == "schema")
+            {
+                var serviceCollection = new ServiceCollection();
+                var startup = new Startup();
+                startup.ConfigureServices(serviceCollection);
+                File.WriteAllText(
+                    "schema.graphql",
+                    serviceCollection.BuildServiceProvider()
+                        .GetRequiredService<ISchema>()
+                        .ToString());
+            }
+            else
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

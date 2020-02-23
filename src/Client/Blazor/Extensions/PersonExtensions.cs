@@ -26,7 +26,7 @@ namespace Client.Extensions
     public class PersonFromStore
         : IPerson
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public Uri ImageUri { get; set; }

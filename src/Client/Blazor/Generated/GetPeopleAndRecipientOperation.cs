@@ -17,7 +17,7 @@ namespace Client
 
         public Type ResultType => typeof(IGetPeopleAndRecipient);
 
-        public Optional<System.Guid> RecipientId { get; set; }
+        public Optional<string> RecipientId { get; set; }
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
@@ -25,7 +25,7 @@ namespace Client
 
             if (RecipientId.HasValue)
             {
-                variables.Add(new VariableValue("recipientId", "Uuid", RecipientId.Value));
+                variables.Add(new VariableValue("recipientId", "ID", RecipientId.Value));
             }
 
             return variables;

@@ -73,7 +73,7 @@
         _people = operation.Data?.People;
     }
 
-    private async Task LoadPeopleAndRecipient(Guid userId, Guid recipientId)
+    private async Task LoadPeopleAndRecipient(string userId, string recipientId)
     {
         var operation = await ChatClient.GetPeopleAndRecipientAsync(recipientId);//userId, recipientId);
 

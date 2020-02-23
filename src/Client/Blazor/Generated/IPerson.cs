@@ -8,7 +8,7 @@ namespace Client
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public interface IPerson
     {
-        System.Guid Id { get; }
+        string Id { get; }
 
         string Name { get; }
 

@@ -10,7 +10,7 @@ namespace Client
         : IPerson
     {
         public Person(
-            System.Guid id, 
+            string id, 
             string name, 
             string email, 
             System.Uri imageUri, 
@@ -25,7 +25,7 @@ namespace Client
             LastSeen = lastSeen;
         }
 
-        public System.Guid Id { get; }
+        public string Id { get; }
 
         public string Name { get; }
 

@@ -19,7 +19,7 @@ namespace Chat.Server.People
         [UsePaging]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<Message> GetMessagesAsync(
+        public IQueryable<Message> GetMessages(
             [GlobalState]Guid currentPersonId,
             [Parent]Person recipient,
             [Service]IMessageRepository repository,

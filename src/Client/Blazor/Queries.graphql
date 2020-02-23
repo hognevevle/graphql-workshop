@@ -2,7 +2,7 @@ query getPeople {
   ...people
 }
 
-# query getPeople($userId: Uuid!) {
+# query getPeople($userId: ID!) {
 #   people(where: { id_not: $userId }) {
 #     nodes {
 #       ...person
@@ -10,12 +10,12 @@ query getPeople {
 #   }
 # }
 
-query getPeopleAndRecipient($recipientId: Uuid!) {
+query getPeopleAndRecipient($recipientId: ID!) {
   ...people
   ...recipientById
 }
 
-query getRecipient($recipientId: Uuid!) {
+query getRecipient($recipientId: ID!) {
   ...recipientById
 }
 

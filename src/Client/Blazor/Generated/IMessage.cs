@@ -10,7 +10,7 @@ namespace Client
     {
         Direction Direction { get; }
 
-        System.Guid Id { get; }
+        string Id { get; }
 
         IParticipant Recipient { get; }
 

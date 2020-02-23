@@ -18,7 +18,7 @@ namespace Client
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
-            Optional<System.Guid> recipientId = default,
+            Optional<string> recipientId = default,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
@@ -26,7 +26,7 @@ namespace Client
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IRecipientById>> GetRecipientAsync(
-            Optional<System.Guid> recipientId = default,
+            Optional<string> recipientId = default,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IRecipientById>> GetRecipientAsync(

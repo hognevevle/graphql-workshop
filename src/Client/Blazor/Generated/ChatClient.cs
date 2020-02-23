@@ -42,9 +42,13 @@ namespace Client
         }
 
         public Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
-            Optional<System.Guid> recipientId = default,
+            Optional<string> recipientId = default,
             CancellationToken cancellationToken = default)
         {
+            if (recipientId.HasValue && recipientId.Value is null)
+            {
+                throw new ArgumentNullException(nameof(recipientId));
+            }
 
             return _executor.ExecuteAsync(
                 new GetPeopleAndRecipientOperation { RecipientId = recipientId },
@@ -64,9 +68,13 @@ namespace Client
         }
 
         public Task<IOperationResult<IRecipientById>> GetRecipientAsync(
-            Optional<System.Guid> recipientId = default,
+            Optional<string> recipientId = default,
             CancellationToken cancellationToken = default)
         {
+            if (recipientId.HasValue && recipientId.Value is null)
+            {
+                throw new ArgumentNullException(nameof(recipientId));
+            }
 
             return _executor.ExecuteAsync(
                 new GetRecipientOperation { RecipientId = recipientId },

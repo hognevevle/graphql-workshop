@@ -14,8 +14,7 @@ namespace Client
     public class GetPeopleAndRecipientResultParser
         : JsonResultParserBase<IGetPeopleAndRecipient>
     {
-        private readonly IValueSerializer _uuidSerializer;
-        private readonly IValueSerializer _stringSerializer;
+        private readonly IValueSerializer _iDSerializer;
         private readonly IValueSerializer _urlSerializer;
         private readonly IValueSerializer _booleanSerializer;
         private readonly IValueSerializer _dateTimeSerializer;
@@ -27,8 +26,7 @@ namespace Client
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
-            _uuidSerializer = serializerResolver.Get("Uuid");
-            _stringSerializer = serializerResolver.Get("String");
+            _iDSerializer = serializerResolver.Get("ID");
             _urlSerializer = serializerResolver.Get("Url");
             _booleanSerializer = serializerResolver.Get("Boolean");
             _dateTimeSerializer = serializerResolver.Get("DateTime");
@@ -74,9 +72,9 @@ namespace Client
             return new Recipient
             (
                 ParseGetPeopleAndRecipientPersonByIdMessages(obj, "messages"),
-                DeserializeUuid(obj, "id"),
-                DeserializeString(obj, "name"),
-                DeserializeString(obj, "email"),
+                DeserializeID(obj, "id"),
+                DeserializeID(obj, "name"),
+                DeserializeID(obj, "email"),
                 DeserializeNullableUrl(obj, "imageUri"),
                 DeserializeBoolean(obj, "isOnline"),
                 DeserializeDateTime(obj, "lastSeen")
@@ -104,9 +102,9 @@ namespace Client
                 JsonElement element = obj[objIndex];
                 list[objIndex] = new Person
                 (
-                    DeserializeUuid(element, "id"),
-                    DeserializeString(element, "name"),
-                    DeserializeString(element, "email"),
+                    DeserializeID(element, "id"),
+                    DeserializeID(element, "name"),
+                    DeserializeID(element, "email"),
                     DeserializeNullableUrl(element, "imageUri"),
                     DeserializeBoolean(element, "isOnline"),
                     DeserializeDateTime(element, "lastSeen")
@@ -159,11 +157,11 @@ namespace Client
                 list[objIndex] = new Message
                 (
                     DeserializeDirection(element, "direction"),
-                    DeserializeUuid(element, "id"),
+                    DeserializeID(element, "id"),
                     ParseGetPeopleAndRecipientPersonByIdMessagesNodesRecipient(element, "recipient"),
                     ParseGetPeopleAndRecipientPersonByIdMessagesNodesSender(element, "sender"),
                     DeserializeDateTime(element, "sent"),
-                    DeserializeString(element, "text")
+                    DeserializeID(element, "text")
                 );
 
             }
@@ -179,8 +177,8 @@ namespace Client
 
             return new Participant
             (
-                DeserializeUuid(obj, "id"),
-                DeserializeString(obj, "name"),
+                DeserializeID(obj, "id"),
+                DeserializeID(obj, "name"),
                 DeserializeBoolean(obj, "isOnline")
             );
         }
@@ -193,22 +191,16 @@ namespace Client
 
             return new Participant
             (
-                DeserializeUuid(obj, "id"),
-                DeserializeString(obj, "name"),
+                DeserializeID(obj, "id"),
+                DeserializeID(obj, "name"),
                 DeserializeBoolean(obj, "isOnline")
             );
         }
 
-        private System.Guid DeserializeUuid(JsonElement obj, string fieldName)
+        private string DeserializeID(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (System.Guid)_uuidSerializer.Deserialize(value.GetString());
-        }
-
-        private string DeserializeString(JsonElement obj, string fieldName)
-        {
-            JsonElement value = obj.GetProperty(fieldName);
-            return (string)_stringSerializer.Deserialize(value.GetString());
+            return (string)_iDSerializer.Deserialize(value.GetString());
         }
 
         private System.Uri DeserializeNullableUrl(JsonElement obj, string fieldName)

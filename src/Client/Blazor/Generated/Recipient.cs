@@ -11,7 +11,7 @@ namespace Client
     {
         public Recipient(
             IMessageConnection messages, 
-            System.Guid id, 
+            string id, 
             string name, 
             string email, 
             System.Uri imageUri, 
@@ -29,7 +29,7 @@ namespace Client
 
         public IMessageConnection Messages { get; }
 
-        public System.Guid Id { get; }
+        public string Id { get; }
 
         public string Name { get; }
 

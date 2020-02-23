@@ -10,7 +10,7 @@ namespace Client
         : IParticipant
     {
         public Participant(
-            System.Guid id, 
+            string id, 
             string name, 
             bool isOnline)
         {
@@ -19,7 +19,7 @@ namespace Client
             IsOnline = isOnline;
         }
 
-        public System.Guid Id { get; }
+        public string Id { get; }
 
         public string Name { get; }
 

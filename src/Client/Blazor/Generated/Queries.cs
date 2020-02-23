@@ -21,28 +21,28 @@ namespace Client
         };
         private readonly byte[] _hash = new byte[]
         {
-            114,
-            52,
-            67,
-            78,
-            80,
-            104,
-            50,
-            89,
-            86,
-            73,
-            53,
-            87,
-            98,
-            43,
-            82,
-            114,
-            106,
-            115,
+            48,
             83,
-            82,
             116,
+            90,
             103,
+            117,
+            88,
+            65,
+            86,
+            47,
+            69,
+            112,
+            75,
+            105,
+            72,
+            77,
+            57,
+            52,
+            77,
+            72,
+            74,
+            65,
             61,
             61
         };
@@ -121,10 +121,8 @@ namespace Client
             100,
             58,
             32,
-            85,
-            117,
-            105,
-            100,
+            73,
+            68,
             33,
             41,
             32,
@@ -194,10 +192,8 @@ namespace Client
             100,
             58,
             32,
-            85,
-            117,
-            105,
-            100,
+            73,
+            68,
             33,
             41,
             32,
@@ -1076,12 +1072,12 @@ namespace Client
               ... people
             }
             
-            query getPeopleAndRecipient($recipientId: Uuid!) {
+            query getPeopleAndRecipient($recipientId: ID!) {
               ... people
               ... recipientById
             }
             
-            query getRecipient($recipientId: Uuid!) {
+            query getRecipient($recipientId: ID!) {
               ... recipientById
             }
             
