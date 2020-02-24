@@ -17,5 +17,15 @@ namespace Chat.Server.People
             await eventTopicObserver.SubscribeAsync<string, Person>(
                 "online", cancellationToken)
                 .ConfigureAwait(false);
+
+        [Subscribe]
+        public async Task<IAsyncEnumerable<Person>> OnTypingAsync(
+            [Service]IEventTopicObserver eventTopicObserver,
+            [GlobalState]string currentUserEmail,
+            CancellationToken cancellationToken) =>
+            await eventTopicObserver.SubscribeAsync<string, Person>(
+                $"typing_to_{currentUserEmail}", cancellationToken)
+                .ConfigureAwait(false);
+
     }
 }

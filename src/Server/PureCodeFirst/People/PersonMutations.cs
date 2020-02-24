@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.Execution;
+using HotChocolate.Subscriptions;
 using HotChocolate.Types;
 
 namespace Chat.Server.People
@@ -52,6 +53,23 @@ namespace Chat.Server.People
             return new InviteFriendPayload(
                 people[1].AddFriendId(people[0].Id),
                 input.ClientMutationId);
+        }
+
+        public async Task<TypingPayload> TypingAsync(
+            TypingInput input,
+            PersonByEmailDataLoader personByEmail,
+            [Service]IEventDispatcher eventDispatcher,
+            CancellationToken cancellationToken)
+        {
+            Person recipient = await personByEmail.LoadAsync(
+                input.WritingTo, cancellationToken)
+                .ConfigureAwait(false);
+
+            await eventDispatcher.SendAsync(
+                $"typing_to_{recipient.Email}", recipient,cancellationToken)
+                .ConfigureAwait(false);
+            
+            return new TypingPayload(recipient, input.ClientMutationId);
         }
     }
 }
