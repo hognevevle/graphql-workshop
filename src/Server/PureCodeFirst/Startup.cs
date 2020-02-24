@@ -41,6 +41,7 @@ namespace Chat.Server
                         .AddType<PersonExtension>()
                         .AddType<MessageExtension>()
                         .AddAuthorizeDirectiveType()
+                        .BindClrType<string, StringType>()
                         .BindClrType<Guid, IdType>());
 
             services.AddQueryRequestInterceptor(async (context, builder, ct) =>
@@ -53,7 +54,6 @@ namespace Chat.Server
                     builder.AddProperty(
                         "currentPersonId",
                         personId);
-
                     builder.AddProperty(
                         "currentUserEmail",
                         context.User.FindFirst(ClaimTypes.Email).Value);
