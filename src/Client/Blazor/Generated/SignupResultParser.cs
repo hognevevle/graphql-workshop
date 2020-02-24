@@ -14,7 +14,7 @@ namespace Client
     public class SignUpResultParser
         : JsonResultParserBase<ISignUp>
     {
-        private readonly IValueSerializer _iDSerializer;
+        private readonly IValueSerializer _stringSerializer;
 
         public SignUpResultParser(IValueSerializerCollection serializerResolver)
         {
@@ -22,7 +22,7 @@ namespace Client
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
-            _iDSerializer = serializerResolver.Get("ID");
+            _stringSerializer = serializerResolver.Get("String");
         }
 
         protected override ISignUp ParserData(JsonElement data)
@@ -54,14 +54,14 @@ namespace Client
 
             return new User
             (
-                DeserializeID(obj, "email")
+                DeserializeString(obj, "email")
             );
         }
 
-        private string DeserializeID(JsonElement obj, string fieldName)
+        private string DeserializeString(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (string)_iDSerializer.Deserialize(value.GetString());
+            return (string)_stringSerializer.Deserialize(value.GetString());
         }
     }
 }

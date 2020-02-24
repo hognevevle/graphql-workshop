@@ -27,12 +27,12 @@ namespace Client
 
             if (RecipientEmail.HasValue)
             {
-                variables.Add(new VariableValue("recipientEmail", "ID", RecipientEmail.Value));
+                variables.Add(new VariableValue("recipientEmail", "String", RecipientEmail.Value));
             }
 
             if (Text.HasValue)
             {
-                variables.Add(new VariableValue("text", "ID", Text.Value));
+                variables.Add(new VariableValue("text", "String", Text.Value));
             }
 
             return variables;

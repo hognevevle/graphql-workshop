@@ -21,28 +21,28 @@ namespace Client
         };
         private readonly byte[] _hash = new byte[]
         {
+            87,
+            50,
+            89,
+            90,
+            56,
+            69,
+            78,
+            68,
+            54,
+            121,
             57,
-            118,
-            52,
-            66,
-            79,
-            52,
+            73,
+            107,
             113,
-            86,
-            82,
-            48,
-            114,
+            108,
+            50,
+            54,
+            116,
+            120,
+            52,
+            100,
             119,
-            80,
-            74,
-            118,
-            106,
-            82,
-            50,
-            55,
-            109,
-            50,
-            65,
             61,
             61
         };
@@ -285,8 +285,12 @@ namespace Client
             108,
             58,
             32,
-            73,
-            68,
+            83,
+            116,
+            114,
+            105,
+            110,
+            103,
             33,
             44,
             32,
@@ -297,8 +301,12 @@ namespace Client
             116,
             58,
             32,
-            73,
-            68,
+            83,
+            116,
+            114,
+            105,
+            110,
+            103,
             33,
             41,
             32,
@@ -1308,7 +1316,7 @@ namespace Client
               ... recipientById
             }
             
-            mutation sendMessage($recipientEmail: ID!, $text: ID!) {
+            mutation sendMessage($recipientEmail: String!, $text: String!) {
               sendMessage(input: { recipientEmail: $recipientEmail, text: $text }) {
                 message {
                   sent

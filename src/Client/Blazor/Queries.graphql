@@ -11,7 +11,7 @@ query getRecipient($recipientId: ID!) {
   ...recipientById
 }
 
-mutation sendMessage($recipientEmail: ID!, $text: ID!) {
+mutation sendMessage($recipientEmail: String!, $text: String!) {
   sendMessage(input: { recipientEmail: $recipientEmail, text: $text }) {
     message {
       sent

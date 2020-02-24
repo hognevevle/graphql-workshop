@@ -15,6 +15,7 @@ namespace Client
         : JsonResultParserBase<IPeople>
     {
         private readonly IValueSerializer _iDSerializer;
+        private readonly IValueSerializer _stringSerializer;
         private readonly IValueSerializer _urlSerializer;
         private readonly IValueSerializer _booleanSerializer;
         private readonly IValueSerializer _dateTimeSerializer;
@@ -26,6 +27,7 @@ namespace Client
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
             _iDSerializer = serializerResolver.Get("ID");
+            _stringSerializer = serializerResolver.Get("String");
             _urlSerializer = serializerResolver.Get("Url");
             _booleanSerializer = serializerResolver.Get("Boolean");
             _dateTimeSerializer = serializerResolver.Get("DateTime");
@@ -82,8 +84,8 @@ namespace Client
                 list[objIndex] = new Person
                 (
                     DeserializeID(element, "id"),
-                    DeserializeID(element, "name"),
-                    DeserializeID(element, "email"),
+                    DeserializeString(element, "name"),
+                    DeserializeString(element, "email"),
                     DeserializeNullableUrl(element, "imageUri"),
                     DeserializeBoolean(element, "isOnline"),
                     DeserializeDateTime(element, "lastSeen")
@@ -98,6 +100,12 @@ namespace Client
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (string)_iDSerializer.Deserialize(value.GetString());
+        }
+
+        private string DeserializeString(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (string)_stringSerializer.Deserialize(value.GetString());
         }
 
         private System.Uri DeserializeNullableUrl(JsonElement obj, string fieldName)

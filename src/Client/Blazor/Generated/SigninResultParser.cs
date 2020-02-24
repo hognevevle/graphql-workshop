@@ -14,6 +14,7 @@ namespace Client
     public class SignInResultParser
         : JsonResultParserBase<ISignIn>
     {
+        private readonly IValueSerializer _stringSerializer;
         private readonly IValueSerializer _iDSerializer;
         private readonly IValueSerializer _urlSerializer;
         private readonly IValueSerializer _booleanSerializer;
@@ -25,6 +26,7 @@ namespace Client
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
+            _stringSerializer = serializerResolver.Get("String");
             _iDSerializer = serializerResolver.Get("ID");
             _urlSerializer = serializerResolver.Get("Url");
             _booleanSerializer = serializerResolver.Get("Boolean");
@@ -49,8 +51,8 @@ namespace Client
             return new LoginPayload
             (
                 ParseSignInLoginMe(obj, "me"),
-                DeserializeID(obj, "scheme"),
-                DeserializeID(obj, "token")
+                DeserializeString(obj, "scheme"),
+                DeserializeString(obj, "token")
             );
         }
 
@@ -63,19 +65,25 @@ namespace Client
             return new Person
             (
                 DeserializeID(obj, "id"),
-                DeserializeID(obj, "name"),
-                DeserializeID(obj, "email"),
+                DeserializeString(obj, "name"),
+                DeserializeString(obj, "email"),
                 DeserializeNullableUrl(obj, "imageUri"),
                 DeserializeBoolean(obj, "isOnline"),
                 DeserializeDateTime(obj, "lastSeen")
             );
         }
 
+        private string DeserializeString(JsonElement obj, string fieldName)
+        {
+            JsonElement value = obj.GetProperty(fieldName);
+            return (string)_stringSerializer.Deserialize(value.GetString());
+        }
         private string DeserializeID(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
             return (string)_iDSerializer.Deserialize(value.GetString());
         }
+
         private System.Uri DeserializeNullableUrl(JsonElement obj, string fieldName)
         {
             if (!obj.TryGetProperty(fieldName, out JsonElement value))

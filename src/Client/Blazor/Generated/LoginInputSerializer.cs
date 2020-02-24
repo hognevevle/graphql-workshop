@@ -10,7 +10,7 @@ namespace Client
         : IInputSerializer
     {
         private bool _needsInitialization = true;
-        private IValueSerializer _iDSerializer;
+        private IValueSerializer _stringSerializer;
 
         public string Name { get; } = "LoginInput";
 
@@ -26,7 +26,7 @@ namespace Client
             {
                 throw new ArgumentNullException(nameof(serializerResolver));
             }
-            _iDSerializer = serializerResolver.Get("ID");
+            _stringSerializer = serializerResolver.Get("String");
             _needsInitialization = false;
         }
 
@@ -48,23 +48,23 @@ namespace Client
 
             if (input.ClientMutationId.HasValue)
             {
-                map.Add("clientMutationId", SerializeNullableID(input.ClientMutationId.Value));
+                map.Add("clientMutationId", SerializeNullableString(input.ClientMutationId.Value));
             }
 
             if (input.Email.HasValue)
             {
-                map.Add("email", SerializeNullableID(input.Email.Value));
+                map.Add("email", SerializeNullableString(input.Email.Value));
             }
 
             if (input.Password.HasValue)
             {
-                map.Add("password", SerializeNullableID(input.Password.Value));
+                map.Add("password", SerializeNullableString(input.Password.Value));
             }
 
             return map;
         }
 
-        private object SerializeNullableID(object value)
+        private object SerializeNullableString(object value)
         {
             if (value is null)
             {
@@ -72,7 +72,7 @@ namespace Client
             }
 
 
-            return _iDSerializer.Serialize(value);
+            return _stringSerializer.Serialize(value);
         }
 
         public object Deserialize(object value)
