@@ -497,6 +497,12 @@ app {
   margin: 5px 0;
 }
 
+.dialog > form > .wrong-credentials {
+  flex: 0 0 auto;
+  margin: 15px 0;
+  color: #e38968;
+}
+
 .dialog > form > label {
   display: flex;
   flex: 0 0 auto;
