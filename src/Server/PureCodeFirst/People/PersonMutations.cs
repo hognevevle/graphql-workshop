@@ -57,19 +57,20 @@ namespace Chat.Server.People
 
         public async Task<TypingPayload> TypingAsync(
             TypingInput input,
+            [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
             [Service]IEventDispatcher eventDispatcher,
             CancellationToken cancellationToken)
         {
-            Person recipient = await personByEmail.LoadAsync(
-                input.WritingTo, cancellationToken)
+            IReadOnlyList<Person> participants = await personByEmail.LoadAsync(
+                cancellationToken, input.WritingTo, currentUserEmail)
                 .ConfigureAwait(false);
 
             await eventDispatcher.SendAsync(
-                $"typing_to_{recipient.Email}", recipient,cancellationToken)
+                $"typing_to_{participants[0].Email}", participants[1], cancellationToken)
                 .ConfigureAwait(false);
-            
-            return new TypingPayload(recipient, input.ClientMutationId);
+
+            return new TypingPayload(participants[0], participants[1], input.ClientMutationId);
         }
     }
 }

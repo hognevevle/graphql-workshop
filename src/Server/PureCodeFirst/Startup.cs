@@ -84,7 +84,9 @@ namespace Chat.Server
 
             app.UseWebSockets();
 
-            app.UseGraphQL().UseVoyager();
+            app.UseGraphQL()
+                .UsePlayground()
+                .UseVoyager();
 
             app.UseEndpoints(endpoints =>
             {
