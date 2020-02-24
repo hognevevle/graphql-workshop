@@ -11,6 +11,7 @@ namespace Client
     public interface IChatClient
     {
         Task<IOperationResult<IPeople>> GetPeopleAsync(
+            Optional<string> userId = default,
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IPeople>> GetPeopleAsync(
@@ -18,6 +19,7 @@ namespace Client
             CancellationToken cancellationToken = default);
 
         Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
+            Optional<string> userId = default,
             Optional<string> recipientId = default,
             CancellationToken cancellationToken = default);
 

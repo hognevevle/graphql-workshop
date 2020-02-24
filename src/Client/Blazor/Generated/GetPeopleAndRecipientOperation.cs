@@ -17,11 +17,18 @@ namespace Client
 
         public Type ResultType => typeof(IGetPeopleAndRecipient);
 
+        public Optional<string> UserId { get; set; }
+
         public Optional<string> RecipientId { get; set; }
 
         public IReadOnlyList<VariableValue> GetVariableValues()
         {
             var variables = new List<VariableValue>();
+
+            if (UserId.HasValue)
+            {
+                variables.Add(new VariableValue("userId", "ID", UserId.Value));
+            }
 
             if (RecipientId.HasValue)
             {

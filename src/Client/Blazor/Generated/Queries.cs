@@ -21,28 +21,28 @@ namespace Client
         };
         private readonly byte[] _hash = new byte[]
         {
-            48,
-            83,
-            116,
-            90,
-            103,
-            117,
-            88,
-            65,
-            86,
-            47,
-            69,
-            112,
-            75,
-            105,
-            72,
-            77,
-            57,
+            108,
+            97,
+            110,
             52,
+            85,
+            47,
+            105,
+            114,
+            86,
+            85,
+            43,
+            43,
+            111,
+            89,
             77,
-            72,
-            74,
-            65,
+            117,
+            48,
+            114,
+            112,
+            99,
+            111,
+            81,
             61,
             61
         };
@@ -63,6 +63,20 @@ namespace Client
             112,
             108,
             101,
+            40,
+            36,
+            117,
+            115,
+            101,
+            114,
+            73,
+            100,
+            58,
+            32,
+            73,
+            68,
+            33,
+            41,
             32,
             123,
             32,
@@ -107,6 +121,20 @@ namespace Client
             110,
             116,
             40,
+            36,
+            117,
+            115,
+            101,
+            114,
+            73,
+            100,
+            58,
+            32,
+            73,
+            68,
+            33,
+            44,
+            32,
             36,
             114,
             101,
@@ -709,6 +737,34 @@ namespace Client
             112,
             108,
             101,
+            40,
+            119,
+            104,
+            101,
+            114,
+            101,
+            58,
+            32,
+            123,
+            32,
+            105,
+            100,
+            95,
+            110,
+            111,
+            116,
+            58,
+            32,
+            36,
+            117,
+            115,
+            101,
+            114,
+            73,
+            100,
+            32,
+            125,
+            41,
             32,
             123,
             32,
@@ -1068,11 +1124,11 @@ namespace Client
         public static Queries Default { get; } = new Queries();
 
         public override string ToString() => 
-            @"query getPeople {
+            @"query getPeople($userId: ID!) {
               ... people
             }
             
-            query getPeopleAndRecipient($recipientId: ID!) {
+            query getPeopleAndRecipient($userId: ID!, $recipientId: ID!) {
               ... people
               ... recipientById
             }
@@ -1119,7 +1175,7 @@ namespace Client
             }
             
             fragment people on Query {
-              people {
+              people(where: { id_not: $userId }) {
                 nodes {
                   ... person
                 }

@@ -21,11 +21,16 @@ namespace Client
         }
 
         public Task<IOperationResult<IPeople>> GetPeopleAsync(
+            Optional<string> userId = default,
             CancellationToken cancellationToken = default)
         {
+            if (userId.HasValue && userId.Value is null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
 
             return _executor.ExecuteAsync(
-                new GetPeopleOperation(),
+                new GetPeopleOperation { UserId = userId },
                 cancellationToken);
         }
 
@@ -42,16 +47,26 @@ namespace Client
         }
 
         public Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
+            Optional<string> userId = default,
             Optional<string> recipientId = default,
             CancellationToken cancellationToken = default)
         {
+            if (userId.HasValue && userId.Value is null)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+
             if (recipientId.HasValue && recipientId.Value is null)
             {
                 throw new ArgumentNullException(nameof(recipientId));
             }
 
             return _executor.ExecuteAsync(
-                new GetPeopleAndRecipientOperation { RecipientId = recipientId },
+                new GetPeopleAndRecipientOperation
+                {
+                    UserId = userId, 
+                    RecipientId = recipientId
+                },
                 cancellationToken);
         }
 

@@ -1,16 +1,8 @@
-query getPeople {
+query getPeople($userId: ID!) {
   ...people
 }
 
-# query getPeople($userId: ID!) {
-#   people(where: { id_not: $userId }) {
-#     nodes {
-#       ...person
-#     }
-#   }
-# }
-
-query getPeopleAndRecipient($recipientId: ID!) {
+query getPeopleAndRecipient($userId: ID!, $recipientId: ID!) {
   ...people
   ...recipientById
 }
@@ -57,7 +49,7 @@ fragment participant on Person {
 }
 
 fragment people on Query {
-  people {
+  people(where: { id_not: $userId }) {
     nodes {
       ...person
     }

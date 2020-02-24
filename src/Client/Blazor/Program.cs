@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using Client.Extensions;
+using Client.Services;
 using Microsoft.AspNetCore.Blazor.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,17 +19,15 @@ namespace Client
             builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddHttpClient(
                 "ChatClient",
-                async (services, client) =>
+                (services, client) =>
                 {
+                    var token = services.GetRequiredService<ITokenStore>().GetToken();
+                    
                     client.BaseAddress = new Uri("http://localhost:5000/");
-
-                    var token = await services
-                        .GetRequiredService<ISessionStorageService>()
-                        .GetItemAsync<string>("Token");
-
                     client.AddBearerToken(token);
                 });
             builder.Services.AddChatClient();
+            builder.Services.AddServices();
             builder.RootComponents.Add<App>("app");
 
             await builder.Build().RunAsync();

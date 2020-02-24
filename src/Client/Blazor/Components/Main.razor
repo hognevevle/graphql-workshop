@@ -29,24 +29,24 @@
 
         if (string.IsNullOrWhiteSpace(recipientId))
         {
-            await LoadPeople(string.Empty);
+            await LoadPeople(User.Id);
         }
         else
         {
-            await LoadPeopleAndRecipient(string.Empty, recipientId);
+            await LoadPeopleAndRecipient(User.Id, recipientId);
         }
 
         _isLoadingPeople = false;
         StateHasChanged();
     }
 
-    private async Task OnClickPerson(IPerson user)
+    private async Task OnClickPerson(IPerson person)
     {
-        var operation = await ChatClient.GetRecipientAsync(user.Id);
+        var operation = await ChatClient.GetRecipientAsync(person.Id);
 
-        if (operation.HasErrors)
+        if (operation.IsNotAuthenticted() && ClickSignOut.HasDelegate)
         {
-            // todo: error handling
+            await ClickSignOut.InvokeAsync(null);
         }
 
         _recipient = operation.Data?.PersonById;
@@ -63,11 +63,11 @@
 
     private async Task LoadPeople(string userId)
     {
-        var operation = await ChatClient.GetPeopleAsync();//userId);
+        var operation = await ChatClient.GetPeopleAsync(userId);
 
-        if (operation.HasErrors)
+        if (operation.IsNotAuthenticted() && ClickSignOut.HasDelegate)
         {
-            // todo: error handling
+            await ClickSignOut.InvokeAsync(null);
         }
         
         _people = operation.Data?.People;
@@ -75,21 +75,17 @@
 
     private async Task LoadPeopleAndRecipient(string userId, string recipientId)
     {
-        var operation = await ChatClient.GetPeopleAndRecipientAsync(recipientId);//userId, recipientId);
+        var operation = await ChatClient.GetPeopleAndRecipientAsync(userId, recipientId);
 
-        if (operation.HasErrors)
+        if (operation.IsNotAuthenticted() && ClickSignOut.HasDelegate)
         {
-            // todo: error handling
+            await ClickSignOut.InvokeAsync(null);
+        }
 
-            var firstError = operation.Errors[0];
-            
-            if (firstError.Exception != null &&
-                firstError.Extensions.ContainsKey("code") &&
-                firstError.Extensions["code"].ToString() == "EXEC_NON_NULL_VIOLATION")
-            {
-                await SessionStore.RemoveItemAsync("RecipientId");
-                await LoadPeople(string.Empty);
-            }
+        if (operation.IsNonNullViolation())
+        {
+            await SessionStore.RemoveItemAsync("RecipientId");
+            await LoadPeople(string.Empty);
         }
         
         _people = operation.Data?.People;
