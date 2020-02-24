@@ -26,6 +26,5 @@ namespace Chat.Server.People
             await eventTopicObserver.SubscribeAsync<string, Person>(
                 $"typing_to_{currentUserEmail}", cancellationToken)
                 .ConfigureAwait(false);
-
     }
 }
