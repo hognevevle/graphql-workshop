@@ -150,7 +150,7 @@ namespace Chat.Server.Users
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = identity,
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(Startup.SharedSecret),
                     SecurityAlgorithms.HmacSha256Signature)
