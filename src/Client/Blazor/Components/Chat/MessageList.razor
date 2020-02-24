@@ -40,12 +40,15 @@
 
   @if (Recipient != null)
   {
-    <Footer />
+    <Footer ClickSend="ClickSend" />
   }
 </div>
 
 @code {
     private bool _isSenderTyping = true;
+
+    [Parameter]
+    public EventCallback<string> ClickSend { get; set; }
 
     [Parameter]
     public bool IsLoading { get; set; }

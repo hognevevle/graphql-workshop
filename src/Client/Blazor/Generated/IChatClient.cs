@@ -35,6 +35,15 @@ namespace Client
             GetRecipientOperation operation,
             CancellationToken cancellationToken = default);
 
+        Task<IOperationResult<ISendMessage>> SendMessageAsync(
+            Optional<string> recipientEmail = default,
+            Optional<string> text = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<ISendMessage>> SendMessageAsync(
+            SendMessageOperation operation,
+            CancellationToken cancellationToken = default);
+
         Task<IOperationResult<ISignIn>> SignInAsync(
             Optional<LoginInput> signIn = default,
             CancellationToken cancellationToken = default);

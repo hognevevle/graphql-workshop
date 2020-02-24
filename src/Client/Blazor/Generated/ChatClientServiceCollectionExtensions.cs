@@ -44,6 +44,7 @@ namespace Client
                 .AddResultParser(serializers => new PeopleResultParser(serializers))
                 .AddResultParser(serializers => new GetPeopleAndRecipientResultParser(serializers))
                 .AddResultParser(serializers => new RecipientByIdResultParser(serializers))
+                .AddResultParser(serializers => new SendMessageResultParser(serializers))
                 .AddResultParser(serializers => new SignInResultParser(serializers))
                 .AddResultParser(serializers => new SignUpResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))

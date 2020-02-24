@@ -11,6 +11,14 @@ query getRecipient($recipientId: ID!) {
   ...recipientById
 }
 
+mutation sendMessage($recipientEmail: ID!, $text: ID!) {
+  sendMessage(input: { recipientEmail: $recipientEmail, text: $text }) {
+    message {
+      sent
+    }
+  }
+}
+
 mutation signIn($signIn: LoginInput!) {
   login(input: $signIn) {
     me {

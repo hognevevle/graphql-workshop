@@ -108,6 +108,42 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
+        public Task<IOperationResult<ISendMessage>> SendMessageAsync(
+            Optional<string> recipientEmail = default,
+            Optional<string> text = default,
+            CancellationToken cancellationToken = default)
+        {
+            if (recipientEmail.HasValue && recipientEmail.Value is null)
+            {
+                throw new ArgumentNullException(nameof(recipientEmail));
+            }
+
+            if (text.HasValue && text.Value is null)
+            {
+                throw new ArgumentNullException(nameof(text));
+            }
+
+            return _executor.ExecuteAsync(
+                new SendMessageOperation
+                {
+                    RecipientEmail = recipientEmail, 
+                    Text = text
+                },
+                cancellationToken);
+        }
+
+        public Task<IOperationResult<ISendMessage>> SendMessageAsync(
+            SendMessageOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
         public Task<IOperationResult<ISignIn>> SignInAsync(
             Optional<LoginInput> signIn = default,
             CancellationToken cancellationToken = default)

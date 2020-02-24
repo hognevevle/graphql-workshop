@@ -9,6 +9,7 @@
 <MessageList
   IsLoading="@_isLoadingRecipient"
   Recipient="@_recipient"
+  ClickSend="OnSendMessage"
 />
 
 @code {
@@ -59,6 +60,12 @@
         {
             await SessionStore.SetItemAsync("RecipientId", _recipient.Id);
         }
+    }
+
+    private async Task OnSendMessage(string message)
+    {
+        var operation = await ChatClient
+            .SendMessageAsync(_recipient.Email, message);
     }
 
     private async Task LoadPeople(string userId)
