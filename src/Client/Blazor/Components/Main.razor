@@ -1,3 +1,4 @@
+@using System.Collections.Immutable;
 @inject IChatClient ChatClient
 @inject ISessionStorageService SessionStore
 
@@ -8,15 +9,20 @@
 />
 <MessageList
   IsLoading="@_isLoadingRecipient"
+  IsTyping="@_isChatParticipantTyping"
   Recipient="@_recipient"
+  Messages="@_messages"
   ClickSend="OnSendMessage"
 />
 
 @code {
     private bool _isLoadingPeople = true;
     private bool _isLoadingRecipient = false;
+    private bool _isChatParticipantTyping = false;
     private IPersonConnection? _people;
     private IRecipient? _recipient;
+    private ImmutableList<IMessage> _messages = ImmutableList<IMessage>.Empty;
+    private IResponseStream<IMessage>? _messageStream;
 
     [Parameter]
     public EventCallback ClickSignOut { get; set; }
@@ -37,6 +43,26 @@
             await LoadPeopleAndRecipient(User.Id, recipientId);
         }
 
+        /*
+        IResponseStream<IOnMessageReceived> messageStream = 
+            await ChatClient.OnMessageReceivedAsync();
+        
+        Task.Run(async () => 
+        {
+            await foreach(IOperationResult<IOnMessageReceived> response in messageStream) 
+            {
+                if(!response.HasErrors 
+                    && _recipient is { } 
+                    && _recipient.Id == response.Data.Message.Sender.Id) 
+                {
+                    
+                    
+                }
+            }
+        });
+        */
+
+        
         _isLoadingPeople = false;
         StateHasChanged();
     }
@@ -64,8 +90,11 @@
 
     private async Task OnSendMessage(string message)
     {
-        var operation = await ChatClient
-            .SendMessageAsync(_recipient.Email, message);
+        if(_recipient is { }) 
+        {
+            var operation = await ChatClient
+                .SendMessageAsync(_recipient.Email, message);
+        }
     }
 
     private async Task LoadPeople(string userId)

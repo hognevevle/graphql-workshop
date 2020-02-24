@@ -14,10 +14,12 @@ namespace Client
         private const string _clientName = "ChatClient";
 
         private readonly IOperationExecutor _executor;
+        private readonly IOperationStreamExecutor _streamExecutor;
 
         public ChatClient(IOperationExecutorPool executorPool)
         {
             _executor = executorPool.CreateExecutor(_clientName);
+            _streamExecutor = executorPool.CreateStreamExecutor(_clientName);
         }
 
         public Task<IOperationResult<IPeople>> GetPeopleAsync(
@@ -194,6 +196,95 @@ namespace Client
             }
 
             return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public Task<IOperationResult<IUserIsTyping>> UserIsTypingAsync(
+            Optional<string> writingTo = default,
+            CancellationToken cancellationToken = default)
+        {
+            if (writingTo.HasValue && writingTo.Value is null)
+            {
+                throw new ArgumentNullException(nameof(writingTo));
+            }
+
+            return _executor.ExecuteAsync(
+                new UserIsTypingOperation { WritingTo = writingTo },
+                cancellationToken);
+        }
+
+        public Task<IOperationResult<IUserIsTyping>> UserIsTypingAsync(
+            UserIsTypingOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _executor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public Task<IResponseStream<IOnMessageReceived>> OnMessageReceivedAsync(
+            CancellationToken cancellationToken = default)
+        {
+
+            return _streamExecutor.ExecuteAsync(
+                new OnMessageReceivedOperation(),
+                cancellationToken);
+        }
+
+        public Task<IResponseStream<IOnMessageReceived>> OnMessageReceivedAsync(
+            OnMessageReceivedOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _streamExecutor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public Task<IResponseStream<IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
+            CancellationToken cancellationToken = default)
+        {
+
+            return _streamExecutor.ExecuteAsync(
+                new OnUserOnlineStatusChangedOperation(),
+                cancellationToken);
+        }
+
+        public Task<IResponseStream<IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
+            OnUserOnlineStatusChangedOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _streamExecutor.ExecuteAsync(operation, cancellationToken);
+        }
+
+        public Task<IResponseStream<IOnUserIsTyping>> OnUserIsTypingAsync(
+            CancellationToken cancellationToken = default)
+        {
+
+            return _streamExecutor.ExecuteAsync(
+                new OnUserIsTypingOperation(),
+                cancellationToken);
+        }
+
+        public Task<IResponseStream<IOnUserIsTyping>> OnUserIsTypingAsync(
+            OnUserIsTypingOperation operation,
+            CancellationToken cancellationToken = default)
+        {
+            if (operation is null)
+            {
+                throw new ArgumentNullException(nameof(operation));
+            }
+
+            return _streamExecutor.ExecuteAsync(operation, cancellationToken);
         }
     }
 }

@@ -37,6 +37,14 @@ namespace Client
                     sp.GetRequiredService<IClientOptions>().GetOperationFormatter(_clientName),
                     sp.GetRequiredService<IClientOptions>().GetResultParsers(_clientName)));
 
+            serviceCollection.AddSingleton<IOperationStreamExecutorFactory>(sp =>
+                new SocketOperationStreamExecutorFactory(
+                    _clientName,
+                    sp.GetRequiredService<ISocketConnectionPool>().RentAsync,
+                    sp.GetRequiredService<ISubscriptionManager>(),
+                    sp.GetRequiredService<IClientOptions>().GetOperationFormatter(_clientName),
+                    sp.GetRequiredService<IClientOptions>().GetResultParsers(_clientName)));
+
             IOperationClientBuilder builder = serviceCollection.AddOperationClientOptions(_clientName)
                 .AddValueSerializer(() => new DirectionValueSerializer())
                 .AddValueSerializer(() => new LoginInputSerializer())
@@ -47,10 +55,19 @@ namespace Client
                 .AddResultParser(serializers => new SendMessageResultParser(serializers))
                 .AddResultParser(serializers => new SignInResultParser(serializers))
                 .AddResultParser(serializers => new SignUpResultParser(serializers))
+                .AddResultParser(serializers => new UserIsTypingResultParser(serializers))
+                .AddResultParser(serializers => new OnMessageReceivedResultParser(serializers))
+                .AddResultParser(serializers => new OnUserOnlineStatusChangedResultParser(serializers))
+                .AddResultParser(serializers => new OnUserIsTypingResultParser(serializers))
                 .AddOperationFormatter(serializers => new JsonOperationFormatter(serializers))
                 .AddHttpOperationPipeline(builder => builder.UseHttpDefaultPipeline());
 
+            serviceCollection.TryAddSingleton<ISubscriptionManager, SubscriptionManager>();
             serviceCollection.TryAddSingleton<IOperationExecutorPool, OperationExecutorPool>();
+            serviceCollection.TryAddEnumerable(new ServiceDescriptor(
+                typeof(ISocketConnectionInterceptor),
+                typeof(MessagePipelineHandler),
+                ServiceLifetime.Singleton));
             return builder;
         }
 

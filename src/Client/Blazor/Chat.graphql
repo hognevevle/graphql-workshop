@@ -18,11 +18,13 @@ type Mutation {
   inviteFriend(input: InviteFriendInput!): InviteFriendPayload!
   login(input: LoginInput!): LoginPayload!
   sendMessage(input: SendMessageInput!): SendMessagePayload!
+  typing(input: TypingInput!): TypingPayload!
 }
 
 type Subscription {
   onMessageReceived: Message!
   onOnline: Person!
+  onTyping: Person!
 }
 
 "The multiplier path scalar represents a valid GraphQL multiplier path string."
@@ -215,6 +217,22 @@ type InviteFriendPayload {
 input InviteFriendInput {
   clientMutationId: String
   email: String!
+}
+
+input TypingInput {
+  "The client mutation id which can be optionally provided with a mutation."
+  clientMutationId: String
+  "The email of the person to which a message is being typed."
+  writingTo: String!
+}
+
+type TypingPayload {
+  "The client mutation id which can be optionally provided with a mutation."
+  clientMutationId: String
+  "The person to which a message is being typed."
+  recipient: Person!
+  "The email of the person who is typing the message."
+  sender: Person!
 }
 
 type CreateUserPayload {

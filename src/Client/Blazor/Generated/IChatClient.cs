@@ -59,5 +59,34 @@ namespace Client
         Task<IOperationResult<ISignUp>> SignUpAsync(
             SignUpOperation operation,
             CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<IUserIsTyping>> UserIsTypingAsync(
+            Optional<string> writingTo = default,
+            CancellationToken cancellationToken = default);
+
+        Task<IOperationResult<IUserIsTyping>> UserIsTypingAsync(
+            UserIsTypingOperation operation,
+            CancellationToken cancellationToken = default);
+
+        Task<IResponseStream<IOnMessageReceived>> OnMessageReceivedAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<IResponseStream<IOnMessageReceived>> OnMessageReceivedAsync(
+            OnMessageReceivedOperation operation,
+            CancellationToken cancellationToken = default);
+
+        Task<IResponseStream<IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<IResponseStream<IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
+            OnUserOnlineStatusChangedOperation operation,
+            CancellationToken cancellationToken = default);
+
+        Task<IResponseStream<IOnUserIsTyping>> OnUserIsTypingAsync(
+            CancellationToken cancellationToken = default);
+
+        Task<IResponseStream<IOnUserIsTyping>> OnUserIsTypingAsync(
+            OnUserIsTypingOperation operation,
+            CancellationToken cancellationToken = default);
     }
 }

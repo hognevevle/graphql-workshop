@@ -14,12 +14,12 @@ namespace Client.Extensions
         public static IPerson ToPerson(this PersonFromStore personFromStore)
         {
             return new Person(
-                personFromStore.Id,
                 personFromStore.Name,
-                personFromStore.Email,
                 personFromStore.ImageUri,
                 personFromStore.IsOnline,
-                personFromStore.LastSeen);
+                personFromStore.LastSeen,
+                personFromStore.Id,
+                personFromStore.Email);
         }
     }
 

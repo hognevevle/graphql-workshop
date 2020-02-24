@@ -37,6 +37,30 @@ mutation signUp($newUser: CreateUserInput!) {
   }
 }
 
+mutation userIsTyping($writingTo : String!) {
+  typing(input: { writingTo: $writingTo }) {
+    clientMutationId
+  }
+}
+
+subscription onMessageReceived {
+  message: onMessageReceived {
+    ...message
+  }
+}
+
+subscription onUserOnlineStatusChanged {
+  onOnline {
+    ...hasPersonId
+  }
+}
+
+subscription onUserIsTyping {
+  onTyping {
+    ...hasPersonId
+  }
+}
+
 fragment message on Message {
   direction
   id
@@ -65,12 +89,20 @@ fragment people on Query {
 }
 
 fragment person on Person {
-  id
+  ...hasPersonId
   name
-  email
+  ...hasPersonEmail
   imageUri
   isOnline
   lastSeen
+}
+
+fragment hasPersonId on Person {
+  id
+}
+
+fragment hasPersonEmail on Person {
+  email
 }
 
 fragment recipientById on Query {

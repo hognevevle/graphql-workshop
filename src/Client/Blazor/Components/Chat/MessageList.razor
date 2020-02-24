@@ -1,4 +1,5 @@
-﻿@inject IChatClient ChatClient
+﻿@using System.Collections.Immutable;
+@inject IChatClient ChatClient
 
 <div class="chat">
   @if (Recipient != null)
@@ -18,7 +19,7 @@
     else if (Recipient != null && Recipient?.Messages?.Nodes != null)
     {
       <ul class="messages">
-        @foreach (var message in Recipient?.Messages.Nodes)
+        @foreach (var message in Messages)
         {
           <ChatMessage
             Message="@message"
@@ -26,7 +27,7 @@
           />
         }
 
-        @if (_isSenderTyping)
+        @if (IsTyping)
         {
           <TypingIndicator />
         }
@@ -45,14 +46,18 @@
 </div>
 
 @code {
-    private bool _isSenderTyping = true;
-
     [Parameter]
     public EventCallback<string> ClickSend { get; set; }
+
+    [Parameter]
+    public bool IsTyping { get; set; }
 
     [Parameter]
     public bool IsLoading { get; set; }
 
     [Parameter]
     public IRecipient? Recipient { get; set; }
+
+    [Parameter]
+    public ImmutableList<IMessage> Messages { get; set; } = ImmutableList<IMessage>.Empty;
 }
