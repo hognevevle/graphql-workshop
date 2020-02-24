@@ -41,6 +41,7 @@ namespace Chat.Server
                         .AddType<PersonExtension>()
                         .AddType<MessageExtension>()
                         .AddAuthorizeDirectiveType()
+                        .BindClrType<string, StringType>()
                         .BindClrType<Guid, IdType>());
 
             services.AddQueryRequestInterceptor(async (context, builder, ct) =>
