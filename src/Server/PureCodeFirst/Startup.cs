@@ -53,7 +53,6 @@ namespace Chat.Server
                     builder.AddProperty(
                         "currentPersonId",
                         personId);
-
                     builder.AddProperty(
                         "currentUserEmail",
                         context.User.FindFirst(ClaimTypes.Email).Value);
