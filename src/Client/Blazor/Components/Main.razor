@@ -1,4 +1,5 @@
 @using System.Collections.Immutable;
+@using System.Diagnostics;
 @inject IChatClient ChatClient
 @inject ISessionStorageService SessionStore
 
@@ -15,9 +16,11 @@
   Recipient="@_recipient"
   Messages="@_messages"
   ClickSend="OnSendMessage"
+  Typing="OnTyping"
 />
 
 @code {
+    private readonly Stopwatch _typing = Stopwatch.StartNew();
     private bool _isLoadingPeople = true;
     private bool _isLoadingRecipient = false;
     private bool _isChatParticipantTyping = false;
@@ -79,12 +82,21 @@
         if(_recipient is { }) 
         {
             var result = await ChatClient.SendMessageAsync(_recipient.Email, message);
-            
+
             if(!result.HasErrors && result.Data is { })
             {
                 _messages = _messages.Add(result.Data.SendMessage.Message);
                 StateHasChanged();
             }
+        }
+    }
+
+    private async Task OnTyping()
+    {
+        if(_recipient is { } && _typing.ElapsedMilliseconds > 250) 
+        {
+            await ChatClient.UserIsTypingAsync(_recipient.Email);
+            _typing.Restart();
         }
     }
 

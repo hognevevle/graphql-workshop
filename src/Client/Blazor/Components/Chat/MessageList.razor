@@ -41,13 +41,16 @@
 
   @if (Recipient != null)
   {
-    <Footer ClickSend="ClickSend" />
+    <Footer ClickSend="ClickSend" Typing="Typing" />
   }
 </div>
 
 @code {
     [Parameter]
     public EventCallback<string> ClickSend { get; set; }
+
+    [Parameter]
+    public EventCallback Typing { get; set; }
 
     [Parameter]
     public bool IsTyping { get; set; }

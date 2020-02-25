@@ -6,6 +6,7 @@
     placeholder="Type your message"
     rows="3"
     @bind="_message"
+    @onkeypress="Typing"
   ></textarea>
   <div class="chat-message-footer">
     @*<div class="chat-message-actions">
@@ -21,6 +22,9 @@
 
     [Parameter]
     public EventCallback<string> ClickSend { get; set; }
+
+    [Parameter]
+    public EventCallback Typing { get; set; }
 
     private async Task OnClickSend()
     {
