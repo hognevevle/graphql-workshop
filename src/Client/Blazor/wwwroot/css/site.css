@@ -228,6 +228,15 @@ app {
     padding: 0;
 }
 
+#scroller * {
+    overflow-anchor: none;
+}
+
+#anchor {
+    overflow-anchor: auto;
+    height: 1px;
+}
+
 .message--incoming,
 .message--outgoing {
   display: block;

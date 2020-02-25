@@ -18,7 +18,8 @@
     }
     else if (Recipient != null && Recipient?.Messages?.Nodes != null)
     {
-  <ul class="messages">
+  <div class="messages" id="scroller">
+      @*ul*@
       @foreach (var message in Messages)
       {
           <ChatMessage Message="@message"
@@ -30,7 +31,8 @@
           <TypingIndicator />
       }
 
-  </ul>
+      <div id="anchor"></div>
+  </div>
     }
     else
     {
@@ -62,4 +64,5 @@
 
     [Parameter]
     public ImmutableList<IMessage> Messages { get; set; } = ImmutableList<IMessage>.Empty;
+
 }
