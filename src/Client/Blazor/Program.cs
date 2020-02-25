@@ -23,11 +23,11 @@ namespace Client
                 (services, client) =>
                 {
                     var token = services.GetRequiredService<ITokenStore>().GetToken();
-
                     client.BaseAddress = new Uri("http://localhost:5000/");
                     client.AddBearerToken(token);
                 });
-            builder.Services.AddWebSocketClient("ChatClient",
+            builder.Services.AddWebSocketClient(
+                "ChatClient",
                 (services, client) =>
                 {
                     var token = services.GetRequiredService<ITokenStore>().GetToken();
