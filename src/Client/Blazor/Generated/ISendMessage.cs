@@ -6,8 +6,8 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface ISendMessage
+    public partial interface ISendMessage
     {
-        ISendMessagePayload SendMessage { get; }
+        global::Client.ISendMessagePayload SendMessage { get; }
     }
 }

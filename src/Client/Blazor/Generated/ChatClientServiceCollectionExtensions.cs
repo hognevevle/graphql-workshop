@@ -15,7 +15,7 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public static class ChatClientServiceCollectionExtensions
+    public static partial class ChatClientServiceCollectionExtensions
     {
         private const string _clientName = "ChatClient";
 

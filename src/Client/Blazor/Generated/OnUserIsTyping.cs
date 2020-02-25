@@ -6,15 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class OnUserIsTyping
+    public partial class OnUserIsTyping
         : IOnUserIsTyping
     {
         public OnUserIsTyping(
-            IHasPersonId onTyping)
+            global::Client.IHasPersonId onTyping)
         {
             OnTyping = onTyping;
         }
 
-        public IHasPersonId OnTyping { get; }
+        public global::Client.IHasPersonId OnTyping { get; }
     }
 }

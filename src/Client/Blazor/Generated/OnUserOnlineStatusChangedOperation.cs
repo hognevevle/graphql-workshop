@@ -6,7 +6,7 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class OnUserOnlineStatusChangedOperation
+    public partial class OnUserOnlineStatusChangedOperation
         : IOperation<IOnUserOnlineStatusChanged>
     {
         public string Name => "onUserOnlineStatusChanged";

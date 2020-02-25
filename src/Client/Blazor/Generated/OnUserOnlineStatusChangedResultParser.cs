@@ -11,7 +11,7 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class OnUserOnlineStatusChangedResultParser
+    public partial class OnUserOnlineStatusChangedResultParser
         : JsonResultParserBase<IOnUserOnlineStatusChanged>
     {
         private readonly IValueSerializer _iDSerializer;
@@ -34,7 +34,7 @@ namespace Client
 
         }
 
-        private IHasPersonId ParseOnUserOnlineStatusChangedOnOnline(
+        private global::Client.IHasPersonId ParseOnUserOnlineStatusChangedOnOnline(
             JsonElement parent,
             string field)
         {
@@ -49,7 +49,7 @@ namespace Client
         private string DeserializeID(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (string)_iDSerializer.Deserialize(value.GetString());
+            return (string)_iDSerializer.Deserialize(value.GetString())!;
         }
     }
 }

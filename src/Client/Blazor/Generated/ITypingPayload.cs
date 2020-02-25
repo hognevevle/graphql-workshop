@@ -6,8 +6,8 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface ITypingPayload
+    public partial interface ITypingPayload
     {
-        string ClientMutationId { get; }
+        string? ClientMutationId { get; }
     }
 }

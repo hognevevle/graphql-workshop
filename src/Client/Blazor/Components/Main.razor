@@ -22,7 +22,6 @@
     private IPersonConnection? _people;
     private IRecipient? _recipient;
     private ImmutableList<IMessage> _messages = ImmutableList<IMessage>.Empty;
-    private IResponseStream<IMessage>? _messageStream;
 
     [Parameter]
     public EventCallback ClickSignOut { get; set; }
@@ -43,26 +42,8 @@
             await LoadPeopleAndRecipient(User.Id, recipientId);
         }
 
-        /*
-        IResponseStream<IOnMessageReceived> messageStream = 
-            await ChatClient.OnMessageReceivedAsync();
-        
-        Task.Run(async () => 
-        {
-            await foreach(IOperationResult<IOnMessageReceived> response in messageStream) 
-            {
-                if(!response.HasErrors 
-                    && _recipient is { } 
-                    && _recipient.Id == response.Data.Message.Sender.Id) 
-                {
-                    
-                    
-                }
-            }
-        });
-        */
+        BeginReceiveMessages();
 
-        
         _isLoadingPeople = false;
         StateHasChanged();
     }
@@ -77,6 +58,7 @@
         }
 
         _recipient = operation.Data?.PersonById;
+        _messages = ImmutableList<IMessage>.Empty;
 
         if (_recipient == null)
         {
@@ -84,6 +66,7 @@
         }
         else
         {
+            _messages = ImmutableList.CreateRange<IMessage>(_recipient.Messages.Nodes);
             await SessionStore.SetItemAsync("RecipientId", _recipient.Id);
         }
     }
@@ -126,5 +109,33 @@
         
         _people = operation.Data?.People;
         _recipient = operation.Data?.PersonById;
+    }
+
+    private void BeginReceiveMessages() 
+    {
+        Task.Run(async () => 
+        {
+            Console.WriteLine("start listening for messages ...");
+
+            IResponseStream<IOnMessageReceived> messageStream = 
+                await ChatClient.OnMessageReceivedAsync();
+
+            Console.WriteLine("started listening for messages ...");
+
+            await foreach(IOperationResult<IOnMessageReceived> response in messageStream) 
+            {
+                Console.WriteLine("evaluating message ...");
+
+                if(!response.HasErrors 
+                    && response.Data is { }
+                    && _recipient is { } 
+                    && _recipient.Id == response.Data.Message.Sender.Id) 
+                {
+                    Console.WriteLine("commiting message ...");
+                    _messages = _messages.Add(response.Data.Message);
+                    StateHasChanged();
+                }
+            }
+        });
     }
 }

@@ -11,7 +11,7 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SendMessageResultParser
+    public partial class SendMessageResultParser
         : JsonResultParserBase<ISendMessage>
     {
         private readonly IValueSerializer _dateTimeSerializer;
@@ -34,7 +34,7 @@ namespace Client
 
         }
 
-        private ISendMessagePayload ParseSendMessageSendMessage(
+        private global::Client.ISendMessagePayload ParseSendMessageSendMessage(
             JsonElement parent,
             string field)
         {
@@ -46,7 +46,7 @@ namespace Client
             );
         }
 
-        private IMessage1 ParseSendMessageSendMessageMessage(
+        private global::Client.IMessage1 ParseSendMessageSendMessageMessage(
             JsonElement parent,
             string field)
         {
@@ -61,7 +61,7 @@ namespace Client
         private System.DateTimeOffset DeserializeDateTime(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (System.DateTimeOffset)_dateTimeSerializer.Deserialize(value.GetString());
+            return (System.DateTimeOffset)_dateTimeSerializer.Deserialize(value.GetString())!;
         }
     }
 }

@@ -6,15 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SendMessage1
+    public partial class SendMessage1
         : ISendMessage
     {
         public SendMessage1(
-            ISendMessagePayload sendMessage)
+            global::Client.ISendMessagePayload sendMessage)
         {
             SendMessage = sendMessage;
         }
 
-        public ISendMessagePayload SendMessage { get; }
+        public global::Client.ISendMessagePayload SendMessage { get; }
     }
 }

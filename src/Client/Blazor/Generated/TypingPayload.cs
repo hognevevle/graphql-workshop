@@ -6,15 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class TypingPayload
+    public partial class TypingPayload
         : ITypingPayload
     {
         public TypingPayload(
-            string clientMutationId)
+            string? clientMutationId)
         {
             ClientMutationId = clientMutationId;
         }
 
-        public string ClientMutationId { get; }
+        public string? ClientMutationId { get; }
     }
 }

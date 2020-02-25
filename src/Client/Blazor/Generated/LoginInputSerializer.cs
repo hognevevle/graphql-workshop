@@ -6,11 +6,11 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class LoginInputSerializer
+    public partial class LoginInputSerializer
         : IInputSerializer
     {
         private bool _needsInitialization = true;
-        private IValueSerializer _stringSerializer;
+        private IValueSerializer? _stringSerializer;
 
         public string Name { get; } = "LoginInput";
 
@@ -30,7 +30,7 @@ namespace Client
             _needsInitialization = false;
         }
 
-        public object Serialize(object value)
+        public object? Serialize(object? value)
         {
             if (_needsInitialization)
             {
@@ -44,7 +44,7 @@ namespace Client
             }
 
             var input = (LoginInput)value;
-            var map = new Dictionary<string, object>();
+            var map = new Dictionary<string, object?>();
 
             if (input.ClientMutationId.HasValue)
             {
@@ -64,7 +64,7 @@ namespace Client
             return map;
         }
 
-        private object SerializeNullableString(object value)
+        private object? SerializeNullableString(object? value)
         {
             if (value is null)
             {
@@ -72,10 +72,10 @@ namespace Client
             }
 
 
-            return _stringSerializer.Serialize(value);
+            return _stringSerializer!.Serialize(value);
         }
 
-        public object Deserialize(object value)
+        public object? Deserialize(object? value)
         {
             throw new NotSupportedException(
                 "Deserializing input values is not supported.");

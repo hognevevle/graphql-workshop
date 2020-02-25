@@ -8,23 +8,23 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class ChatClient
+    public partial class ChatClient
         : IChatClient
     {
         private const string _clientName = "ChatClient";
 
-        private readonly IOperationExecutor _executor;
-        private readonly IOperationStreamExecutor _streamExecutor;
+        private readonly global::StrawberryShake.IOperationExecutor _executor;
+        private readonly global::StrawberryShake.IOperationStreamExecutor _streamExecutor;
 
-        public ChatClient(IOperationExecutorPool executorPool)
+        public ChatClient(global::StrawberryShake.IOperationExecutorPool executorPool)
         {
             _executor = executorPool.CreateExecutor(_clientName);
             _streamExecutor = executorPool.CreateStreamExecutor(_clientName);
         }
 
-        public Task<IOperationResult<IPeople>> GetPeopleAsync(
-            Optional<string> userId = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IPeople>> GetPeopleAsync(
+            global::StrawberryShake.Optional<string> userId = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (userId.HasValue && userId.Value is null)
             {
@@ -36,9 +36,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<IPeople>> GetPeopleAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IPeople>> GetPeopleAsync(
             GetPeopleOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -48,10 +48,10 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
-            Optional<string> userId = default,
-            Optional<string> recipientId = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
+            global::StrawberryShake.Optional<string> userId = default,
+            global::StrawberryShake.Optional<string> recipientId = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (userId.HasValue && userId.Value is null)
             {
@@ -72,9 +72,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IGetPeopleAndRecipient>> GetPeopleAndRecipientAsync(
             GetPeopleAndRecipientOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -84,9 +84,9 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<IRecipientById>> GetRecipientAsync(
-            Optional<string> recipientId = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IRecipientById>> GetRecipientAsync(
+            global::StrawberryShake.Optional<string> recipientId = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (recipientId.HasValue && recipientId.Value is null)
             {
@@ -98,9 +98,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<IRecipientById>> GetRecipientAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IRecipientById>> GetRecipientAsync(
             GetRecipientOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -110,10 +110,10 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<ISendMessage>> SendMessageAsync(
-            Optional<string> recipientEmail = default,
-            Optional<string> text = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.ISendMessage>> SendMessageAsync(
+            global::StrawberryShake.Optional<string> recipientEmail = default,
+            global::StrawberryShake.Optional<string> text = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (recipientEmail.HasValue && recipientEmail.Value is null)
             {
@@ -134,9 +134,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<ISendMessage>> SendMessageAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.ISendMessage>> SendMessageAsync(
             SendMessageOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -146,9 +146,9 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<ISignIn>> SignInAsync(
-            Optional<LoginInput> signIn = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.ISignIn>> SignInAsync(
+            global::StrawberryShake.Optional<global::Client.LoginInput> signIn = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (signIn.HasValue && signIn.Value is null)
             {
@@ -160,9 +160,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<ISignIn>> SignInAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.ISignIn>> SignInAsync(
             SignInOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -172,9 +172,9 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<ISignUp>> SignUpAsync(
-            Optional<CreateUserInput> newUser = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.ISignUp>> SignUpAsync(
+            global::StrawberryShake.Optional<global::Client.CreateUserInput> newUser = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (newUser.HasValue && newUser.Value is null)
             {
@@ -186,9 +186,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<ISignUp>> SignUpAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.ISignUp>> SignUpAsync(
             SignUpOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -198,9 +198,9 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IOperationResult<IUserIsTyping>> UserIsTypingAsync(
-            Optional<string> writingTo = default,
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IUserIsTyping>> UserIsTypingAsync(
+            global::StrawberryShake.Optional<string> writingTo = default,
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (writingTo.HasValue && writingTo.Value is null)
             {
@@ -212,9 +212,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IOperationResult<IUserIsTyping>> UserIsTypingAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<global::Client.IUserIsTyping>> UserIsTypingAsync(
             UserIsTypingOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -224,8 +224,8 @@ namespace Client
             return _executor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IResponseStream<IOnMessageReceived>> OnMessageReceivedAsync(
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IResponseStream<global::Client.IOnMessageReceived>> OnMessageReceivedAsync(
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
 
             return _streamExecutor.ExecuteAsync(
@@ -233,9 +233,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IResponseStream<IOnMessageReceived>> OnMessageReceivedAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IResponseStream<global::Client.IOnMessageReceived>> OnMessageReceivedAsync(
             OnMessageReceivedOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -245,8 +245,8 @@ namespace Client
             return _streamExecutor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IResponseStream<IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IResponseStream<global::Client.IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
 
             return _streamExecutor.ExecuteAsync(
@@ -254,9 +254,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IResponseStream<IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IResponseStream<global::Client.IOnUserOnlineStatusChanged>> OnUserOnlineStatusChangedAsync(
             OnUserOnlineStatusChangedOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {
@@ -266,8 +266,8 @@ namespace Client
             return _streamExecutor.ExecuteAsync(operation, cancellationToken);
         }
 
-        public Task<IResponseStream<IOnUserIsTyping>> OnUserIsTypingAsync(
-            CancellationToken cancellationToken = default)
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IResponseStream<global::Client.IOnUserIsTyping>> OnUserIsTypingAsync(
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
 
             return _streamExecutor.ExecuteAsync(
@@ -275,9 +275,9 @@ namespace Client
                 cancellationToken);
         }
 
-        public Task<IResponseStream<IOnUserIsTyping>> OnUserIsTypingAsync(
+        public global::System.Threading.Tasks.Task<global::StrawberryShake.IResponseStream<global::Client.IOnUserIsTyping>> OnUserIsTypingAsync(
             OnUserIsTypingOperation operation,
-            CancellationToken cancellationToken = default)
+            global::System.Threading.CancellationToken cancellationToken = default)
         {
             if (operation is null)
             {

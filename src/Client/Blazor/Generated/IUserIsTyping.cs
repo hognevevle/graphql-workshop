@@ -6,8 +6,8 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IUserIsTyping
+    public partial interface IUserIsTyping
     {
-        ITypingPayload Typing { get; }
+        global::Client.ITypingPayload Typing { get; }
     }
 }

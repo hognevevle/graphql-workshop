@@ -6,7 +6,7 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public interface IMessage1
+    public partial interface IMessage1
     {
         System.DateTimeOffset Sent { get; }
     }

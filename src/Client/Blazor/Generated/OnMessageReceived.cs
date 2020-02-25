@@ -6,15 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class OnMessageReceived
+    public partial class OnMessageReceived
         : IOnMessageReceived
     {
         public OnMessageReceived(
-            IMessage message)
+            global::Client.IMessage message)
         {
             Message = message;
         }
 
-        public IMessage Message { get; }
+        public global::Client.IMessage Message { get; }
     }
 }

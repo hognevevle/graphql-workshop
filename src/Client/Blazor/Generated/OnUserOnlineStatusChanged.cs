@@ -6,15 +6,15 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class OnUserOnlineStatusChanged
+    public partial class OnUserOnlineStatusChanged
         : IOnUserOnlineStatusChanged
     {
         public OnUserOnlineStatusChanged(
-            IHasPersonId onOnline)
+            global::Client.IHasPersonId onOnline)
         {
             OnOnline = onOnline;
         }
 
-        public IHasPersonId OnOnline { get; }
+        public global::Client.IHasPersonId OnOnline { get; }
     }
 }

@@ -11,7 +11,7 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class OnMessageReceivedResultParser
+    public partial class OnMessageReceivedResultParser
         : JsonResultParserBase<IOnMessageReceived>
     {
         private readonly IValueSerializer _directionSerializer;
@@ -42,7 +42,7 @@ namespace Client
 
         }
 
-        private IMessage ParseOnMessageReceivedMessage(
+        private global::Client.IMessage ParseOnMessageReceivedMessage(
             JsonElement parent,
             string field)
         {
@@ -59,7 +59,7 @@ namespace Client
             );
         }
 
-        private IParticipant ParseOnMessageReceivedMessageRecipient(
+        private global::Client.IParticipant ParseOnMessageReceivedMessageRecipient(
             JsonElement parent,
             string field)
         {
@@ -73,7 +73,7 @@ namespace Client
             );
         }
 
-        private IParticipant ParseOnMessageReceivedMessageSender(
+        private global::Client.IParticipant ParseOnMessageReceivedMessageSender(
             JsonElement parent,
             string field)
         {
@@ -90,30 +90,30 @@ namespace Client
         private Direction DeserializeDirection(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (Direction)_directionSerializer.Deserialize(value.GetString());
+            return (Direction)_directionSerializer.Deserialize(value.GetString())!;
         }
 
         private string DeserializeID(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (string)_iDSerializer.Deserialize(value.GetString());
+            return (string)_iDSerializer.Deserialize(value.GetString())!;
         }
 
         private System.DateTimeOffset DeserializeDateTime(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (System.DateTimeOffset)_dateTimeSerializer.Deserialize(value.GetString());
+            return (System.DateTimeOffset)_dateTimeSerializer.Deserialize(value.GetString())!;
         }
 
         private string DeserializeString(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (string)_stringSerializer.Deserialize(value.GetString());
+            return (string)_stringSerializer.Deserialize(value.GetString())!;
         }
         private bool DeserializeBoolean(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (bool)_booleanSerializer.Deserialize(value.GetBoolean());
+            return (bool)_booleanSerializer.Deserialize(value.GetBoolean())!;
         }
     }
 }

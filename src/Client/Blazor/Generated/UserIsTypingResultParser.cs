@@ -11,7 +11,7 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class UserIsTypingResultParser
+    public partial class UserIsTypingResultParser
         : JsonResultParserBase<IUserIsTyping>
     {
         private readonly IValueSerializer _stringSerializer;
@@ -34,7 +34,7 @@ namespace Client
 
         }
 
-        private ITypingPayload ParseUserIsTypingTyping(
+        private global::Client.ITypingPayload ParseUserIsTypingTyping(
             JsonElement parent,
             string field)
         {
@@ -46,7 +46,7 @@ namespace Client
             );
         }
 
-        private string DeserializeNullableString(JsonElement obj, string fieldName)
+        private string? DeserializeNullableString(JsonElement obj, string fieldName)
         {
             if (!obj.TryGetProperty(fieldName, out JsonElement value))
             {
@@ -58,7 +58,7 @@ namespace Client
                 return null;
             }
 
-            return (string)_stringSerializer.Deserialize(value.GetString());
+            return (string?)_stringSerializer.Deserialize(value.GetString())!;
         }
     }
 }

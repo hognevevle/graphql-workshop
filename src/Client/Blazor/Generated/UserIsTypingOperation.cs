@@ -6,7 +6,7 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class UserIsTypingOperation
+    public partial class UserIsTypingOperation
         : IOperation<IUserIsTyping>
     {
         public string Name => "userIsTyping";

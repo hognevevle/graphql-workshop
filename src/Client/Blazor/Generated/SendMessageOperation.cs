@@ -6,7 +6,7 @@ using StrawberryShake;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SendMessageOperation
+    public partial class SendMessageOperation
         : IOperation<ISendMessage>
     {
         public string Name => "sendMessage";

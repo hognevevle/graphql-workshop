@@ -11,7 +11,7 @@ using StrawberryShake.Transport;
 namespace Client
 {
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
-    public class SignUpResultParser
+    public partial class SignUpResultParser
         : JsonResultParserBase<ISignUp>
     {
         private readonly IValueSerializer _stringSerializer;
@@ -34,7 +34,7 @@ namespace Client
 
         }
 
-        private ICreateUserPayload ParseSignUpCreateUser(
+        private global::Client.ICreateUserPayload ParseSignUpCreateUser(
             JsonElement parent,
             string field)
         {
@@ -46,7 +46,7 @@ namespace Client
             );
         }
 
-        private IUser ParseSignUpCreateUserUser(
+        private global::Client.IUser ParseSignUpCreateUserUser(
             JsonElement parent,
             string field)
         {
@@ -61,7 +61,7 @@ namespace Client
         private string DeserializeString(JsonElement obj, string fieldName)
         {
             JsonElement value = obj.GetProperty(fieldName);
-            return (string)_stringSerializer.Deserialize(value.GetString());
+            return (string)_stringSerializer.Deserialize(value.GetString())!;
         }
     }
 }
