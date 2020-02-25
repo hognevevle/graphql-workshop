@@ -31,7 +31,6 @@ namespace Client
                 (services, client) =>
                 {
                     var token = services.GetRequiredService<ITokenStore>().GetToken();
-                    Console.WriteLine(new Uri("ws://localhost:5000?token=" + token).ToString());
                     client.Uri = new Uri("ws://localhost:5000?token=" + token);
                 });
             builder.Services.AddChatClient();
