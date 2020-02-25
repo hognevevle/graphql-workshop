@@ -34,7 +34,7 @@ namespace Client
                     client.Uri = new Uri("ws://localhost:5000?token=" + token);
                 });
             builder.Services.AddChatClient();
-            builder.Services.AddServices();
+            builder.Services.AddTokenServices();
             builder.RootComponents.Add<App>("app");
 
             await builder.Build().RunAsync();

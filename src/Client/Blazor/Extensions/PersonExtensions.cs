@@ -11,6 +11,22 @@ namespace Client.Extensions
                 : "offline";
         }
 
+        public static string GetIsRecipient(
+            this IPerson? person,
+            IRecipient? recipient)
+        {
+            string response = "IsNOTRecipient";
+            if ((person != null) && (recipient != null))
+            {
+                if (person.Id == recipient.Id)
+                {
+                    response = "IsRecipient";
+                }
+            }
+
+            return response;
+        }
+
         public static IPerson ToPerson(this PersonFromStore personFromStore)
         {
             return new Person(

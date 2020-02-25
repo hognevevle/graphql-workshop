@@ -79,6 +79,25 @@ app {
   cursor: pointer;
 }
 
+.person--IsNOTRecipient {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.person--IsRecipient {
+    display: flex;
+    flex: 0 0 auto;
+    background-color: rgba(1, 33, 76, 0.3);
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
 .person:hover {
   background-color: rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease-in-out;
