@@ -1,8 +1,8 @@
 @using System.Collections.Immutable;
 @using System.Diagnostics;
-@using System.Timers;
 @inject IChatClient ChatClient
 @inject ISessionStorageService SessionStore
+@inject TypingTracking TypingTracking;
 
 <PeopleList
   IsLoading="@_isLoadingPeople"
@@ -22,7 +22,6 @@
 
 @code {
     private readonly Stopwatch _typing = Stopwatch.StartNew();
-    private System.Timers.Timer _typingCheckTimer = new System.Timers.Timer(750);
     private bool _isLoadingPeople = true;
     private bool _isLoadingRecipient = false;
     private bool _isChatParticipantTyping = false;
@@ -50,23 +49,15 @@
         }
 
         BeginReceiveMessages();
-        BeginReceiveTyping();
+
+        TypingTracking.Typing += (sender, args) => 
+        {
+            _isChatParticipantTyping = args.IsTyping;
+            StateHasChanged();
+        };
+        TypingTracking.Begin();
 
         _isLoadingPeople = false;
-        StateHasChanged();
-
-        _typingCheckTimer.Elapsed += CheckTypingTimer;
-        _typingCheckTimer.Stop();
-    }
-
-    private void CheckTypingTimer(Object source, ElapsedEventArgs e)
-    {
-        Console.WriteLine(
-            "The Elapsed event was raised at {0:HH:mm:ss.fff}",
-            e.SignalTime);
-
-        _typingCheckTimer.Stop();
-        _isChatParticipantTyping = false;
         StateHasChanged();
     }
 
@@ -81,6 +72,7 @@
 
         _recipient = operation.Data?.PersonById;
         _messages = ImmutableList<IMessage>.Empty;
+        TypingTracking.SetRecipient(_recipient);
 
         if (_recipient == null)
         {
@@ -170,37 +162,6 @@
                     Console.WriteLine("commiting message ...");
                     _messages = _messages.Add(response.Data.Message);
                     StateHasChanged();
-                }
-            }
-        });
-    }
-
-    private void BeginReceiveTyping()
-    {
-        Task.Run(async () =>
-        {
-            Console.WriteLine("start listening for typing ...");
-
-            IResponseStream<IOnUserIsTyping> messageStream =
-                await ChatClient.OnUserIsTypingAsync();
-
-            Console.WriteLine("started listening for typing ...");
-
-            await foreach(IOperationResult<IOnUserIsTyping> response in messageStream)
-            {
-                Console.WriteLine("evaluating message ...");
-
-                if(!response.HasErrors
-                    && response.Data is { }
-                    && _recipient is { }
-                    && _recipient.Id == response.Data.Recipient.Id)
-                {
-                    Console.WriteLine("commiting message ...");
-                    _isChatParticipantTyping = true;
-                    StateHasChanged();
-
-                    _typingCheckTimer.Stop();
-                    _typingCheckTimer.Start();
                 }
             }
         });

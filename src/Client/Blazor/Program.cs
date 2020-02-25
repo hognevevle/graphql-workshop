@@ -35,6 +35,7 @@ namespace Client
                 });
             builder.Services.AddChatClient();
             builder.Services.AddTokenServices();
+            builder.Services.AddTypingTracking();
             builder.RootComponents.Add<App>("app");
 
             await builder.Build().RunAsync();
