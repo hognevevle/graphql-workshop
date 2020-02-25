@@ -4,7 +4,7 @@
 <div class="chat">
   @if (Recipient != null)
   {
-    <Header Recipient="@Recipient" />
+    <Header Recipient="@Recipient" IsTyping="@IsTyping"/>
   }
 
   <div class="chat-history">
@@ -18,20 +18,19 @@
     }
     else if (Recipient != null && Recipient?.Messages?.Nodes != null)
     {
-      <ul class="messages">
-        @foreach (var message in Messages)
-        {
-          <ChatMessage
-            Message="@message"
-            Sender="@message.Sender"
-          />
-        }
+  <ul class="messages">
+      @foreach (var message in Messages)
+      {
+          <ChatMessage Message="@message"
+                       Sender="@message.Sender" />
+      }
 
-        @if (IsTyping)
-        {
+      @if (IsTyping)
+      {
           <TypingIndicator />
-        }
-      </ul>
+      }
+
+  </ul>
     }
     else
     {

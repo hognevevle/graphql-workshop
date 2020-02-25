@@ -224,8 +224,8 @@ app {
 }
 
 .messages {
-  flex: 1 1 auto;
-  padding: 0;
+    flex: 1 1 auto;
+    padding: 0;
 }
 
 .message--incoming,

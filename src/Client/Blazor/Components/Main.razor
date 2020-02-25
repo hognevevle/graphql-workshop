@@ -1,5 +1,6 @@
 @using System.Collections.Immutable;
 @using System.Diagnostics;
+@using System.Timers;
 @inject IChatClient ChatClient
 @inject ISessionStorageService SessionStore
 
@@ -21,6 +22,7 @@
 
 @code {
     private readonly Stopwatch _typing = Stopwatch.StartNew();
+    private System.Timers.Timer _typingCheckTimer = new System.Timers.Timer(750);
     private bool _isLoadingPeople = true;
     private bool _isLoadingRecipient = false;
     private bool _isChatParticipantTyping = false;
@@ -52,6 +54,20 @@
 
         _isLoadingPeople = false;
         StateHasChanged();
+
+        _typingCheckTimer.Elapsed += CheckTypingTimer;
+        _typingCheckTimer.Stop();
+    }
+
+    private void CheckTypingTimer(Object source, ElapsedEventArgs e)
+    {
+        Console.WriteLine(
+            "The Elapsed event was raised at {0:HH:mm:ss.fff}",
+            e.SignalTime);
+
+        _typingCheckTimer.Stop();
+        _isChatParticipantTyping = false;
+        StateHasChanged();
     }
 
     private async Task OnClickPerson(IPerson person)
@@ -79,7 +95,7 @@
 
     private async Task OnSendMessage(string message)
     {
-        if(_recipient is { }) 
+        if(_recipient is { })
         {
             var result = await ChatClient.SendMessageAsync(_recipient.Email, message);
 
@@ -108,7 +124,7 @@
         {
             await ClickSignOut.InvokeAsync(null);
         }
-        
+
         _people = operation.Data?.People;
     }
 
@@ -126,30 +142,30 @@
             await SessionStore.RemoveItemAsync("RecipientId");
             await LoadPeople(string.Empty);
         }
-        
+
         _people = operation.Data?.People;
         _recipient = operation.Data?.PersonById;
     }
 
-    private void BeginReceiveMessages() 
+    private void BeginReceiveMessages()
     {
-        Task.Run(async () => 
+        Task.Run(async () =>
         {
             Console.WriteLine("start listening for messages ...");
 
-            IResponseStream<IOnMessageReceived> messageStream = 
+            IResponseStream<IOnMessageReceived> messageStream =
                 await ChatClient.OnMessageReceivedAsync();
 
             Console.WriteLine("started listening for messages ...");
 
-            await foreach(IOperationResult<IOnMessageReceived> response in messageStream) 
+            await foreach(IOperationResult<IOnMessageReceived> response in messageStream)
             {
                 Console.WriteLine("evaluating message ...");
 
-                if(!response.HasErrors 
+                if(!response.HasErrors
                     && response.Data is { }
-                    && _recipient is { } 
-                    && _recipient.Id == response.Data.Message.Sender.Id) 
+                    && _recipient is { }
+                    && _recipient.Id == response.Data.Message.Sender.Id)
                 {
                     Console.WriteLine("commiting message ...");
                     _messages = _messages.Add(response.Data.Message);
@@ -159,29 +175,32 @@
         });
     }
 
-    private void BeginReceiveTyping() 
+    private void BeginReceiveTyping()
     {
-        Task.Run(async () => 
+        Task.Run(async () =>
         {
             Console.WriteLine("start listening for typing ...");
 
-            IResponseStream<IOnUserIsTyping> messageStream = 
+            IResponseStream<IOnUserIsTyping> messageStream =
                 await ChatClient.OnUserIsTypingAsync();
 
             Console.WriteLine("started listening for typing ...");
 
-            await foreach(IOperationResult<IOnUserIsTyping> response in messageStream) 
+            await foreach(IOperationResult<IOnUserIsTyping> response in messageStream)
             {
                 Console.WriteLine("evaluating message ...");
 
-                if(!response.HasErrors 
+                if(!response.HasErrors
                     && response.Data is { }
-                    && _recipient is { } 
-                    && _recipient.Id == response.Data.Recipient.Id) 
+                    && _recipient is { }
+                    && _recipient.Id == response.Data.Recipient.Id)
                 {
                     Console.WriteLine("commiting message ...");
                     _isChatParticipantTyping = true;
                     StateHasChanged();
+
+                    _typingCheckTimer.Stop();
+                    _typingCheckTimer.Start();
                 }
             }
         });
