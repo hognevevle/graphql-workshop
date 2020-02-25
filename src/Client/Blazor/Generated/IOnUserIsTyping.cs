@@ -8,6 +8,6 @@ namespace Client
     [System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "11.0.0")]
     public partial interface IOnUserIsTyping
     {
-        global::Client.IHasPersonId OnTyping { get; }
+        global::Client.IHasPersonId Recipient { get; }
     }
 }

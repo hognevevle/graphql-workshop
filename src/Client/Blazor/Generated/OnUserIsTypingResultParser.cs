@@ -29,12 +29,12 @@ namespace Client
         {
             return new OnUserIsTyping
             (
-                ParseOnUserIsTypingOnTyping(data, "onTyping")
+                ParseOnUserIsTypingRecipient(data, "recipient")
             );
 
         }
 
-        private global::Client.IHasPersonId ParseOnUserIsTypingOnTyping(
+        private global::Client.IHasPersonId ParseOnUserIsTypingRecipient(
             JsonElement parent,
             string field)
         {

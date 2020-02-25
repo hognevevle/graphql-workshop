@@ -10,11 +10,11 @@ namespace Client
         : IOnUserIsTyping
     {
         public OnUserIsTyping(
-            global::Client.IHasPersonId onTyping)
+            global::Client.IHasPersonId recipient)
         {
-            OnTyping = onTyping;
+            Recipient = recipient;
         }
 
-        public global::Client.IHasPersonId OnTyping { get; }
+        public global::Client.IHasPersonId Recipient { get; }
     }
 }

@@ -43,6 +43,7 @@
         }
 
         BeginReceiveMessages();
+        BeginReceiveTyping();
 
         _isLoadingPeople = false;
         StateHasChanged();
@@ -138,6 +139,34 @@
                 {
                     Console.WriteLine("commiting message ...");
                     _messages = _messages.Add(response.Data.Message);
+                    StateHasChanged();
+                }
+            }
+        });
+    }
+
+    private void BeginReceiveTyping() 
+    {
+        Task.Run(async () => 
+        {
+            Console.WriteLine("start listening for typing ...");
+
+            IResponseStream<IOnUserIsTyping> messageStream = 
+                await ChatClient.OnUserIsTypingAsync();
+
+            Console.WriteLine("started listening for typing ...");
+
+            await foreach(IOperationResult<IOnUserIsTyping> response in messageStream) 
+            {
+                Console.WriteLine("evaluating message ...");
+
+                if(!response.HasErrors 
+                    && response.Data is { }
+                    && _recipient is { } 
+                    && _recipient.Id == response.Data.Recipient.Id) 
+                {
+                    Console.WriteLine("commiting message ...");
+                    _isChatParticipantTyping = true;
                     StateHasChanged();
                 }
             }

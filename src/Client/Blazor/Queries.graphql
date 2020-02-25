@@ -56,7 +56,7 @@ subscription onUserOnlineStatusChanged {
 }
 
 subscription onUserIsTyping {
-  onTyping {
+  recipient: onTyping {
     ...hasPersonId
   }
 }
