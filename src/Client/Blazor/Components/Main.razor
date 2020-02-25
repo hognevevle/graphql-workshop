@@ -75,8 +75,14 @@
     {
         if(_recipient is { }) 
         {
-            var operation = await ChatClient
+            var result = await ChatClient
                 .SendMessageAsync(_recipient.Email, message);
+            
+            if(!result.HasErrors && result.Data is { }) 
+            {
+                _messages = _messages.Add(result.Data.SendMessage.Message);
+                StateHasChanged();
+            }
         }
     }
 

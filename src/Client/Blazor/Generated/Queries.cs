@@ -21,28 +21,28 @@ namespace Client
         };
         private readonly byte[] _hash = new byte[]
         {
-            48,
-            105,
-            119,
-            81,
-            75,
-            66,
-            121,
-            112,
-            69,
-            122,
-            72,
-            111,
-            82,
+            88,
+            116,
+            120,
+            77,
+            100,
+            109,
+            90,
+            109,
+            53,
             43,
-            66,
-            74,
-            49,
+            86,
+            84,
+            78,
             110,
-            110,
-            82,
-            107,
-            65,
+            75,
+            69,
+            47,
+            47,
+            55,
+            120,
+            55,
+            103,
             61,
             61
         };
@@ -415,10 +415,17 @@ namespace Client
             109,
             101,
             32,
-            115,
+            46,
+            46,
+            46,
+            32,
+            109,
             101,
-            110,
-            116,
+            115,
+            115,
+            97,
+            103,
+            101,
             32,
             125,
             32,
@@ -1736,6 +1743,31 @@ namespace Client
             103,
             101,
             115,
+            40,
+            111,
+            114,
+            100,
+            101,
+            114,
+            95,
+            98,
+            121,
+            58,
+            32,
+            123,
+            32,
+            115,
+            101,
+            110,
+            116,
+            58,
+            32,
+            65,
+            83,
+            67,
+            32,
+            125,
+            41,
             32,
             123,
             32,
@@ -1813,7 +1845,7 @@ namespace Client
             mutation sendMessage($recipientEmail: String!, $text: String!) {
               sendMessage(input: { recipientEmail: $recipientEmail, text: $text }) {
                 message {
-                  sent
+                  ... message
                 }
               }
             }
@@ -1912,7 +1944,7 @@ namespace Client
             
             fragment recipient on Person {
               ... person
-              messages {
+              messages(order_by: { sent: ASC }) {
                 nodes {
                   ... message
                 }

@@ -14,7 +14,7 @@ query getRecipient($recipientId: ID!) {
 mutation sendMessage($recipientEmail: String!, $text: String!) {
   sendMessage(input: { recipientEmail: $recipientEmail, text: $text }) {
     message {
-      sent
+      ...message
     }
   }
 }
@@ -113,7 +113,7 @@ fragment recipientById on Query {
 
 fragment recipient on Person {
   ...person
-  messages {
+  messages (order_by: { sent: ASC }) {
     nodes {
       ...message
     }

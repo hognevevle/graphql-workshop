@@ -10,11 +10,11 @@ namespace Client
         : ISendMessagePayload
     {
         public SendMessagePayload(
-            global::Client.IMessage1 message)
+            global::Client.IMessage message)
         {
             Message = message;
         }
 
-        public global::Client.IMessage1 Message { get; }
+        public global::Client.IMessage Message { get; }
     }
 }
