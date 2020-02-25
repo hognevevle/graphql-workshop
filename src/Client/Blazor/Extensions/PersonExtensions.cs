@@ -11,6 +11,13 @@ namespace Client.Extensions
                 : "offline";
         }
 
+        public static string GetPicture(this IPerson? person)
+        {
+            return person != null && person.ImageUri != null && String.IsNullOrEmpty(person.ImageUri.ToString()) == false
+                ? person.ImageUri.ToString()
+                : "img/chillicream-logo.svg";
+        }
+
         public static string GetIsRecipient(
             this IPerson? person,
             IRecipient? recipient)

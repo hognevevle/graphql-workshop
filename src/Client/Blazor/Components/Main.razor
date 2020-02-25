@@ -1,4 +1,5 @@
 @using System.Collections.Immutable;
+@using System.Timers;
 @inject IChatClient ChatClient
 @inject ISessionStorageService SessionStore
 
@@ -21,6 +22,9 @@
     private bool _isLoadingPeople = true;
     private bool _isLoadingRecipient = false;
     private bool _isChatParticipantTyping = false;
+    private DateTime _lastTimeParticipantTyping = DateTime.MinValue;
+    private const int _typingOffsetSeconds = 10;
+    private static System.Timers.Timer? _typingCheckTimer;
     private IPersonConnection? _people;
     private IRecipient? _recipient;
     private ImmutableList<IMessage> _messages = ImmutableList<IMessage>.Empty;
@@ -49,6 +53,31 @@
 
         _isLoadingPeople = false;
         StateHasChanged();
+
+        if (_typingCheckTimer == null)
+        {
+            _typingCheckTimer = new System.Timers.Timer(5000);
+            _typingCheckTimer.Elapsed += CheckTypingTimer;
+            _typingCheckTimer.AutoReset = true;
+            _typingCheckTimer.Enabled = true;
+
+            //TODO: We should stop and dispose it, but it's a demo ;)
+        }
+    }
+
+    private void CheckTypingTimer(Object source, ElapsedEventArgs e)
+    {
+        Console.WriteLine("The Elapsed event was raised at {0:HH:mm:ss.fff}",
+                          e.SignalTime);
+        // we check the latest participant date with the current datetime and if the difference 
+        // is > an offset, 5, 10, 15 seconds we set the _isChatParticipantTyping to false
+        var currentUTCDateTime = DateTime.UtcNow;
+        var diffInSeconds = (_lastTimeParticipantTyping - currentUTCDateTime).TotalSeconds;
+        if (diffInSeconds > _typingOffsetSeconds)
+        {
+            _isChatParticipantTyping = false;
+            StateHasChanged();
+        }
     }
 
     private async Task OnClickPerson(IPerson person)
@@ -76,10 +105,10 @@
 
     private async Task OnSendMessage(string message)
     {
-        if(_recipient is { }) 
+        if(_recipient is { })
         {
             var result = await ChatClient.SendMessageAsync(_recipient.Email, message);
-            
+
             if(!result.HasErrors && result.Data is { })
             {
                 _messages = _messages.Add(result.Data.SendMessage.Message);
@@ -96,7 +125,7 @@
         {
             await ClickSignOut.InvokeAsync(null);
         }
-        
+
         _people = operation.Data?.People;
     }
 
@@ -114,30 +143,30 @@
             await SessionStore.RemoveItemAsync("RecipientId");
             await LoadPeople(string.Empty);
         }
-        
+
         _people = operation.Data?.People;
         _recipient = operation.Data?.PersonById;
     }
 
-    private void BeginReceiveMessages() 
+    private void BeginReceiveMessages()
     {
-        Task.Run(async () => 
+        Task.Run(async () =>
         {
             Console.WriteLine("start listening for messages ...");
 
-            IResponseStream<IOnMessageReceived> messageStream = 
+            IResponseStream<IOnMessageReceived> messageStream =
                 await ChatClient.OnMessageReceivedAsync();
 
             Console.WriteLine("started listening for messages ...");
 
-            await foreach(IOperationResult<IOnMessageReceived> response in messageStream) 
+            await foreach(IOperationResult<IOnMessageReceived> response in messageStream)
             {
                 Console.WriteLine("evaluating message ...");
 
-                if(!response.HasErrors 
+                if(!response.HasErrors
                     && response.Data is { }
-                    && _recipient is { } 
-                    && _recipient.Id == response.Data.Message.Sender.Id) 
+                    && _recipient is { }
+                    && _recipient.Id == response.Data.Message.Sender.Id)
                 {
                     Console.WriteLine("commiting message ...");
                     _messages = _messages.Add(response.Data.Message);
@@ -147,28 +176,29 @@
         });
     }
 
-    private void BeginReceiveTyping() 
+    private void BeginReceiveTyping()
     {
-        Task.Run(async () => 
+        Task.Run(async () =>
         {
             Console.WriteLine("start listening for typing ...");
 
-            IResponseStream<IOnUserIsTyping> messageStream = 
+            IResponseStream<IOnUserIsTyping> messageStream =
                 await ChatClient.OnUserIsTypingAsync();
 
             Console.WriteLine("started listening for typing ...");
 
-            await foreach(IOperationResult<IOnUserIsTyping> response in messageStream) 
+            await foreach(IOperationResult<IOnUserIsTyping> response in messageStream)
             {
                 Console.WriteLine("evaluating message ...");
 
-                if(!response.HasErrors 
+                if(!response.HasErrors
                     && response.Data is { }
-                    && _recipient is { } 
-                    && _recipient.Id == response.Data.Recipient.Id) 
+                    && _recipient is { }
+                    && _recipient.Id == response.Data.Recipient.Id)
                 {
                     Console.WriteLine("commiting message ...");
                     _isChatParticipantTyping = true;
+                    _lastTimeParticipantTyping = DateTime.UtcNow;
                     StateHasChanged();
                 }
             }
