@@ -10,20 +10,20 @@ namespace Chat.Server.People
     [ExtendObjectType(Name = "Subscription")]
     public class PersonSubscriptions
     {
-        [Subscribe]
+        [SubscribeAndResolve]
         public async Task<IAsyncEnumerable<Person>> OnOnlineAsync(
-            [Service]IEventTopicObserver eventTopicObserver,
+            [Service]ITopicEventReceiver eventReceiver,
             CancellationToken cancellationToken) =>
-            await eventTopicObserver.SubscribeAsync<string, Person>(
+            await eventReceiver.SubscribeAsync<string, Person>(
                 "online", cancellationToken)
                 .ConfigureAwait(false);
 
-        [Subscribe]
+        [SubscribeAndResolve]
         public async Task<IAsyncEnumerable<Person>> OnTypingAsync(
-            [Service]IEventTopicObserver eventTopicObserver,
+            [Service]ITopicEventReceiver eventReceiver,
             [GlobalState]string currentUserEmail,
             CancellationToken cancellationToken) =>
-            await eventTopicObserver.SubscribeAsync<string, Person>(
+            await eventReceiver.SubscribeAsync<string, Person>(
                 $"typing_to_{currentUserEmail}", cancellationToken)
                 .ConfigureAwait(false);
     }

@@ -59,14 +59,14 @@ namespace Chat.Server.People
             TypingInput input,
             [GlobalState]string currentUserEmail,
             PersonByEmailDataLoader personByEmail,
-            [Service]IEventDispatcher eventDispatcher,
+            [Service]ITopicEventSender eventSender,
             CancellationToken cancellationToken)
         {
             IReadOnlyList<Person> participants = await personByEmail.LoadAsync(
                 cancellationToken, input.WritingTo, currentUserEmail)
                 .ConfigureAwait(false);
 
-            await eventDispatcher.SendAsync(
+            await eventSender.SendAsync(
                 $"typing_to_{participants[0].Email}", participants[1], cancellationToken)
                 .ConfigureAwait(false);
 

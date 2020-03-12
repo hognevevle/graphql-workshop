@@ -88,7 +88,7 @@ namespace Chat.Server.Users
             LoginInput input,
             [Service]IUserRepository userRepository,
             [Service]PersonByEmailDataLoader personByEmail,
-            [Service]IEventDispatcher eventDispatcher,
+            [Service]ITopicEventSender eventSender,
             CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(input.Email))
@@ -159,7 +159,7 @@ namespace Chat.Server.Users
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
             string tokenString = tokenHandler.WriteToken(token);
 
-            await eventDispatcher.SendAsync<string, Person>("online", me);
+            await eventSender.SendAsync<string, Person>("online", me);
 
             return new LoginPayload(me, tokenString, "bearer", input.ClientMutationId);
         }
