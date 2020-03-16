@@ -38,7 +38,7 @@ namespace Chat.Server
                             if (context.HttpContext.Request.Query.ContainsKey("token"))
                             {
                                 context.Token = context.HttpContext.Request.Query["token"];
-                            }                            
+                            }
                             return Task.CompletedTask;
                         }
                     };

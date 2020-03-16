@@ -25,11 +25,6 @@ namespace Chat.Server
             }
             else
             {
-                var serviceCollection = new ServiceCollection();
-                serviceCollection.AddDbContext<ChatDbContext>();
-                serviceCollection.BuildServiceProvider().CreateScope().ServiceProvider.GetRequiredService<ChatDbContext>().Database.EnsureCreated();
-
-
                 CreateHostBuilder(args).Build().Run();
             }
         }

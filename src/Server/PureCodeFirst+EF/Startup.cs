@@ -14,7 +14,8 @@ using HotChocolate.AspNetCore;
 using HotChocolate.AspNetCore.Voyager;
 using HotChocolate.Execution.Configuration;
 using HotChocolate.Types;
-
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Chat.Server
 {
@@ -57,7 +58,7 @@ namespace Chat.Server
                         .Create(),
                     new QueryExecutionOptions { ForceSerialExecution = true });
 
-            services.AddQueryRequestInterceptor(async (context, builder, ct) =>
+            services.AddQueryRequestInterceptor((context, builder, ct) =>
             {
                 if (context.User.Identity.IsAuthenticated)
                 {
@@ -67,15 +68,12 @@ namespace Chat.Server
                     builder.AddProperty(
                         "currentPersonId",
                         personId);
+
                     builder.AddProperty(
                         "currentUserEmail",
                         context.User.FindFirst(ClaimTypes.Email).Value);
-
-                    /*
-                    IPersonRepository personRepository =
-                        context.RequestServices.GetRequiredService<IPersonRepository>();
-                    await personRepository.UpdateLastSeenAsync(personId, DateTime.UtcNow, ct);*/
                 }
+                return Task.CompletedTask;
             });
         }
 
